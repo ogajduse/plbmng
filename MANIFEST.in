@@ -1,0 +1,2 @@
+global-include README.rst LICENSE README.md
+recursive-include plbmng *

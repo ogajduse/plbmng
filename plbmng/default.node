@@ -1,0 +1,998 @@
+# ID	IP	DNS	CONTINENT	COUNTRY	REGION	CITY	URL	FULL NAME	LATITUDE	LONGITUDE
+1	212.235.189.115	planetlab2.fri.uni-lj.si	EU	SI	Upravna Enota Ljubljana	unknown	http://www.uni-lj.si	University of Ljubljana	46.0319	14.3052
+2	192.42.43.22	planetlab1.unineuchatel.ch	EU	CH	District du Gros-de-Vaud	unknown	http://iiun.unine.ch	University of Neuchatel	46.59	6.56
+3	203.159.63.250	ple2.ait.ac.th	AS	TH	unknown	พระนครศรีอยุธยา	www.interlab.ait.asia	interlab-ait	14.1426	100.604
+4	unknown	ple02.fc.univie.ac.at	EU	AT	unknown	unknown	http://www.cs.univie.ac.at	University of Vienna	48.16	16.24
+5	221.199.217.144	planetlab1.research.nicta.com.au	OC	AU	Sydney	Sydney	http://www.nicta.com.au	National ICT Australia (NICTA)	-33.8954	151.197
+6	193.157.115.250	planetlab1.ifi.uio.no	EU	NO	Oslo	Oslo	http://www.ifi.uio.no/	University of Oslo	59.93	10.75
+7	141.24.249.129	pl1.prakinf.tu-ilmenau.de	EU	DE	Ilm-Kreis	unknown	www.tu-ilmenau.de	Technische Universitat Ilmenau	50.681	10.9386
+8	unknown	planetlab1.polito.it	EU	IT	TO	Torino	http://www.tlc-networks.polito.it	Politecnico di Torino	45.07	7.67
+9	193.191.148.249	planck249ple.test.iminds.be	EU	BE	Gent	Gent	http://idlab.technology	imec iLab.t	51.04	3.74
+10	193.136.19.29	planetlab-um10.di.uminho.pt	EU	PT	Braga	unknown	http://cctc.di.uminho.pt	CCTC / Universidade do Minho	41.5615	-8.39722
+11	unknown	planetlab1.virtues.fi	EU	FI	Oulun seutukunta	Oulu	http://www.cwc.oulu.fi/home/	Centre for Wireless Communications	65.0582	25.4713
+12	unknown	pl1.ccsrfi.net	EU	GB	Surrey	unknown	http://www.ee.surrey.ac.uk/CCSR/	University of Surrey	51.2436	-0.588343
+13	195.130.121.204	planetlab1.cs.uoi.gr	EU	GR	Δήμος Ιωαννιτών	unknown	http://dmod.cs.uoi.gr	University of Ioannina	39.6182	20.8386
+14	195.148.124.74	planetlab-2.research.netlab.hut.fi	EU	FI	Helsingin seutukunta	Helsinki	http://comnet.tkk.fi	Aalto University Comnet	60.19	24.93
+15	130.208.242.1	planetlab1.ru.is	EU	IS	unknown	Reykjavíkurborg	http://www.ru.is	Reykjavik University	64.1232	-21.9249
+16	146.179.62.13	planetlab-3.imperial.ac.uk	EU	GB	unknown	London	http://www.imperial.ac.uk	Imperial College London	51.498	-0.176655
+17	193.136.191.21	planetlab-4.iscte.pt	EU	PT	unknown	unknown	http://adetti.iscte.pt	IT/ISCTE-IUL	38.43	-9.08
+18	83.212.32.131	iason.inf.uth.gr	EU	GR	Δήμος Αλίμου	unknown	http://www.certh.gr/	Centre for Research and Technology Hellas	37.9	23.7
+19	129.13.100.9	iraplab1.iralab.uni-karlsruhe.de	EU	DE	unknown	Karlsruhe	http://www.tm.kit.edu/itm/index.php?lang=en	Karlsruhe Institute of Technology	49.015	8.405
+20	155.185.54.250	planetlab-2.ing.unimo.it	EU	IT	MO	Modena	http://www.unimore.it/	University of Modena and Reggio Emilia	44.6218	10.9637
+21	139.165.12.212	planetlab2.montefiore.ulg.ac.be	EU	BE	Liège	Liège	http://www.ulg.ac.be	Universite de Liege	50.58	5.56
+22	195.130.124.1	planetlab1.ionio.gr	EU	GR	Δήμος Κέρκυρας	Κέρκυρα	http://dbislab.di.ionio.gr	Ionian University	39.6205	19.9148
+23	141.76.45.17	planet1.inf.tu-dresden.de	EU	DE	unknown	Dresden	http://planetlab.inf.tu-dresden.de	Technische Universitat Dresden	51.026	13.725
+24	195.116.53.21	onelab1.warsaw.rd.tp.pl	EU	PL	Warszawa	Warszawa	http://www.mini.pw.edu.pl	Warsaw University of Technology Europe	52.2221	21.0069
+25	195.116.53.22	onelab2.warsaw.rd.tp.pl	EU	PL	Warszawa	Warszawa	http://www.tp.pl	Orange Labs Warsaw	52.1762	21.0012
+26	155.54.239.64	planetlab1.um.es	EU	ES	Área Metropolitana de Murcia	Murcia	http://www.um.es	University of Murcia	38.0232	-1.17473
+27	unknown	planetlab2.s3.kth.se	EU	SE	Stockholm	Sthlm	http://www.kth.se	KTH, Royal Institute of Technology, EE	59.3495	18.067
+28	148.81.140.194	planetlab2.pjwstk.edu.pl	EU	PL	Warszawa	Warszawa	http://www.pjwstk.edu.pl	Polish-Japanese Institute of Information Technology (PJIIT)	52.22	20.99
+29	147.102.224.228	stella.planetlab.ntua.gr	EU	GR	Δήμος Αθηναίων	3º Δημοτικό Διαμέρισμα	http://www.netmode.ntua.gr	Network Management & Optimal Design Laboratory - National Technical University of Athens	37.97	23.72
+30	193.136.191.20	planetlab-3.iscte.pt	EU	PT	unknown	unknown	http://adetti.iscte.pt	IT/ISCTE-IUL	38.43	-9.08
+31	193.55.112.41	planetlab2.eurecom.fr	EU	FR	Alpes-Maritimes	unknown	http://www.eurecom.fr	Eurecom Institute	43.6285	7.05162
+32	193.226.19.30	planetlab1.upm.ro	EU	RO	Mureș	Târgu Mureș	http://www.upm.ro/	Petru Maior University of Targu Mures	46.547	24.566
+33	150.254.212.148	planetlab-2.man.poznan.pl	EU	PL	Poznań	Poznań	http://www.man.poznan.pl	Poznan Supercomputing and Networking Center	52.4118	16.9165
+34	unknown	planetlab2.dit.upm.es	EU	ES	Área metropolitana de Madrid y Corredor del Henares	Madrid	http://www.fi.upm.es	Technical University of Madrid	40.42	-3.72
+35	192.43.193.71	planetlab-1.cs.unibas.ch	EU	CH	unknown	Basel	http://cn.cs.unibas.ch/	University of Basel, Switzerland	47.55	7.6
+36	84.88.58.155	dplanet2.uoc.edu	EU	ES	BCN	Barcelona	http://www.uoc.edu	Universitat Oberta de Catalunya	41.3909	2.16791
+37	unknown	planetlab-1.imag.fr	EU	FR	Grenoble	unknown	http://www.liglab.fr/	Laboratoire dInformatique de Grenoble	45.2174	5.80872
+38	157.181.175.249	planet1.elte.hu	EU	HU	unknown	Budapest	http://www.elte.hu	Eotvos Lorand University	47.4744	19.0622
+39	156.17.10.52	planetlab2.ci.pwr.wroc.pl	EU	PL	Wrocław	Wrocław	http://www.pwr.wroc.pl	Wroclaw University of Technology	51.1	16.93
+40	83.230.127.124	plab4.ple.silweb.pl	EU	PL	Gliwice	Gliwice	http://www.inf.polsl.pl/	Silesian University of Technology, Insti	50.2901	18.6773
+41	192.114.4.3	planetlab2.tau.ac.il	AS	IL	unknown	תל אביב-יפו	http://www.eng.tau.ac.il	Tel-Aviv University	32.1139	34.8042
+42	unknown	uoepl1.essex.ac.uk	EU	GB	Essex	unknown	www.essex.ac.uk	University of Essex	51.8754	0.944138
+43	unknown	uoepl2.essex.ac.uk	EU	GB	Essex	unknown	www.essex.ac.uk	University of Essex	51.8754	0.944138
+44	unknown	planetlab-1.di.fc.ul.pt	EU	PT	Sesimbra	Santiago	http://lasige.di.fc.ul.pt	University of Lisbon	38.45	-9.09
+45	unknown	planetlab-2.di.fc.ul.pt	EU	PT	Sesimbra	Santiago	http://lasige.di.fc.ul.pt	University of Lisbon	38.45	-9.09
+46	195.113.161.14	ple2.cesnet.cz	EU	CZ	okres Hlavní město Praha	Praha	http://www.ces.net	Czech Educational and Scientific Network	50.102	14.3916
+47	195.148.124.73	planetlab-1.research.netlab.hut.fi	EU	FI	Helsingin seutukunta	Helsinki	http://comnet.tkk.fi	Aalto University Comnet	60.19	24.93
+48	192.114.4.2	planetlab1.tau.ac.il	AS	IL	unknown	תל אביב-יפו	http://www.eng.tau.ac.il	Tel-Aviv University	32.1139	34.8042
+49	131.114.53.187	pierre.iet.unipi.it	EU	IT	LI	Livorno	http://www.quantavis.com	Quantavis	43.5052	10.3252
+50	131.114.53.188	marie.iet.unipi.it	EU	IT	LI	Livorno	http://www.quantavis.com	Quantavis	43.5052	10.3252
+51	195.113.161.13	ple1.cesnet.cz	EU	CZ	okres Hlavní město Praha	Praha	http://www.ces.net	Czech Educational and Scientific Network	50.102	14.3916
+52	156.17.10.51	planetlab1.ci.pwr.wroc.pl	EU	PL	Wrocław	Wrocław	http://www.pwr.wroc.pl	Wroclaw University of Technology	51.1	16.93
+53	192.42.43.23	planetlab2.unineuchatel.ch	EU	CH	District du Gros-de-Vaud	unknown	http://iiun.unine.ch	University of Neuchatel	46.59	6.56
+54	147.102.3.113	planetlab3.cslab.ece.ntua.gr	EU	GR	Δήμος Αθηναίων	Αθήνα	http://www.cslab.ece.ntua.gr	CSLab - Institute of Communication and Computer Systems of National Technical University of Athens	38.0	23.73
+55	147.102.3.117	planetlab4.cslab.ece.ntua.gr	EU	GR	Δήμος Αθηναίων	Αθήνα	http://www.cslab.ece.ntua.gr	CSLab - Institute of Communication and Computer Systems of National Technical University of Athens	38.0	23.73
+56	195.130.121.205	planetlab2.cs.uoi.gr	EU	GR	Δήμος Ιωαννιτών	unknown	http://dmod.cs.uoi.gr	University of Ioannina	39.6182	20.8386
+57	unknown	planetlab-4.dis.uniroma1.it	EU	IT	RM	Roma	http://www.dis.uniroma1.it/	Sapienza University of Rome	41.891	12.5037
+58	unknown	planetlab1.diku.dk	EU	DK	Københavns Kommune	København	www.diku.dk	University of Copenhagen, DIKU	55.7014	12.5612
+59	unknown	planetlab2.diku.dk	EU	DK	Københavns Kommune	København	www.diku.dk	University of Copenhagen, DIKU	55.7014	12.5612
+60	148.81.140.193	planetlab1.pjwstk.edu.pl	EU	PL	Warszawa	Warszawa	http://www.pjwstk.edu.pl	Polish-Japanese Institute of Information Technology (PJIIT)	52.22	20.99
+61	139.91.90.238	planetlab1.ics.forth.gr	EU	GR	Δήμος Ηρακλείου	unknown	http://www.ics.forth.gr	Inst. of Computer Science, Foundation for Research and Technology - Hellas	35.17	25.0
+62	139.91.90.239	planetlab2.ics.forth.gr	EU	GR	Δήμος Ηρακλείου	unknown	http://www.ics.forth.gr	Inst. of Computer Science, Foundation for Research and Technology - Hellas	35.17	25.0
+63	193.1.170.136	planetlab-node-02.ucd.ie	EU	IE	County Dublin	unknown	http://www.cs.ucd.ie	University College Dublin	53.3092	-6.22169
+64	129.13.100.10	iraplab2.iralab.uni-karlsruhe.de	EU	DE	unknown	Karlsruhe	http://www.tm.kit.edu/itm/index.php?lang=en	Karlsruhe Institute of Technology	49.015	8.405
+65	157.159.226.72	planetlab-node1.it-sudparis.eu	EU	FR	Orléans	unknown	www.it-sudparis.eu	Telecom and Management Sud Paris	48.0	2.0
+66	147.102.224.227	vicky.planetlab.ntua.gr	EU	GR	Δήμος Αθηναίων	3º Δημοτικό Διαμέρισμα	http://www.netmode.ntua.gr	Network Management & Optimal Design Laboratory - National Technical University of Athens	37.97	23.72
+67	138.251.214.77	planetlab3.cs.st-andrews.ac.uk	EU	GB	Fife	unknown	http://www.cs.st-andrews.ac.uk/	University of St Andrews	56.25	-3.03
+68	unknown	ple01.fc.univie.ac.at	EU	AT	unknown	unknown	http://www.cs.univie.ac.at	University of Vienna	48.16	16.24
+69	194.79.147.164	pl1.tailab.eu	EU	FR	Arrondissement de Nanterre	unknown	http://www.thalesgroup.com	Thales Communications & Security	48.9408	2.30674
+70	130.79.48.55	planetlab1.u-strasbg.fr	EU	FR	Strasbourg	unknown	http://icube-reseaux.unistra.fr	Universite de Strasbourg	48.5237	7.73833
+71	132.65.240.100	planet1.cs.huji.ac.il	AS	IL	unknown	ירושלים	http://www.cs.huji.ac.il/labs/danss	The Hebrew University of Jerusalem	31.7857	35.2007
+72	155.185.54.249	planetlab-1.ing.unimo.it	EU	IT	MO	Modena	http://www.unimore.it/	University of Modena and Reggio Emilia	44.6218	10.9637
+73	131.188.44.102	planetlab2.informatik.uni-erlangen.de	EU	DE	Schwabach	unknown	http://www4.informatik.uni-erlangen.de/	Friedrich-Alexander University Erlangen-Nuremberg	49.36	11.0
+74	152.66.245.161	planetlab1.tmit.bme.hu	EU	HU	unknown	Budapest	http://www.tmit.bme.hu/home!eng	Budapest University of Technology and Economics	47.4725	19.06
+75	150.254.212.147	planetlab-1.man.poznan.pl	EU	PL	Poznań	Poznań	http://www.man.poznan.pl	Poznan Supercomputing and Networking Center	52.4118	16.9165
+76	83.230.127.122	plab2.ple.silweb.pl	EU	PL	Gliwice	Gliwice	http://www.inf.polsl.pl/	Silesian University of Technology, Insti	50.2901	18.6773
+77	unknown	planetlab1.willab.fi	EU	FI	Helsingin seutukunta	Espoo	http://www.vtt.fi	VTT	60.1826	24.8259
+78	193.147.162.166	ait05.us.es	EU	ES	Sevilla	Sevilla	http://www.us.es	University of Sevilla	37.42	-5.9
+79	193.138.2.13	planetlab-13.e5.ijs.si	EU	SI	Upravna Enota Ljubljana	Ljubljana	http://www.ijs.si	Jozef Stefan Institute	46.0423	14.488
+80	195.251.248.181	planetlab2.cs.aueb.gr	EU	GR	Δήμος Αθηναίων	Αθήνα	http://mm.aueb.gr/	Athens Univ. of Economics & Business	37.9966	23.7399
+81	195.37.16.121	aladdin.planetlab.extranet.uni-passau.de	EU	DE	Passau	unknown	http://www.fmi.uni-passau.de/lehrstuehle/demeer/	University of Passau	48.58	13.47
+82	131.114.59.243	onelab7.iet.unipi.it	EU	IT	PI	Pisa	http://info.iet.unipi.it/	Universita di Pisa	43.7207	10.3852
+83	192.36.94.2	planetlab-1.ida.liu.se	EU	SE	Linköping	Linköping	http://www.ida.liu.se	Linkoping University - IDA	58.399	15.577
+84	192.36.94.3	planetlab-2.ida.liu.se	EU	SE	Linköping	Linköping	http://www.ida.liu.se	Linkoping University - IDA	58.399	15.577
+85	194.29.178.5	planetlab1.mini.pw.edu.pl	EU	PL	Warszawa	Warszawa	http://www.mini.pw.edu.pl	Warsaw University of Technology Europe	52.2221	21.0069
+86	130.73.241.34	planet2.zib.de	EU	DE	unknown	Berlin	http://www.zib.de/	Zuse Institute Berlin	52.4545	13.2962
+87	88.197.53.228	plato.di.uoa.gr	EU	GR	Δήμος Καισαριανής	unknown	http://www.di.uoa.gr	University of Athens	37.9684	23.7669
+88	193.55.112.40	planetlab1.eurecom.fr	EU	FR	Alpes-Maritimes	unknown	http://www.eurecom.fr	Eurecom Institute	43.6285	7.05162
+89	150.214.150.187	ple2.hpca.ual.es	EU	ES	Almería	Almería	http://www.ual.es/	University of AlmerÃ­a - SAL	36.83	-2.40454
+90	138.96.112.62	onelab2.pl.sophia.inria.fr	EU	FR	Alpes-Maritimes	unknown	http://www-sop.inria.fr/	INRIA OneLab	43.6156	7.06874
+91	138.96.112.60	onelab1.pl.sophia.inria.fr	EU	FR	Alpes-Maritimes	unknown	http://www-sop.inria.fr/	INRIA OneLab	43.6156	7.06874
+92	138.48.3.202	orval.infonet.fundp.ac.be	EU	BE	Namur	Namur	www.info.unamur.be	The University of Namur	50.467	4.867
+93	unknown	planetlab2.polito.it	EU	IT	TO	Torino	http://www.tlc-networks.polito.it	Politecnico di Torino	45.07	7.67
+94	unknown	peeramide.irisa.fr	EU	FR	Rennes	Rennes	http://www.irisa.fr	IRISA	48.1155	-1.65071
+95	unknown	peeramidion.irisa.fr	EU	FR	Rennes	Rennes	http://www.irisa.fr	IRISA	48.1155	-1.65071
+96	62.108.171.74	ple1.tu.koszalin.pl	EU	PL	Koszalin	Koszalin	www.tu.koszalin.pl	The Koszalin University of Technology	54.2047	16.1972
+97	132.65.240.101	planet2.cs.huji.ac.il	AS	IL	unknown	ירושלים	http://www.cs.huji.ac.il/labs/danss	The Hebrew University of Jerusalem	31.7857	35.2007
+98	193.137.173.217	planet1.servers.ua.pt	EU	PT	Aveiro	Glória e Vera Cruz	http://www.it.pt/	IT-Aveiro	40.6401	-8.65628
+99	130.149.49.136	planetlab01.tkn.tu-berlin.de	EU	DE	unknown	Berlin	http://www.tkn.tu-berlin.de/	Technische Universitaet Berlin	52.5	13.3
+100	unknown	inriarennes1.irisa.fr	EU	FR	Rennes	Rennes	http://www.irisa.fr	IRISA	48.1155	-1.65071
+101	unknown	planetlab1lannion.elibel.tm.fr	EU	FR	Lannion	unknown	www.francetelecom.com	France Telecom R&D Lannion - PL Europe	48.7319	-3.45842
+102	unknown	planetlab2lannion.elibel.tm.fr	EU	FR	Lannion	unknown	www.francetelecom.com	France Telecom R&D Lannion - PL Europe	48.7319	-3.45842
+103	unknown	planetlab1.s3.kth.se	EU	SE	Stockholm	Sthlm	http://www.kth.se	KTH, Royal Institute of Technology, EE	59.3495	18.067
+104	unknown	dev-res-plab-02.tid.es	EU	ES	Área metropolitana de Madrid y Corredor del Henares	Madrid	www.tid.es	Telefonica I+D, Barcelona	40.5136	-3.6642
+105	unknown	dev-res-plab-01.tid.es	EU	ES	Área metropolitana de Madrid y Corredor del Henares	Madrid	www.tid.es	Telefonica I+D, Barcelona	40.5136	-3.6642
+106	132.187.230.8	planetlab2.informatik.uni-wuerzburg.de	EU	DE	Würzburg	Würzburg	http://www-info3.informatik.uni-wuerzburg.de/	University of Wuerzburg	49.8	9.93
+107	88.197.53.226	plutarch.di.uoa.gr	EU	GR	Δήμος Καισαριανής	unknown	http://www.di.uoa.gr	University of Athens	37.9684	23.7669
+108	163.117.253.22	planetlab1.uc3m.es	EU	ES	Área metropolitana de Madrid y Corredor del Henares	Leganés	www.evalues.es	Universidad Carlos III Madrid	40.3545	-3.74463
+109	163.117.253.23	planetlab2.uc3m.es	EU	ES	Área metropolitana de Madrid y Corredor del Henares	Leganés	www.evalues.es	Universidad Carlos III Madrid	40.3545	-3.74463
+110	84.88.58.154	dplanet1.uoc.edu	EU	ES	BCN	Barcelona	http://www.uoc.edu	Universitat Oberta de Catalunya	41.3909	2.16791
+111	150.244.58.159	ops.ii.uam.es	EU	ES	Área metropolitana de Madrid y Corredor del Henares	Madrid	http://www.eps.uam.es	Escuela Politecnica Superior	40.4363	-3.69413
+112	193.138.2.12	planetlab-12.e5.ijs.si	EU	SI	Upravna Enota Ljubljana	Ljubljana	http://www.ijs.si	Jozef Stefan Institute	46.0423	14.488
+113	212.201.44.81	planetlab1.eecs.jacobs-university.de	EU	DE	Landkreis Oldenburg	unknown	http://www.jacobs-university.de/	Jacobs University Bremen	53.04	8.49
+114	160.78.253.32	planet2.unipr.it	EU	IT	PR	Parma	http://www.unipr.it	University of Parma	44.8009	10.3255
+115	217.173.198.154	prometeusz.we.po.opole.pl	EU	PL	Opole	Opole	http://www.we.po.opole.pl/eng/	Opole University of Technology	50.6811	17.9438
+116	unknown	planetlab-2.imag.fr	EU	FR	Grenoble	unknown	http://www.liglab.fr/	Laboratoire dInformatique de Grenoble	45.2174	5.80872
+117	192.33.90.195	planetlab01.ethz.ch	EU	CH	Bezirk Zürich	Zürich	http://www.planetlab.ethz.ch	ETH Zuerich	47.3833	8.53333
+118	192.33.90.196	planetlab02.ethz.ch	EU	CH	Bezirk Zürich	Zürich	http://www.planetlab.ethz.ch	ETH Zuerich	47.3833	8.53333
+119	193.136.124.5	planetlab2.di.fct.unl.pt	EU	PT	ALM	Almada, Cova da Piedade, Pragal e Cacilhas	http://www.fct.unl.pt	FCT/UNL	38.672	-9.18423
+120	unknown	aguila1.lsi.upc.edu	EU	ES	BCN	Barcelona	http://www.upc.edu	Universitat Politecnica de Catalunya	41.3897	2.11273
+121	143.225.229.238	planetlab02.dis.unina.it	EU	IT	NA	Napoli	http://www.unina.it	Universita di Napoli Federico II	40.8283	14.1906
+122	193.144.21.130	planetlab1.urv.cat	EU	ES	Tarragonès	unknown	http://www.urv.net	Universitat Rovira i Virgili	41.07	1.15
+123	unknown	planetlab01.cs.tcd.ie	EU	IE	County Dublin	Dublin 18	http://www.scss.tcd.ie	Trinity College Dublin	53.24	-6.24
+124	193.136.227.164	planetlab2.fct.ualg.pt	EU	PT	Faro	unknown	http://www.ualg.pt/	Universidade do Algarve	37.01	-7.96
+125	138.246.253.2	planetlab3.net.in.tum.de	EU	DE	unknown	München	http://www.tum.de	Technische Universitaet Muenchen	48.1493	11.5669
+126	138.251.214.78	planetlab4.cs.st-andrews.ac.uk	EU	GB	Fife	unknown	http://www.cs.st-andrews.ac.uk/	University of St Andrews	56.25	-3.03
+127	unknown	planet2.itc.auth.gr	EU	GR	Δήμος Ελασσόνας	unknown	http://delab.csd.auth.gr	Aristotle University of Thessaloniki (delab-auth)	40.0	22.0
+128	unknown	planetlab2.willab.fi	EU	FI	Helsingin seutukunta	Espoo	http://www.vtt.fi	VTT	60.1826	24.8259
+129	193.205.215.74	planetlab1.science.unitn.it	EU	IT	Territorio Val d'Adige	Trento	http://www.unitn.it	Universita degli Studi di Trento	46.066	11.15
+130	152.81.47.5	host4-plb.loria.fr	EU	FR	Nancy	unknown	http://www.loria.fr	INRIA Nancy - Grand Est	48.6661	6.15775
+131	unknown	planetlab2.sics.se	EU	SE	Stockholm	Sthlm	http://www.sics.se/	Swedish Institute of Computer Science	59.3333	18.05
+132	132.227.123.13	ple3.planet-lab.eu	EU	FR	Paris	Paris	http://www.lip6.fr	Universite Pierre et Marie Curie	48.8473	2.35749
+133	unknown	node1pl.planet-lab.telecom-lille1.eu	EU	FR	Lille	unknown	http://www.telecom-lille1.eu/	Telecom Lille 1	50.6103	3.13525
+134	194.42.17.163	planetlab-1.cs.ucy.ac.cy	AS	CY	Λευκωσία - Lefkoşa	unknown	http://grid.ucy.ac.cy/planetlab	University of Cyprus	35.15	33.36
+135	141.76.45.18	planet2.inf.tu-dresden.de	EU	DE	unknown	Dresden	http://planetlab.inf.tu-dresden.de	Technische Universitat Dresden	51.026	13.725
+136	193.136.191.25	planetlab-1.iscte.pt	EU	PT	unknown	unknown	http://adetti.iscte.pt	IT/ISCTE-IUL	38.43	-9.08
+137	134.151.255.181	planetlab2.aston.ac.uk	EU	GB	West Midlands Combined Authority	Birmingham	http://www.aston.ac.uk/~pengx1/DSN-project	Aston University	52.4866	-1.89098
+138	194.79.147.165	pl2.tailab.eu	EU	FR	Arrondissement de Nanterre	unknown	http://www.thalesgroup.com	Thales Communications & Security	48.9408	2.30674
+139	83.212.32.133	medea.inf.uth.gr	EU	GR	Δήμος Αλίμου	unknown	http://www.certh.gr/	Centre for Research and Technology Hellas	37.9	23.7
+140	130.206.158.138	planetlab1.tlm.unavarra.es	EU	ES	Navarra - Nafarroa	Pamplona/Iruña	http://www.tlm.unavarra.es/research	Universidad Publica de Navarra	42.7993	-1.63544
+141	192.41.136.219	planetlab2.csg.uzh.ch	EU	CH	Bezirk Muri	Beinwil (Freiamt)	http://www.csg.uzh.ch/	University of Zurich, Communication Systems Group	47.23	8.32
+142	141.24.249.131	pl2.prakinf.tu-ilmenau.de	EU	DE	Ilm-Kreis	unknown	www.tu-ilmenau.de	Technische Universitat Ilmenau	50.681	10.9386
+143	130.73.241.33	planet1.zib.de	EU	DE	unknown	Berlin	http://www.zib.de/	Zuse Institute Berlin	52.4545	13.2962
+144	unknown	planetlab04.cnds.unibe.ch	EU	CH	Verwaltungskreis Obersimmental-Saanen	unknown	http://www.iam.unibe.ch	University of Bern, IAM	46.57	7.26
+145	212.235.189.114	planetlab1.fri.uni-lj.si	EU	SI	Upravna Enota Ljubljana	unknown	http://www.uni-lj.si	University of Ljubljana	46.0319	14.3052
+146	151.97.9.224	gschembra3.diit.unict.it	EU	IT	CT	Catania	http://www.unict.it	University of Catania - Computer Science and Telecommunications Engineering	37.5258	15.0749
+147	193.136.19.13	planetlab-um00.di.uminho.pt	EU	PT	Braga	unknown	http://cctc.di.uminho.pt	CCTC / Universidade do Minho	41.5615	-8.39722
+148	unknown	itchy.comlab.bth.se	EU	SE	Karlskrona	Karlskrona	http://www.bth.se	Blekinge Institute of Technology	56.1819	15.5911
+149	unknown	planetlab03.cnds.unibe.ch	EU	CH	Verwaltungskreis Obersimmental-Saanen	unknown	http://www.iam.unibe.ch	University of Bern, IAM	46.57	7.26
+150	128.232.103.202	planetlab2.xeno.cl.cam.ac.uk	EU	GB	Cambridgeshire	Cambridge	http://www.cl.cam.ac.uk/	University of Cambridge	52.2112	0.0917
+151	193.175.135.59	planetlab-2.fhi-fokus.de	EU	DE	unknown	Berlin	http://www.fokus.fraunhofer.de	Fraunhofer FOKUS - Research Institute for Open Communication Systems	52.5258	13.3143
+152	83.230.127.123	plab3.ple.silweb.pl	EU	PL	Gliwice	Gliwice	http://www.inf.polsl.pl/	Silesian University of Technology, Insti	50.2901	18.6773
+153	130.37.193.143	planetlab2.cs.vu.nl	EU	NL	unknown	Amsterdam	http://www.cs.vu.nl/index-en.html	Vrije Universiteit	52.35	4.9
+154	unknown	node2pl.planet-lab.telecom-lille1.eu	EU	FR	Lille	unknown	http://www.telecom-lille1.eu/	Telecom Lille 1	50.6103	3.13525
+155	195.130.124.2	planetlab2.ionio.gr	EU	GR	Δήμος Κέρκυρας	Κέρκυρα	http://dbislab.di.ionio.gr	Ionian University	39.6205	19.9148
+156	unknown	planetlab1.wiwi.hu-berlin.de	EU	DE	unknown	Berlin	http://iwi.wiwi.hu-berlin.de/	Humboldt-Universitaet zu Berlin - IWI	52.5211	13.4031
+157	212.199.61.203	planetlab1.mta.ac.il	AS	IL	unknown	תל אביב-יפו	https://www.mta.ac.il/en/	Tel Aviv Yaffo College	32.0479	34.761
+158	192.43.193.72	planetlab-2.cs.unibas.ch	EU	CH	unknown	Basel	http://cn.cs.unibas.ch/	University of Basel, Switzerland	47.55	7.6
+159	212.199.61.205	planetlab2.mta.ac.il	AS	IL	unknown	תל אביב-יפו	https://www.mta.ac.il/en/	Tel Aviv Yaffo College	32.0479	34.761
+160	193.147.162.182	ait21.us.es	EU	ES	Sevilla	Sevilla	http://www.us.es	University of Sevilla	37.42	-5.9
+161	unknown	planetlab02.cnds.unibe.ch	EU	CH	Verwaltungskreis Obersimmental-Saanen	unknown	http://www.iam.unibe.ch	University of Bern, IAM	46.57	7.26
+162	193.175.135.58	planetlab-1.fhi-fokus.de	EU	DE	unknown	Berlin	http://www.fokus.fraunhofer.de	Fraunhofer FOKUS - Research Institute for Open Communication Systems	52.5258	13.3143
+163	203.159.63.249	ple1.ait.ac.th	AS	TH	unknown	พระนครศรีอยุธยา	www.interlab.ait.asia	interlab-ait	14.1426	100.604
+164	141.83.148.102	node2.planetlab.uni-luebeck.de	EU	DE	unknown	Lübeck	https://itm.uni-luebeck.de	University of Luebeck - ITM	53.8341	10.7043
+165	194.199.68.165	lim-planetlab-1.univ-reunion.fr	EU	FR	Saint-Denis	Saint-Denis	http://lim.univ-reunion.fr	Universite de La Reunion	-20.905	55.5
+166	193.205.215.75	planetlab2.science.unitn.it	EU	IT	Territorio Val d'Adige	Trento	http://www.unitn.it	Universita degli Studi di Trento	46.066	11.15
+167	132.187.230.9	planetlab3.informatik.uni-wuerzburg.de	EU	DE	Würzburg	Würzburg	http://www-info3.informatik.uni-wuerzburg.de/	University of Wuerzburg	49.8	9.93
+168	193.157.115.251	planetlab2.ifi.uio.no	EU	NO	Oslo	Oslo	http://www.ifi.uio.no/	University of Oslo	59.93	10.75
+169	unknown	planetlab-3.dis.uniroma1.it	EU	IT	RM	Roma	http://www.dis.uniroma1.it/	Sapienza University of Rome	41.891	12.5037
+170	131.114.59.242	onelab6.iet.unipi.it	EU	IT	PI	Pisa	http://info.iet.unipi.it/	Universita di Pisa	43.7207	10.3852
+171	193.136.227.163	planetlab1.fct.ualg.pt	EU	PT	Faro	unknown	http://www.ualg.pt/	Universidade do Algarve	37.01	-7.96
+172	212.51.218.235	ple1.dmcs.p.lodz.pl	EU	PL	Łódź	Łódź	www.dmcs.pl	Technical University of Lodz	51.7461	19.4556
+173	195.37.16.125	dschinni.planetlab.extranet.uni-passau.de	EU	DE	Passau	unknown	http://www.fmi.uni-passau.de/lehrstuehle/demeer/	University of Passau	48.58	13.47
+174	41.225.7.3	planetlab1.esprit-tn.com	AF	TN	الفريوات	unknown	www.esprit.ens.tn	ESPRIT	36.0	10.0
+175	unknown	planet1.itc.auth.gr	EU	GR	Δήμος Ελασσόνας	unknown	http://delab.csd.auth.gr	Aristotle University of Thessaloniki (delab-auth)	40.0	22.0
+176	unknown	planetlabpc0.upf.edu	EU	ES	BCN	Barcelona	http://www.upf.edu	Universitat Pompeu Fabra - NeTS	41.3849	2.1864
+177	unknown	planetlab1.sics.se	EU	SE	Stockholm	Sthlm	http://www.sics.se/	Swedish Institute of Computer Science	59.3333	18.05
+178	141.83.148.101	node1.planetlab.uni-luebeck.de	EU	DE	unknown	Lübeck	https://itm.uni-luebeck.de	University of Luebeck - ITM	53.8341	10.7043
+179	193.146.210.245	ple2.det.uvigo.es	EU	ES	Pontevedra	Vigo	http://www.uvigo.es/	Universidade de Vigo	42.1692	-8.68458
+180	141.11.0.165	planetlab1.thlab.net	EU	FR	Paris	Paris	http://www.thlab.net	Technicolor Paris Research Lab	48.8319	2.28097
+181	129.69.210.96	planetvs1.informatik.uni-stuttgart.de	EU	DE	Stuttgart	Stuttgart	http://www.ipvs.uni-stuttgart.de	University of Stuttgart - IPVS	48.7835	9.17517
+182	217.173.198.153	pandora.we.po.opole.pl	EU	PL	Opole	Opole	http://www.we.po.opole.pl/eng/	Opole University of Technology	50.6811	17.9438
+183	194.42.17.175	planetlab-3.cs.ucy.ac.cy	AS	CY	Λευκωσία - Lefkoşa	unknown	http://grid.ucy.ac.cy/planetlab	University of Cyprus	35.15	33.36
+184	157.159.226.74	planetlab-node3.it-sudparis.eu	EU	FR	Orléans	unknown	www.it-sudparis.eu	Telecom and Management Sud Paris	48.0	2.0
+185	131.246.19.202	planetlab2.informatik.uni-kl.de	EU	DE	Kaiserslautern	Kaiserslautern	http://disco.informatik.uni-kl.de	University of Kaiserslautern, Germany	49.45	7.78
+186	138.48.3.201	chimay.infonet.fundp.ac.be	EU	BE	Namur	Namur	www.info.unamur.be	The University of Namur	50.467	4.867
+187	150.214.150.185	ple1.hpca.ual.es	EU	ES	Almería	Almería	http://www.ual.es/	University of AlmerÃ­a - SAL	36.83	-2.40454
+188	129.242.19.197	planetlab2.cs.uit.no	EU	NO	Troms	unknown	http://www.cs.uit.no	University of Tromso	69.6813	18.977
+189	146.179.62.14	planetlab-4.imperial.ac.uk	EU	GB	unknown	London	http://www.imperial.ac.uk	Imperial College London	51.498	-0.176655
+190	138.48.3.203	rochefort.infonet.fundp.ac.be	EU	BE	Namur	Namur	www.info.unamur.be	The University of Namur	50.467	4.867
+191	193.146.210.244	ple1.det.uvigo.es	EU	ES	Pontevedra	Vigo	http://www.uvigo.es/	Universidade de Vigo	42.1692	-8.68458
+192	134.76.249.229	planetlab1.informatik.uni-goettingen.de	EU	DE	Landkreis Kassel	Fuldatal	http://www.ifi.informatik.uni-goettingen.de	University of Goettingen	51.3622	9.55996
+193	193.137.173.218	planet2.servers.ua.pt	EU	PT	Aveiro	Glória e Vera Cruz	http://www.it.pt/	IT-Aveiro	40.6401	-8.65628
+194	160.80.221.37	planet-lab-node1.netgroup.uniroma2.it	EU	IT	RM	Roma	http://netgroup.uniroma2.it	Netgroup at University of Rome - Tor Vergata	41.8556	12.6243
+195	unknown	planetlab2.jcp-consult.net	EU	FR	Rennes	unknown	http://www.jcp-c.net	JCP-Consult	48.1179	-1.60753
+196	unknown	planet2.l3s.uni-hannover.de	EU	DE	Region Hannover	Hannover	http://www.l3s.de/	L3S Research Center, University of Hannover	52.4	9.73
+197	unknown	aguila2.lsi.upc.edu	EU	ES	BCN	Barcelona	http://www.upc.edu	Universitat Politecnica de Catalunya	41.3897	2.11273
+198	unknown	planetlab1.jcp-consult.net	EU	FR	Rennes	unknown	http://www.jcp-c.net	JCP-Consult	48.1179	-1.60753
+199	221.199.217.145	planetlab2.research.nicta.com.au	OC	AU	Sydney	Sydney	http://www.nicta.com.au	National ICT Australia (NICTA)	-33.8954	151.197
+200	160.80.221.39	planet-lab-node2.netgroup.uniroma2.it	EU	IT	RM	Roma	http://netgroup.uniroma2.it	Netgroup at University of Rome - Tor Vergata	41.8556	12.6243
+201	unknown	planet1.l3s.uni-hannover.de	EU	DE	Region Hannover	Hannover	http://www.l3s.de/	L3S Research Center, University of Hannover	52.4	9.73
+202	193.191.148.250	planck250ple.test.iminds.be	EU	BE	Gent	Gent	http://idlab.technology	imec iLab.t	51.04	3.74
+203	141.20.103.3	planetlab2.wiwi.hu-berlin.de	EU	DE	unknown	Berlin	http://iwi.wiwi.hu-berlin.de/	Humboldt-Universitaet zu Berlin - IWI	52.5211	13.4031
+204	193.1.170.135	planetlab-node-01.ucd.ie	EU	IE	County Dublin	unknown	http://www.cs.ucd.ie	University College Dublin	53.3092	-6.22169
+205	139.165.12.211	planetlab1.montefiore.ulg.ac.be	EU	BE	Liège	Liège	http://www.ulg.ac.be	Universite de Liege	50.58	5.56
+206	195.116.53.23	onelab3.warsaw.rd.tp.pl	EU	PL	Warszawa	Warszawa	http://www.tp.pl	Orange Labs Warsaw	52.1762	21.0012
+207	unknown	planetlab2.virtues.fi	EU	FI	Oulun seutukunta	Oulu	http://www.cwc.oulu.fi/home/	Centre for Wireless Communications	65.0582	25.4713
+208	130.206.158.140	planetlab2.tlm.unavarra.es	EU	ES	Navarra - Nafarroa	Pamplona/Iruña	http://www.tlm.unavarra.es/research	Universidad Publica de Navarra	42.7993	-1.63544
+209	194.199.68.166	lim-planetlab-2.univ-reunion.fr	EU	FR	Saint-Denis	Saint-Denis	http://lim.univ-reunion.fr	Universite de La Reunion	-20.905	55.5
+210	193.136.124.3	planetlab1.di.fct.unl.pt	EU	PT	ALM	Almada, Cova da Piedade, Pragal e Cacilhas	http://www.fct.unl.pt	FCT/UNL	38.672	-9.18423
+211	130.104.72.200	onelab4.info.ucl.ac.be	EU	BE	Nivelles	unknown	http://www.info.ucl.ac.be	Universite Catholique de Louvain	50.6833	4.61667
+212	138.246.253.11	planetlab11.net.in.tum.de	EU	DE	unknown	München	http://www.tum.de	Technische Universitaet Muenchen	48.1493	11.5669
+213	151.97.9.225	gschembra4.diit.unict.it	EU	IT	CT	Catania	http://www.unict.it	University of Catania - Computer Science and Telecommunications Engineering	37.5258	15.0749
+214	138.246.253.13	planetlab13.net.in.tum.de	EU	DE	unknown	München	http://www.tum.de	Technische Universitaet Muenchen	48.1493	11.5669
+215	192.41.136.218	planetlab1.csg.uzh.ch	EU	CH	Bezirk Muri	Beinwil (Freiamt)	http://www.csg.uzh.ch/	University of Zurich, Communication Systems Group	47.23	8.32
+216	152.66.245.162	planetlab2.tmit.bme.hu	EU	HU	unknown	Budapest	http://www.tmit.bme.hu/home!eng	Budapest University of Technology and Economics	47.4725	19.06
+217	unknown	pl2.ccsrfi.net	EU	GB	Surrey	unknown	http://www.ee.surrey.ac.uk/CCSR/	University of Surrey	51.2436	-0.588343
+218	157.181.175.248	planet2.elte.hu	EU	HU	unknown	Budapest	http://www.elte.hu	Eotvos Lorand University	47.4744	19.0622
+219	unknown	scratchy.comlab.bth.se	EU	SE	Karlskrona	Karlskrona	http://www.bth.se	Blekinge Institute of Technology	56.1819	15.5911
+220	193.1.13.14	planetlab-tea.ait.ie	EU	IE	County Westmeath	unknown	http://www.ait.ie/sri	Athlone Institute of Technology	53.4187	-7.90557
+221	130.104.229.5	onelab3.info.ucl.ac.be	EU	BE	Nivelles	unknown	http://www.info.ucl.ac.be	Universite Catholique de Louvain	50.6833	4.61667
+222	194.254.215.12	planetlab2.utt.fr	EU	FR	Troyes	unknown	http://www.utt.fr	Troyes University of Technology	48.2693	4.06739
+223	62.108.171.76	ple2.tu.koszalin.pl	EU	PL	Koszalin	Koszalin	www.tu.koszalin.pl	The Koszalin University of Technology	54.2047	16.1972
+224	129.69.210.97	planetvs2.informatik.uni-stuttgart.de	EU	DE	Stuttgart	Stuttgart	http://www.ipvs.uni-stuttgart.de	University of Stuttgart - IPVS	48.7835	9.17517
+225	130.79.48.57	planetlab2.u-strasbg.fr	EU	FR	Strasbourg	unknown	http://icube-reseaux.unistra.fr	Universite de Strasbourg	48.5237	7.73833
+226	195.116.53.24	onelab4.warsaw.rd.tp.pl	EU	PL	Warszawa	Warszawa	http://www.mini.pw.edu.pl	Warsaw University of Technology Europe	52.2221	21.0069
+227	141.11.0.162	planetlab2.thlab.net	EU	FR	Paris	Paris	http://www.thlab.net	Technicolor Paris Research Lab	48.8319	2.28097
+228	194.254.215.11	planetlab1.utt.fr	EU	FR	Troyes	unknown	http://www.utt.fr	Troyes University of Technology	48.2693	4.06739
+229	41.225.7.4	planetlab2.esprit-tn.com	AF	TN	الفريوات	unknown	www.esprit.ens.tn	ESPRIT	36.0	10.0
+230	unknown	planetlabpc1.upf.edu	EU	ES	BCN	Barcelona	http://www.upf.edu	Universitat Pompeu Fabra - NeTS	41.3849	2.1864
+231	212.201.44.82	planetlab2.eecs.jacobs-university.de	EU	DE	Landkreis Oldenburg	unknown	http://www.jacobs-university.de/	Jacobs University Bremen	53.04	8.49
+232	193.1.13.12	planetlab-coffee.ait.ie	EU	IE	County Westmeath	unknown	http://www.ait.ie/sri	Athlone Institute of Technology	53.4187	-7.90557
+233	134.151.255.180	planetlab1.aston.ac.uk	EU	GB	West Midlands Combined Authority	Birmingham	http://www.aston.ac.uk/~pengx1/DSN-project	Aston University	52.4866	-1.89098
+234	150.244.58.161	utet.ii.uam.es	EU	ES	Área metropolitana de Madrid y Corredor del Henares	Madrid	http://www.eps.uam.es	Escuela Politecnica Superior	40.4363	-3.69413
+235	138.246.253.1	planetlab1.net.in.tum.de	EU	DE	unknown	München	http://www.tum.de	Technische Universitaet Muenchen	48.1493	11.5669
+236	194.29.178.6	planetlab2.mini.pw.edu.pl	EU	PL	Warszawa	Warszawa	http://www.mini.pw.edu.pl	Warsaw University of Technology Europe	52.2221	21.0069
+237	unknown	planetlab02.cs.tcd.ie	EU	IE	County Dublin	Dublin 18	http://www.scss.tcd.ie	Trinity College Dublin	53.24	-6.24
+238	128.232.103.201	planetlab1.xeno.cl.cam.ac.uk	EU	GB	Cambridgeshire	Cambridge	http://www.cl.cam.ac.uk/	University of Cambridge	52.2112	0.0917
+239	193.144.21.131	planetlab2.urv.cat	EU	ES	Tarragonès	unknown	http://www.urv.net	Universitat Rovira i Virgili	41.07	1.15
+240	130.37.193.141	planetlab1.cs.vu.nl	EU	NL	unknown	Amsterdam	http://www.cs.vu.nl/index-en.html	Vrije Universiteit	52.35	4.9
+241	160.78.253.31	planet1.unipr.it	EU	IT	PR	Parma	http://www.unipr.it	University of Parma	44.8009	10.3255
+242	212.51.218.237	ple2.dmcs.p.lodz.pl	EU	PL	Łódź	Łódź	www.dmcs.pl	Technical University of Lodz	51.7461	19.4556
+243	130.83.166.247	host3.planetlab.informatik.tu-darmstadt.de	EU	DE	Ludwigshafen am Rhein	Ludwigshafen am Rhein	http://www.tu-darmstadt.de	Technische Universitat Darmstadt	49.53	8.4
+244	unknown	planetlab1.dit.upm.es	EU	ES	Área metropolitana de Madrid y Corredor del Henares	Madrid	http://www.fi.upm.es	Technical University of Madrid	40.42	-3.72
+245	unknown	host2.planetlab.informatik.tu-darmstadt.de	EU	DE	Ludwigshafen am Rhein	Ludwigshafen am Rhein	http://www.tu-darmstadt.de	Technische Universitat Darmstadt	49.53	8.4
+246	131.188.44.104	planetlab3.informatik.uni-erlangen.de	EU	DE	Schwabach	unknown	http://www4.informatik.uni-erlangen.de/	Friedrich-Alexander University Erlangen-Nuremberg	49.36	11.0
+247	134.34.246.5	chronos.disy.inf.uni-konstanz.de	EU	DE	Verwaltungsgemeinschaft Konstanz	unknown	http://www.uni-konstanz.de	University of Konstanz	47.6894	9.18783
+248	130.208.242.2	planetlab2.ru.is	EU	IS	unknown	Reykjavíkurborg	http://www.ru.is	Reykjavik University	64.1232	-21.9249
+249	134.76.249.230	planetlab2.informatik.uni-goettingen.de	EU	DE	Landkreis Kassel	Fuldatal	http://www.ifi.informatik.uni-goettingen.de	University of Goettingen	51.3622	9.55996
+250	129.242.19.196	planetlab1.cs.uit.no	EU	NO	Troms	unknown	http://www.cs.uit.no	University of Tromso	69.6813	18.977
+251	unknown	inriarennes2.irisa.fr	EU	FR	Rennes	Rennes	http://www.irisa.fr	IRISA	48.1155	-1.65071
+252	193.1.201.27	planetlabeu-2.tssg.org	EU	IE	County Waterford	Waterford	http://www.tssg.org	Waterford Institute of Technology	52.2441	-7.15825
+253	128.232.103.203	planetlab3.xeno.cl.cam.ac.uk	EU	GB	Cambridgeshire	Cambridge	http://www.cl.cam.ac.uk/	University of Cambridge	52.2112	0.0917
+254	130.149.49.137	planetlab02.tkn.tu-berlin.de	EU	DE	unknown	Berlin	http://www.tkn.tu-berlin.de/	Technische Universitaet Berlin	52.5	13.3
+255	193.1.201.26	planetlabeu-1.tssg.org	EU	IE	County Waterford	Waterford	http://www.tssg.org	Waterford Institute of Technology	52.2441	-7.15825
+256	152.81.47.4	host3-plb.loria.fr	EU	FR	Nancy	unknown	http://www.loria.fr	INRIA Nancy - Grand Est	48.6661	6.15775
+257	131.188.44.100	planetlab1.informatik.uni-erlangen.de	EU	DE	Schwabach	unknown	http://www4.informatik.uni-erlangen.de/	Friedrich-Alexander University Erlangen-Nuremberg	49.36	11.0
+258	193.226.19.31	planetlab2.upm.ro	EU	RO	Mureș	Târgu Mureș	http://www.upm.ro/	Petru Maior University of Targu Mures	46.547	24.566
+259	193.136.191.26	planetlab-2.iscte.pt	EU	PT	unknown	unknown	http://adetti.iscte.pt	IT/ISCTE-IUL	38.43	-9.08
+260	132.227.123.14	ple4.planet-lab.eu	EU	FR	Paris	Paris	http://www.lip6.fr	Universite Pierre et Marie Curie	48.8473	2.35749
+261	132.227.123.10	node.planet-lab.eu	unknown	unknown	unknown	unknown	http://www.planet-lab.eu/	PlanetLabEurope Central	0.0	0.0
+262	143.225.229.236	planetlab01.dis.unina.it	EU	IT	NA	Napoli	http://www.unina.it	Universita di Napoli Federico II	40.8283	14.1906
+263	216.165.109.81	planet1.scs.cs.nyu.edu	NA	US	New York County	NYC	http://www.cs.nyu.edu/	New York University	40.7292	-73.9937
+264	216.165.109.82	planet2.scs.cs.nyu.edu	NA	US	New York County	NYC	http://www.cs.nyu.edu/	New York University	40.7292	-73.9937
+265	171.66.3.181	planet1.scs.stanford.edu	NA	US	Santa Clara County	unknown	http://cs.stanford.edu/	Stanford University	37.4294	-122.172
+266	128.42.142.41	ricepl-1.cs.rice.edu	NA	US	Harris County	Houston	http://www.cs.rice.edu/	Rice University	29.7225	-95.3924
+267	unknown	pl1.eecs.utk.edu	NA	US	Knox County	Knoxville	http://www.cs.utk.edu/	University of Tennessee at Knoxville	35.9483	-83.9367
+268	unknown	pl2.eecs.utk.edu	NA	US	Knox County	Knoxville	http://www.cs.utk.edu/	University of Tennessee at Knoxville	35.9483	-83.9367
+269	142.103.2.1	planetlab1.cs.ubc.ca	NA	CA	Metro Vancouver	University Endowment Lands	http://www.cs.ubc.ca/	University of British Columbia	49.2637	-123.237
+270	143.89.49.73	plab1.cs.ust.hk	AS	CN	油尖旺區 Yau Tsim Mong District	unknown	http://www.cs.ust.hk/~gchan	The Hong Kong University of Science and Technology	22.3	114.166
+271	138.25.15.194	planetlab1.it.uts.edu.au	OC	AU	Sydney	Sydney	http://www.it.uts.edu.au/	University of Technology at Sydney	-33.8874	151.195
+272	222.197.180.139	planetlab-2.scie.uestc.edu.cn	AS	CN	成华区 (Chenghua)	成华区	http://www.uestc.edu.cn	University of Electronic Science and Technology of China	30.6795	104.108
+273	128.119.247.251	planetlab1.cs.umass.edu	NA	US	Hampshire	unknown	http://www.cs.umass.edu/	University of Massachusetts Amherst	42.3949	-72.5274
+274	128.119.247.250	planetlab2.cs.umass.edu	NA	US	Hampshire	unknown	http://www.cs.umass.edu/	University of Massachusetts Amherst	42.3949	-72.5274
+275	133.11.240.56	planetlab1.iii.u-tokyo.ac.jp	AS	JP	unknown	東久留米市	http://www.planet-lab-jp.org	University of Tokyo	35.75	139.5
+276	133.11.240.57	planetlab2.iii.u-tokyo.ac.jp	AS	JP	unknown	東久留米市	http://www.planet-lab-jp.org	University of Tokyo	35.75	139.5
+277	129.82.12.187	planetlab-1.cs.colostate.edu	NA	US	Larimer County	unknown	http://netsec.cs.colostate.edu	Colorado State University	40.35	-105.05
+278	129.82.12.188	planetlab-2.cs.colostate.edu	NA	US	Larimer County	unknown	http://netsec.cs.colostate.edu	Colorado State University	40.35	-105.05
+279	unknown	planetlab3.cs.uchicago.edu	NA	US	Cook County	Chicago	http://www.cs.uchicago.edu/	University of Chicago	41.7894	-87.6011
+280	152.8.108.158	csplanet1.ncat.edu	NA	US	Guilford County	Greensboro	http://www.eng.ncat.edu	North Carolina AT State University	36.07	-79.77
+281	129.105.15.36	planetlab1.eecs.northwestern.edu	NA	US	Cook County	Evanston	http://www.eecs.northwestern.edu/	Northwestern University (Illinois)	42.05	-87.69
+282	206.117.37.4	planetlab1.postel.org	NA	US	Los Angeles County	unknown	http://www.isi.edu/	University of Southern California, ISI	33.9815	-118.46
+283	129.105.15.37	planetlab2.eecs.northwestern.edu	NA	US	Cook County	Evanston	http://www.eecs.northwestern.edu/	Northwestern University (Illinois)	42.05	-87.69
+284	128.238.88.64	planetlab1.poly.edu	NA	US	Kings County	NYC	http://www.poly.edu	Polytechnic Institute of NYU	40.69	-73.99
+285	202.189.126.85	planetlab1.eee.hku.hk	AS	CN	離島區 Islands District	unknown	http://www.eee.hku.hk	The University of Hong Kong	22.17	114.09
+286	142.150.238.13	pl2.csl.utoronto.ca	NA	CA	Niagara Region	West Lincoln	http://www.ece.utoronto.ca	University of Toronto	43.0	-79.5
+287	142.150.238.12	pl1.csl.utoronto.ca	NA	CA	Niagara Region	West Lincoln	http://www.ece.utoronto.ca	University of Toronto	43.0	-79.5
+288	202.189.126.86	planetlab2.eee.hku.hk	AS	CN	離島區 Islands District	unknown	http://www.eee.hku.hk	The University of Hong Kong	22.17	114.09
+289	unknown	planetlab-1.cmcl.cs.cmu.edu	NA	US	Allegheny County	PGH	http://www.cs.cmu.edu/	Carnegie Mellon University	40.4446	-79.9427
+290	unknown	planetlab-2.cmcl.cs.cmu.edu	NA	US	Allegheny County	PGH	http://www.cs.cmu.edu/	Carnegie Mellon University	40.4446	-79.9427
+291	unknown	planetlab-3.cmcl.cs.cmu.edu	NA	US	Allegheny County	PGH	http://www.cs.cmu.edu/	Carnegie Mellon University	40.4446	-79.9427
+292	171.66.3.182	planet2.scs.stanford.edu	NA	US	Santa Clara County	unknown	http://cs.stanford.edu/	Stanford University	37.4294	-122.172
+293	unknown	planetlab1.cnu.ac.kr	AS	KR	unknown	unknown	http://www.cnu.ac.kr	Chungnam National University	37.0	127.5
+294	152.3.138.2	planetlab2.cs.duke.edu	NA	US	Durham County	Durham	http://www.cs.duke.edu/	Duke University	36.0088	-78.9427
+295	152.3.138.3	planetlab3.cs.duke.edu	NA	US	Durham County	Durham	http://www.cs.duke.edu/	Duke University	36.0088	-78.9427
+296	128.31.1.11	planetlab1.csail.mit.edu	NA	US	Middlesex County	unknown	http://www.lcs.mit.edu/	Massachusetts Institute of Technology	42.363	-71.0926
+297	140.114.89.44	cs743.cs.nthu.edu.tw	AS	TW	南投縣	unknown	http://www.cs.nthu.edu.tw/	National Tsing Hua University	23.5	121.0
+298	140.114.89.45	cs744.cs.nthu.edu.tw	AS	TW	南投縣	unknown	http://www.cs.nthu.edu.tw/	National Tsing Hua University	23.5	121.0
+299	unknown	lab1.asmdba.com	AS	CN	临桂区 / Lingui	四塘镇	http://www.gliet.edu.cn/	Guilin University of Electronic Technology of China	25.17	110.19
+300	unknown	planetlab2.csres.utexas.edu	NA	US	Travis County	Austin	http://boss.cias.utexas.edu/	University of Texas, Austin	30.2869	-97.7366
+301	unknown	planetlab1.rdfrancetelecom.com	EU	FR	Paris	Paris	http://www.rdfrancetelecom.com	France Telecom R&D	48.87	2.33
+302	129.22.150.78	planetlab-5.eecs.cwru.edu	NA	US	Cuyahoga County	Cleveland	http://engineering.case.edu/eecs/	Case Western Reserve University	41.5022	-81.6079
+303	146.57.249.98	planetlab1.dtc.umn.edu	NA	US	Hennepin County	Minneapolis	http://www.dtc.umn.edu	University of Minnesota	44.98	-93.24
+304	128.84.167.121	planetlab1.cs.cornell.edu	NA	US	Ithaca Town	Ithaca	http://www.cs.cornell.edu/	Cornell University	42.4436	-76.4816
+305	220.245.140.196	plnode01.cs.mu.oz.au	OC	AU	City of Maribyrnong	unknown	http://www.cis.unimelb.edu.au/	University of Melbourne - CSSE	-37.8	144.9
+306	220.245.140.197	plnode02.cs.mu.oz.au	OC	AU	City of Maribyrnong	unknown	http://www.cis.unimelb.edu.au/	University of Melbourne - CSSE	-37.8	144.9
+307	unknown	pli1-pa-4.hpl.hp.com	NA	US	Santa Clara County	Palo Alto	http://hpl.hp.com	HP Labs	37.44	-122.15
+308	128.163.142.20	planetlab1.netlab.uky.edu	NA	US	Fayette County	Lexington	http://www.netlab.uky.edu/	University of Kentucky	38.0401	-84.5054
+309	128.163.142.21	planetlab2.netlab.uky.edu	NA	US	Fayette County	Lexington	http://www.netlab.uky.edu/	University of Kentucky	38.0401	-84.5054
+310	140.247.60.123	lefthand.eecs.harvard.edu	NA	US	Middlesex County	unknown	http://www.cs.harvard.edu/	Harvard University	42.3788	-71.1164
+311	140.247.60.126	righthand.eecs.harvard.edu	NA	US	Middlesex County	unknown	http://www.cs.harvard.edu/	Harvard University	42.3788	-71.1164
+312	unknown	planetlab1.csres.utexas.edu	NA	US	Travis County	Austin	http://boss.cias.utexas.edu/	University of Texas, Austin	30.2869	-97.7366
+313	unknown	planetlab3.csres.utexas.edu	NA	US	Travis County	Austin	http://boss.cias.utexas.edu/	University of Texas, Austin	30.2869	-97.7366
+314	143.215.131.206	planet1.cc.gt.atl.ga.us	NA	US	Fulton County	Atlanta	http://www.cc.gatech.edu/	Georgia Institute of Technology	33.7772	-84.3976
+315	158.130.54.129	planetlab1.cis.upenn.edu	NA	US	Philadelphia County	Philadelphia	http://www.cis.upenn.edu/	University of Pennsylvania	39.9517	-75.1904
+316	158.130.54.121	planetlab2.cis.upenn.edu	NA	US	Philadelphia County	Philadelphia	http://www.cis.upenn.edu/	University of Pennsylvania	39.9517	-75.1904
+317	unknown	planetlab01.uncc.edu	NA	US	Mecklenburg County	Charlotte	http://www.cyberdna.uncc.edu/~ehab	University of North Carolina at Charlotte	35.3061	-80.7326
+318	128.42.142.42	ricepl-2.cs.rice.edu	NA	US	Harris County	Houston	http://www.cs.rice.edu/	Rice University	29.7225	-95.3924
+319	128.187.223.211	planetlab1.byu.edu	NA	US	Utah County	unknown	http://ilab.cs.byu.edu	Brigham Young University	40.14	-111.39
+320	unknown	planetlab1.eecs.umich.edu	NA	US	Washtenaw County	Ann Arbor	http://www.eecs.umich.edu/	University of Michigan	42.2944	-83.7126
+321	unknown	planetlab2.eecs.umich.edu	NA	US	Washtenaw County	Ann Arbor	http://www.eecs.umich.edu/	University of Michigan	42.2944	-83.7126
+322	129.237.161.193	kupl1.ittc.ku.edu	NA	US	Douglas County	Lawrence	http://www.ittc.ku.edu/	University of Kansas	38.9527	-95.2644
+323	129.237.161.194	kupl2.ittc.ku.edu	NA	US	Douglas County	Lawrence	http://www.ittc.ku.edu/	University of Kansas	38.9527	-95.2644
+324	128.59.20.226	planetlab1.cs.columbia.edu	NA	US	New York County	NYC	http://www.cs.columbia.edu/	Columbia University	40.808	-73.9639
+325	128.59.20.227	planetlab2.cs.columbia.edu	NA	US	New York County	NYC	http://www.cs.columbia.edu/	Columbia University	40.808	-73.9639
+326	128.59.20.228	planetlab3.cs.columbia.edu	NA	US	New York County	NYC	http://www.cs.columbia.edu/	Columbia University	40.808	-73.9639
+327	unknown	planetlab01.erin.utoronto.ca	NA	CA	Niagara	unknown	http://www.utm.utoronto.ca/~w3csc/	University of Toronto at Mississauga	43.35	-79.37
+328	unknown	planetlab02.erin.utoronto.ca	NA	CA	Niagara	unknown	http://www.utm.utoronto.ca/~w3csc/	University of Toronto at Mississauga	43.35	-79.37
+329	unknown	planetlab-1.unk.edu	NA	US	Buffalo County	Kearney	http://www.unk.edu/	University of Nebraska at Kearney	40.7	-99.1
+330	unknown	planetlab-2.unk.edu	NA	US	Buffalo County	Kearney	http://www.unk.edu/	University of Nebraska at Kearney	40.7	-99.1
+331	129.97.74.12	plink.cs.uwaterloo.ca	NA	CA	Waterloo Region	Waterloo	http://www.uwaterloo.ca/	University of Waterloo	43.4726	-80.5422
+332	103.25.231.42	planetlab2.iiitd.edu.in	AS	IN	unknown	unknown	http://www.iiitd.ac.in	IIIT- Delhi	28.5447	77.2726
+333	72.36.112.72	planetlab2.cs.uiuc.edu	NA	US	Champaign County	Urbana	http://www.cs.uiuc.edu/	University of Illinois at Urbana-Champaign	40.1103	-88.2272
+334	72.36.112.71	planetlab1.cs.uiuc.edu	NA	US	Champaign County	Urbana	http://www.cs.uiuc.edu/	University of Illinois at Urbana-Champaign	40.1103	-88.2272
+335	138.25.15.195	planetlab2.it.uts.edu.au	OC	AU	Sydney	Sydney	http://www.it.uts.edu.au/	University of Technology at Sydney	-33.8874	151.195
+336	103.27.9.3	agni.iitd.ernet.in	AS	IN	unknown	unknown	http://agni.iitd.ernet.in	Indian Institute of Technology Delhi	28.4	77.13
+337	137.99.26.115	planetlab2.engr.uconn.edu	NA	US	New London County	unknown	http://www.cse.uconn.edu/	University of Connecticut	41.49	-72.15
+338	133.69.32.131	planetlab1.koganei.itrc.net	AS	JP	unknown	千代田区	http://www.nict.go.jp/	NICT	35.7	139.767
+339	133.69.32.133	planetlab2.koganei.itrc.net	AS	JP	unknown	千代田区	http://www.nict.go.jp/	NICT	35.7	139.767
+340	unknown	newbootcd.cs.princeton.edu	NA	US	Mercer County	Princeton	http://www.cs.princeton.edu/	Princeton	40.3502	-74.6524
+341	unknown	f20bootcd.cs.princeton.edu	NA	US	Mercer County	Princeton	http://www.cs.princeton.edu/	Princeton	40.3502	-74.6524
+342	203.30.39.242	planetlab3.singaren.net.sg	AS	MY	unknown	Pasir Gudang	http://www.singaren.net.sg	Singapore Advanced Research and Education Network	1.45141	103.918
+343	72.18.165.65	planetlab-01.cs.angelo.edu	NA	US	Tom Green County	San Angelo	http://www.angelo.edu/	Angelo State University	31.4399	-100.46
+344	216.165.109.79	planetx.scs.cs.nyu.edu	NA	US	New York County	NYC	http://www.cs.nyu.edu/	New York University	40.7292	-73.9937
+345	200.129.0.161	planetlab1.pop-ce.rnp.br	SA	BR	Microrregião de Fortaleza	Fortaleza		RNP - Ceara	-3.7352	-38.5816
+346	unknown	plab3.nec-labs.com	NA	US	Mercer County	Princeton	http://www.nec-labs.com	NEC Laboratories	40.37	-74.64
+347	200.132.1.4	planetlab1.pop-rs.rnp.br	SA	BR	Região Geográfica Imediata de Porto Alegre	Porto Alegre		RNP - Rio Grande do Sul	-30.0533	-51.13
+348	200.132.1.6	planetlab2.pop-rs.rnp.br	SA	BR	Região Geográfica Imediata de Porto Alegre	Porto Alegre		RNP - Rio Grande do Sul	-30.0533	-51.13
+349	143.89.49.74	plab2.cs.ust.hk	AS	CN	油尖旺區 Yau Tsim Mong District	unknown	http://www.cs.ust.hk/~gchan	The Hong Kong University of Science and Technology	22.3	114.166
+350	139.182.137.140	planetlab0.ias.csusb.edu	NA	US	Riverside County	Calimesa	http://www.ias.csusb.edu	Institute for Applied Supercomputing, California State University San Bernardino	34.0012	-117.003
+351	128.6.192.158	orbpl1.rutgers.edu	NA	US	Middlesex County	New Brunswick	http://www.orbit-lab.org	Orbit	40.48	-74.45
+352	128.6.192.156	orbpl2.rutgers.edu	NA	US	Middlesex County	New Brunswick	http://www.orbit-lab.org	Orbit	40.48	-74.45
+353	169.235.24.133	planet-lab1.cs.ucr.edu	NA	US	Riverside County	Riverside	http://www.cs.ucr.edu	University of California, Riverside	33.95	-117.39
+354	209.148.46.135	planetlab3.georgetown.edu	NA	US	Charles County	unknown	http://www.cs.georgetown.edu	Georgetown University	38.54	-77.04
+355	209.148.46.136	planetlab4.georgetown.edu	NA	US	Charles County	unknown	http://www.cs.georgetown.edu	Georgetown University	38.54	-77.04
+356	140.109.17.180	planetlab1.iis.sinica.edu.tw	AS	TW	unknown	unknown	http://www.iis.sinica.edu.tw/	Academia Sinica - Taiwan	25.02	121.37
+357	140.109.17.181	planetlab2.iis.sinica.edu.tw	AS	TW	unknown	unknown	http://www.iis.sinica.edu.tw/	Academia Sinica - Taiwan	25.02	121.37
+358	164.107.127.12	planetlab-1.cse.ohio-state.edu	NA	US	Franklin County	Grandview Heights	http://www.cse.ohio-state.edu	Ohio State University	39.98	-83.03
+359	164.107.127.13	planetlab-2.cse.ohio-state.edu	NA	US	Franklin County	Grandview Heights	http://www.cse.ohio-state.edu	Ohio State University	39.98	-83.03
+360	unknown	planetlab1.netmedia.gist.ac.kr	AS	KR	unknown	서울	http://nm.gist.ac.kr	GIST (Gwangju Institute of Science & Technology)	37.53	127.0
+361	128.10.18.52	planetlab1.cs.purdue.edu	NA	US	Tippecanoe County	West Lafayette	http://www.cs.purdue.edu	Purdue	40.4274	-86.9167
+362	128.10.18.53	planetlab2.cs.purdue.edu	NA	US	Tippecanoe County	West Lafayette	http://www.cs.purdue.edu	Purdue	40.4274	-86.9167
+363	unknown	planetlab1.cs.uchicago.edu	NA	US	Cook County	Chicago	http://www.cs.uchicago.edu/	University of Chicago	41.7894	-87.6011
+364	128.220.231.2	planetlab1.cnds.jhu.edu	NA	US	unknown	Baltimore	http://www.cnds.jhu.edu	Johns Hopkins CNDS	39.33	-76.6
+365	128.220.231.3	planetlab2.cnds.jhu.edu	NA	US	unknown	Baltimore	http://www.cnds.jhu.edu	Johns Hopkins CNDS	39.33	-76.6
+366	unknown	planetlab2.netmedia.gist.ac.kr	AS	KR	unknown	서울	http://nm.gist.ac.kr	GIST (Gwangju Institute of Science & Technology)	37.53	127.0
+367	unknown	planetlab2.cs.uchicago.edu	NA	US	Cook County	Chicago	http://www.cs.uchicago.edu/	University of Chicago	41.7894	-87.6011
+368	207.178.4.6	uw1.accretive-dsl.nodes.planet-lab.org	NA	US	King County	Seattle	http://www.cs.washington.edu/	University of Washington - Accretive DSL	47.6531	-122.313
+369	unknown	pli1-pa-1.hpl.hp.com	NA	US	Santa Clara County	Palo Alto	http://hpl.hp.com	HP Labs	37.44	-122.15
+370	unknown	pli1-pa-2.hpl.hp.com	NA	US	Santa Clara County	Palo Alto	http://hpl.hp.com	HP Labs	37.44	-122.15
+371	unknown	pli1-pa-3.hpl.hp.com	NA	US	Santa Clara County	Palo Alto	http://hpl.hp.com	HP Labs	37.44	-122.15
+372	64.106.82.8	pl1.cs.unm.edu	NA	US	Bernalillo County	ABQ	http://www.cs.unm.edu	University of New Mexico	35.08	-106.65
+373	unknown	planetlab2.utep.edu	NA	US	El Paso County	El Paso	http://www.cs.utep.edu	University of Texas at El Paso	31.75	-106.49
+374	133.1.17.73	pl2-higashi.ics.es.osaka-u.ac.jp	AS	JP	unknown	吹田市	http://www.ist.osaka-u.ac.jp	Osaka University	34.81	135.52
+375	unknown	mlabtest.cs.princeton.edu	NA	US	Mercer County	Princeton	http://www.cs.princeton.edu/	Princeton	40.3502	-74.6524
+376	unknown	pl221nassau0.cs.princeton.edu	NA	US	Mercer County	Princeton	http://www.cs.princeton.edu/	Princeton	40.3502	-74.6524
+377	129.74.74.15	planetlab1.cse.nd.edu	NA	US	Saint Joseph County	unknown	http://www.cse.nd.edu/	University of Notre Dame	41.7	-86.2386
+378	136.145.115.194	planetlab-01.ece.uprm.edu	NA	US	Mayagüez	Mayagüez	http://ece.uprm.edu	University of Puerto Rico at Mayaguez	18.2	-67.14
+379	136.145.115.196	planetlab-02.ece.uprm.edu	NA	US	Mayagüez	Mayagüez	http://ece.uprm.edu	University of Puerto Rico at Mayaguez	18.2	-67.14
+380	72.36.112.74	planetlab4.cs.uiuc.edu	NA	US	Champaign County	Urbana	http://www.cs.uiuc.edu/	University of Illinois at Urbana-Champaign	40.1103	-88.2272
+381	unknown	planetlab1.cse.msu.edu	NA	US	Ingham County	East Lansing	http://www.cse.msu.edu	Michigan State University	42.74	-84.48
+382	200.19.159.34	planetlab1.pop-mg.rnp.br	SA	BR	Microrregião Belo Horizonte	BH	http://www.dcc.ufmg.br	Universidade Federal de Minas Gerais	-19.9333	-43.95
+383	200.19.159.35	planetlab2.pop-mg.rnp.br	SA	BR	Microrregião Belo Horizonte	BH	http://www.dcc.ufmg.br	Universidade Federal de Minas Gerais	-19.9333	-43.95
+384	unknown	planetlab-1a.ics.uci.edu	NA	US	Orange County	Irvine	http://www.ics.uci.edu/~lbao/planetlab/	University of California, Irvine	33.67	-117.81
+385	unknown	planetlab-2a.ics.uci.edu	NA	US	Orange County	Irvine	http://www.ics.uci.edu/~lbao/planetlab/	University of California, Irvine	33.67	-117.81
+386	150.65.32.66	planet0.jaist.ac.jp	AS	JP	unknown	unknown	http://www.jaist.ac.jp	Japan Advanced Institute of Science and Technology (JAIST)	39.38	140.05
+387	150.65.32.68	planet1.jaist.ac.jp	AS	JP	unknown	unknown	http://www.jaist.ac.jp	Japan Advanced Institute of Science and Technology (JAIST)	39.38	140.05
+388	128.208.4.198	planetlab02.cs.washington.edu	NA	US	King County	Seattle	http://www.cs.washington.edu/	University of Washington	47.6531	-122.313
+389	unknown	planetlab2.cse.msu.edu	NA	US	Ingham County	East Lansing	http://www.cse.msu.edu	Michigan State University	42.74	-84.48
+390	unknown	planetlab1.uc.edu	NA	US	Hamilton County	Cincinnati	http://www.ececs.uc.edu/~berman/CISKM/	University of Cincinnati	39.11	-84.5
+391	unknown	planetlab2.uc.edu	NA	US	Hamilton County	Cincinnati	http://www.ececs.uc.edu/~berman/CISKM/	University of Cincinnati	39.11	-84.5
+392	165.91.55.8	planetlab1.tamu.edu	NA	US	Brazos County	College Station	http://planetlab.tamu.edu	Texas AM University	30.61	-96.34
+393	unknown	server2.planetlab.iit-tech.net	NA	US	Cook County	Chicago	http://www.nsl.iit.edu	Illinois Institute of Technology	41.8383	-87.629
+394	128.233.252.11	planetlab-1.usask.ca	NA	CA	Census Division No. 11	Saskatoon	http://usask.ca	University of Saskatchewan	52.13	-106.65
+395	128.233.252.12	planetlab-2.usask.ca	NA	CA	Census Division No. 11	Saskatoon	http://usask.ca	University of Saskatchewan	52.13	-106.65
+396	152.8.109.170	csplanet2.ncat.edu	NA	US	Guilford County	Greensboro	http://www.eng.ncat.edu	North Carolina AT State University	36.07	-79.77
+397	128.84.167.122	planetlab2.cs.cornell.edu	NA	US	Ithaca Town	Ithaca	http://www.cs.cornell.edu/	Cornell University	42.4436	-76.4816
+398	129.59.88.179	planetlab-1.vuse.vanderbilt.edu	NA	US	Davidson County	Nashville-Davidson	http://www.vuse.vanderbilt.edu	Vanderbilt University	36.145	-86.8041
+399	129.59.88.180	planetlab-2.vuse.vanderbilt.edu	NA	US	Davidson County	Nashville-Davidson	http://www.vuse.vanderbilt.edu	Vanderbilt University	36.145	-86.8041
+400	unknown	planetlab1.eecs.wsu.edu	NA	US	Whitman County	Pullman	http://www.eecs.wsu.edu/	Washington State University	46.731	-117.178
+401	unknown	planetlab2.eecs.wsu.edu	NA	US	Whitman County	Pullman	http://www.eecs.wsu.edu/	Washington State University	46.731	-117.178
+402	203.230.7.202	planetlab2.kreonet.net	AS	KR	unknown	논산시	http://www.kreonet2.re.kr	KREONET at KISTI-DAEJON	36.2	127.26
+403	203.230.7.201	planetlab1.kreonet.net	AS	KR	unknown	논산시	http://www.kreonet2.re.kr	KREONET at KISTI-DAEJON	36.2	127.26
+404	unknown	node1.planetlab.uprr.pr	NA	US	unknown	Suffolk	http://www.uprr.pr	University of Puerto Rico, Rio Piedras Campus	36.8093	-76.6406
+405	unknown	node2.planetlab.uprr.pr	NA	US	unknown	Suffolk	http://www.uprr.pr	University of Puerto Rico, Rio Piedras Campus	36.8093	-76.6406
+406	203.178.143.10	planetlab1.sfc.wide.ad.jp	AS	JP	市原市	unknown	http://www.sfc.wide.ad.jp	Keio University	35.5546	140.059
+407	203.178.143.28	planetlab2.sfc.wide.ad.jp	AS	JP	市原市	unknown	http://www.sfc.wide.ad.jp	Keio University	35.5546	140.059
+408	152.3.138.1	planetlab1.cs.duke.edu	NA	US	Durham County	Durham	http://www.cs.duke.edu/	Duke University	36.0088	-78.9427
+409	unknown	planetlab1.uta.edu	NA	US	Tarrant County	Arlington	http://isec.uta.edu	University of Texas at Arlington	32.73	-97.115
+410	195.113.161.82	planetlab1.cesnet.cz	EU	CZ	okres Hlavní město Praha	Praha	http://www.ces.net/about/	CESNET - Czech Education and Research Network	50.102	14.3916
+411	128.208.4.99	planetlab04.cs.washington.edu	NA	US	King County	Seattle	http://www.cs.washington.edu/	University of Washington	47.6531	-122.313
+412	195.113.161.83	planetlab2.cesnet.cz	EU	CZ	okres Hlavní město Praha	Praha	http://www.ces.net/about/	CESNET - Czech Education and Research Network	50.102	14.3916
+413	204.56.0.137	kc-sce-plab1.umkc.edu	NA	US	Jackson County	Kansas City	http://www.umkc.edu	University of Missouri Kansas City	39.0386	-94.5794
+414	204.56.0.138	kc-sce-plab2.umkc.edu	NA	US	Jackson County	Kansas City	http://www.umkc.edu	University of Missouri Kansas City	39.0386	-94.5794
+415	unknown	planetlab3.netmedia.gist.ac.kr	AS	KR	unknown	서울	http://nm.gist.ac.kr	GIST (Gwangju Institute of Science & Technology)	37.53	127.0
+416	128.31.1.13	planetlab3.csail.mit.edu	NA	US	Middlesex County	unknown	http://www.lcs.mit.edu/	Massachusetts Institute of Technology	42.363	-71.0926
+417	59.163.146.20	plab1.psgtech.ac.in	AS	IN	unknown	unknown	http://www.ernet.in	ERNET India	28.6	77.09
+418	132.239.17.224	planetlab1.ucsd.edu	NA	US	San Diego County	San Diego	http://www.cs.ucsd.edu/	University of California at San Diego	32.877	-117.237
+419	132.239.17.225	planetlab2.ucsd.edu	NA	US	San Diego County	San Diego	http://www.cs.ucsd.edu/	University of California at San Diego	32.877	-117.237
+420	132.239.17.226	planetlab3.ucsd.edu	NA	US	San Diego County	San Diego	http://www.cs.ucsd.edu/	University of California at San Diego	32.877	-117.237
+421	128.31.1.12	planetlab2.csail.mit.edu	NA	US	Middlesex County	unknown	http://www.lcs.mit.edu/	Massachusetts Institute of Technology	42.363	-71.0926
+422	unknown	pl1.dce.edu	AS	IN	unknown	unknown	http://www.ernet.in	ERNET India	28.6	77.09
+423	165.242.90.146	pl3.sos.info.hiroshima-cu.ac.jp	AS	JP	unknown	広島市	http://www.hiroshima-cu.ac.jp/C/index.html	Hiroshima City University - Information Science	34.4403	132.415
+424	165.242.90.147	pl4.sos.info.hiroshima-cu.ac.jp	AS	JP	unknown	広島市	http://www.hiroshima-cu.ac.jp/C/index.html	Hiroshima City University - Information Science	34.4403	132.415
+425	unknown	pl3.coep.org.in	AS	IN	unknown	unknown	http://www.ernet.in	ERNET India	28.6	77.09
+426	unknown	pl4.coep.org.in	AS	IN	unknown	unknown	http://www.ernet.in	ERNET India	28.6	77.09
+427	unknown	planetlab2.piotrkow.rd.tp.pl	EU	PL	gmina Moszczenica	unknown	http://www.tp-ir.pl/index.php?page=index&lang=en	PlanetLab Colo - TP Piotrkow Trybunalski	51.5	19.6833
+428	143.248.55.129	csplanetlab4.kaist.ac.kr	AS	KR	unknown	unknown	an.kaist.ac.kr	KAIST	37.0	127.5
+429	143.248.55.128	csplanetlab3.kaist.ac.kr	AS	KR	unknown	unknown	an.kaist.ac.kr	KAIST	37.0	127.5
+430	unknown	plab1.engr.sjsu.edu	NA	US	Alameda County	unknown	http://www.sjsu.edu	San Jose State University	37.59	-121.89
+431	unknown	plab2.engr.sjsu.edu	NA	US	Alameda County	unknown	http://www.sjsu.edu	San Jose State University	37.59	-121.89
+432	143.215.131.197	planet2.cc.gt.atl.ga.us	NA	US	Fulton County	Atlanta	http://www.cc.gatech.edu/	Georgia Institute of Technology	33.7772	-84.3976
+433	143.215.131.198	planet3.cc.gt.atl.ga.us	NA	US	Fulton County	Atlanta	http://www.cc.gatech.edu/	Georgia Institute of Technology	33.7772	-84.3976
+434	143.215.131.199	planet4.cc.gt.atl.ga.us	NA	US	Fulton County	Atlanta	http://www.cc.gatech.edu/	Georgia Institute of Technology	33.7772	-84.3976
+435	unknown	planetlab1.piotrkow.rd.tp.pl	EU	PL	gmina Moszczenica	unknown	http://www.tp-ir.pl/index.php?page=index&lang=en	PlanetLab Colo - TP Piotrkow Trybunalski	51.5	19.6833
+436	59.163.146.21	plab2.psgtech.ac.in	AS	IN	unknown	unknown	http://www.ernet.in	ERNET India	28.6	77.09
+437	203.178.133.2	planetlab0.otemachi.wide.ad.jp	unknown	unknown	unknown	unknown	http://www.wide.ad.jp/	WIDE Project	36.1024	142.493
+438	203.178.133.3	planetlab1.otemachi.wide.ad.jp	unknown	unknown	unknown	unknown	http://www.wide.ad.jp/	WIDE Project	36.1024	142.493
+439	203.178.133.10	planetlab0.dojima.wide.ad.jp	unknown	unknown	unknown	unknown	http://www.wide.ad.jp/	WIDE Project	36.1024	142.493
+440	203.178.133.11	planetlab1.dojima.wide.ad.jp	unknown	unknown	unknown	unknown	http://www.wide.ad.jp/	WIDE Project	36.1024	142.493
+441	203.30.39.240	planetlab1.singaren.net.sg	AS	MY	unknown	Pasir Gudang	http://www.singaren.net.sg	Singapore Advanced Research and Education Network	1.45141	103.918
+442	203.30.39.241	planetlab2.singaren.net.sg	AS	MY	unknown	Pasir Gudang	http://www.singaren.net.sg	Singapore Advanced Research and Education Network	1.45141	103.918
+443	128.31.1.15	planetlab5.csail.mit.edu	NA	US	Middlesex County	unknown	http://www.lcs.mit.edu/	Massachusetts Institute of Technology	42.363	-71.0926
+444	128.31.1.17	planetlab7.csail.mit.edu	NA	US	Middlesex County	unknown	http://www.lcs.mit.edu/	Massachusetts Institute of Technology	42.363	-71.0926
+445	128.31.1.14	planetlab4.csail.mit.edu	NA	US	Middlesex County	unknown	http://www.lcs.mit.edu/	Massachusetts Institute of Technology	42.363	-71.0926
+446	195.116.60.49	planetlab1.swidnik.rd.tp.pl	EU	PL	gmina Wólka	unknown	http://www.tp-ir.pl/index.php?page=index&lang=en	Telekomunikacja Polska R&D at Swidnik	51.25	22.686
+447	139.182.137.141	planetlab1.ias.csusb.edu	NA	US	Riverside County	Calimesa	http://www.ias.csusb.edu	Institute for Applied Supercomputing, California State University San Bernardino	34.0012	-117.003
+448	unknown	planetlab2.rdfrancetelecom.com	EU	FR	Paris	Paris	http://www.rdfrancetelecom.com	France Telecom R&D	48.87	2.33
+449	202.244.160.251	planetlab-01.kusa.ac.jp	unknown	unknown	unknown	unknown	unknown	NICT JGN2 Okayama	unknown	unknown
+450	202.244.160.252	planetlab-02.kusa.ac.jp	unknown	unknown	unknown	unknown	unknown	NICT JGN2 Okayama	unknown	unknown
+451	unknown	planetlab-02.kyushu.jgn2.jp	unknown	unknown	unknown	unknown	unknown	NICT JGN2 Fukuoka	unknown	unknown
+452	198.108.101.60	planetlab1.emich.edu	NA	US	Washtenaw County	Ypsilanti	http://www.emich.edu	Eastern Michigan University	42.2477	-83.6226
+453	unknown	planetlab-01.kyushu.jgn2.jp	unknown	unknown	unknown	unknown	unknown	NICT JGN2 Fukuoka	unknown	unknown
+454	198.108.101.61	planetlab2.emich.edu	NA	US	Washtenaw County	Ypsilanti	http://www.emich.edu	Eastern Michigan University	42.2477	-83.6226
+455	unknown	planetlab1.iin-bit.com.cn	AS	CN	unknown	海淀区	http://211.94.143.62/en/lab.jsp	Beijing Institute of Technology, Intelligent Information Network Lab	39.9663	116.317
+456	unknown	fobos.cecalc.ula.ve	SA	VE	Municipio Libertador	Parroquia Mariano Picon Salas	http://www.cecalc.ula.ve/	Centro Nacional de Calculo Cientifico Universidad de Los Andes	8.6	-71.1833
+457	unknown	planetlab1.gdansk.rd.tp.pl	EU	PL	Gdańsk	Gdańsk	http://www.tp-ir.pl/index.php?page=index&lang=en	PlanetLab Colo - TP Gdansk	54.33	18.66
+458	unknown	planetlab2.gdansk.rd.tp.pl	EU	PL	Gdańsk	Gdańsk	http://www.tp-ir.pl/index.php?page=index&lang=en	PlanetLab Colo - TP Gdansk	54.33	18.66
+459	unknown	planetlab1.poznan.rd.tp.pl	EU	PL	gmina Kórnik	unknown	http://www.tp-ir.pl/index.php?page=index&lang=en	PlanetLab Colo - TP Poznan	52.33	17.0
+460	unknown	planetlab2.poznan.rd.tp.pl	EU	PL	gmina Kórnik	unknown	http://www.tp-ir.pl/index.php?page=index&lang=en	PlanetLab Colo - TP Poznan	52.33	17.0
+461	195.116.60.145	planetlab1.nowogrodzka.rd.tp.pl	EU	PL	Warszawa	Warszawa	http://www.tp-ir.pl/index.php?page=index&lang=en	PlanetLab Colo - TP Warsaw	52.25	21.0
+462	152.3.138.4	planetlab4.cs.duke.edu	NA	US	Durham County	Durham	http://www.cs.duke.edu/	Duke University	36.0088	-78.9427
+463	152.3.138.5	planetlab5.cs.duke.edu	NA	US	Durham County	Durham	http://www.cs.duke.edu/	Duke University	36.0088	-78.9427
+464	128.84.167.125	planetlab5.cs.cornell.edu	NA	US	Ithaca Town	Ithaca	http://www.cs.cornell.edu/	Cornell University	42.4436	-76.4816
+465	unknown	planetlab6.cs.cornell.edu	NA	US	Ithaca Town	Ithaca	http://www.cs.cornell.edu/	Cornell University	42.4436	-76.4816
+466	unknown	deimos.cecalc.ula.ve	SA	VE	Municipio Libertador	Parroquia Mariano Picon Salas	http://www.cecalc.ula.ve/	Centro Nacional de Calculo Cientifico Universidad de Los Andes	8.6	-71.1833
+467	103.49.160.134	planetlab4.ie.cuhk.edu.hk	AS	CN	油尖旺區 Yau Tsim Mong District	unknown	http://www.ie.cuhk.edu.hk/	The Chinese University of Hong Kong	22.3	114.166
+468	130.161.3.168	planetlab2.tudelft.nl	EU	NL	unknown	Delft	http://www.nas.its.tudelft.nl/people/people.htm	Delft University of Technology	52.02	4.35
+469	103.49.160.135	planetlab5.ie.cuhk.edu.hk	AS	CN	油尖旺區 Yau Tsim Mong District	unknown	http://www.ie.cuhk.edu.hk/	The Chinese University of Hong Kong	22.3	114.166
+470	195.116.60.146	planetlab2.nowogrodzka.rd.tp.pl	EU	PL	Warszawa	Warszawa	http://www.tp-ir.pl/index.php?page=index&lang=en	PlanetLab Colo - TP Warsaw	52.25	21.0
+471	163.221.11.73	planetlab-03.naist.jp	AS	JP	unknown	和泉市		Nara Institute of Science and Technology	34.41	135.5
+472	unknown	opencloud-01.cs.princeton.edu	NA	US	Mercer County	Princeton	http://www.cs.princeton.edu/	Princeton	40.3502	-74.6524
+473	130.161.3.166	planetlab1.tudelft.nl	EU	NL	unknown	Delft	http://www.nas.its.tudelft.nl/people/people.htm	Delft University of Technology	52.02	4.35
+474	unknown	planetlab1.homelinux.org	AS	CN	離島區 Islands District	unknown	http://www.astri.org	Hong Kong Applied Science & Tech Research Institute	22.18	114.1
+475	163.221.11.74	planetlab-04.naist.jp	AS	JP	unknown	和泉市		Nara Institute of Science and Technology	34.41	135.5
+476	192.33.90.66	planetlab1.inf.ethz.ch	EU	CH	Bezirk Zürich	Zürich	http://www.inf.ethz.ch	ETH Zuerich - Computer Science	47.3794	8.54513
+477	142.103.2.2	planetlab2.cs.ubc.ca	NA	CA	Metro Vancouver	University Endowment Lands	http://www.cs.ubc.ca/	University of British Columbia	49.2637	-123.237
+478	192.33.90.67	planetlab2.inf.ethz.ch	EU	CH	Bezirk Zürich	Zürich	http://www.inf.ethz.ch	ETH Zuerich - Computer Science	47.3794	8.54513
+479	194.29.178.13	planetlab3.mini.pw.edu.pl	EU	PL	Warszawa	Warszawa	http://www.mini.pw.edu.pl/tiki-index.php?page=studies_en	Warsaw University of Technology	52.2207	21.0104
+480	194.29.178.14	planetlab4.mini.pw.edu.pl	EU	PL	Warszawa	Warszawa	http://www.mini.pw.edu.pl/tiki-index.php?page=studies_en	Warsaw University of Technology	52.2207	21.0104
+481	141.117.68.60	planetlab-1.rml.ryerson.ca	NA	CA	unknown	Toronto	http://www.ee.ryerson.ca/	Ryerson University	43.6575	-79.3772
+482	141.117.68.62	planetlab-2.rml.ryerson.ca	NA	CA	unknown	Toronto	http://www.ee.ryerson.ca/	Ryerson University	43.6575	-79.3772
+483	149.169.227.131	planetlab2.eas.asu.edu	NA	US	Maricopa County	Tempe	http://cse.asu.edu	Arizona State University	33.4286	-111.915
+484	149.169.227.129	planetlab1.eas.asu.edu	NA	US	Maricopa County	Tempe	http://cse.asu.edu	Arizona State University	33.4286	-111.915
+485	155.98.35.5	planetlab4.flux.utah.edu	NA	US	Salt Lake County	Salt Lake City	http://www.cs.utah.edu/	University of Utah	40.7686	-111.846
+486	155.98.35.6	planetlab5.flux.utah.edu	NA	US	Salt Lake County	Salt Lake City	http://www.cs.utah.edu/	University of Utah	40.7686	-111.846
+487	128.31.1.16	planetlab6.csail.mit.edu	NA	US	Middlesex County	unknown	http://www.lcs.mit.edu/	Massachusetts Institute of Technology	42.363	-71.0926
+488	133.1.74.162	pub1-s.ane.cmc.osaka-u.ac.jp	AS	JP	unknown	吹田市	http://www.ist.osaka-u.ac.jp	Osaka University	34.81	135.52
+489	133.1.74.163	pub2-s.ane.cmc.osaka-u.ac.jp	AS	JP	unknown	吹田市	http://www.ist.osaka-u.ac.jp	Osaka University	34.81	135.52
+490	unknown	planetlab02.uncc.edu	NA	US	Mecklenburg County	Charlotte	http://www.cyberdna.uncc.edu/~ehab	University of North Carolina at Charlotte	35.3061	-80.7326
+491	155.225.2.71	planetlab1.citadel.edu	NA	US	Charleston County	Charleston	http://www.mathcs.citadel.edu/~baniks/	The Citadel	32.7984	-79.9614
+492	155.225.2.72	planetlab2.citadel.edu	NA	US	Charleston County	Charleston	http://www.mathcs.citadel.edu/~baniks/	The Citadel	32.7984	-79.9614
+493	unknown	pl2.ernet.in	AS	IN	unknown	unknown	http://www.ernet.in	ERNET India	28.6	77.09
+494	192.33.90.68	planetlab3.inf.ethz.ch	EU	CH	Bezirk Zürich	Zürich	http://www.inf.ethz.ch	ETH Zuerich - Computer Science	47.3794	8.54513
+495	192.33.90.69	planetlab4.inf.ethz.ch	EU	CH	Bezirk Zürich	Zürich	http://www.inf.ethz.ch	ETH Zuerich - Computer Science	47.3794	8.54513
+496	unknown	planetlab2.iin-bit.com.cn	AS	CN	unknown	海淀区	http://211.94.143.62/en/lab.jsp	Beijing Institute of Technology, Intelligent Information Network Lab	39.9663	116.317
+497	unknown	planetlab1.arizona-gigapop.net	NA	US	Pima County	Tucson	http://www.cs.arizona.edu/	University of Arizona	32.2333	-110.948
+498	200.0.206.202	planetlab1-santiago.lan.redclara.net	SA	CL	Provincia de Santiago	La Reina	update	PlanetLab Colo - CLARA Santiago	-33.45	-70.55
+499	200.0.206.203	planetlab2-santiago.lan.redclara.net	SA	CL	Provincia de Santiago	La Reina	update	PlanetLab Colo - CLARA Santiago	-33.45	-70.55
+500	200.0.206.136	planetlab1-saopaulo.lan.redclara.net	unknown	unknown	unknown	unknown	update	PlanetLab Colo - CLARA Sao Paulo	1.0	1.0
+501	200.0.206.137	planetlab2-saopaulo.lan.redclara.net	unknown	unknown	unknown	unknown	update	PlanetLab Colo - CLARA Sao Paulo	1.0	1.0
+502	200.0.206.168	planetlab1-buenosaires.lan.redclara.net	unknown	unknown	unknown	unknown	update	PlanetLab Colo - CLARA Buenos Aires	1.0	1.0
+503	200.0.206.169	planetlab2-buenosaires.lan.redclara.net	unknown	unknown	unknown	unknown	update	PlanetLab Colo - CLARA Buenos Aires	1.0	1.0
+504	200.0.206.12	planetlab1-tijuana.lan.redclara.net	unknown	unknown	unknown	unknown	update	PlanetLab Colo - CLARA Tijuana	1.0	1.0
+505	200.0.206.13	planetlab2-tijuana.lan.redclara.net	unknown	unknown	unknown	unknown	update	PlanetLab Colo - CLARA Tijuana	1.0	1.0
+506	unknown	pl1snu.koren.kr	AS	KR	단원구	안산시	http://mmlab.snu.ac.kr/	Seoul National University - MMLAB	37.26	126.57
+507	216.98.102.29	planetlabnode-1.docomolabs-usa.com	NA	US	Sumner County	unknown	http://www.docomolabs-usa.com/	DoCoMo Communications Laboratories USA, Inc.	37.0625	-97.6771
+508	216.98.102.30	planetlabnode-2.docomolabs-usa.com	NA	US	Sumner County	unknown	http://www.docomolabs-usa.com/	DoCoMo Communications Laboratories USA, Inc.	37.0625	-97.6771
+509	128.112.139.19	planetlab-05.cs.princeton.edu	NA	US	Mercer County	Princeton	http://www.cs.princeton.edu/	Princeton	40.3502	-74.6524
+510	206.117.37.5	planetlab2.postel.org	NA	US	Los Angeles County	unknown	http://www.isi.edu/	University of Southern California, ISI	33.9815	-118.46
+511	128.187.223.212	planetlab2.byu.edu	NA	US	Utah County	unknown	http://ilab.cs.byu.edu	Brigham Young University	40.14	-111.39
+512	82.179.176.42	mercury.silicon-valley.ru	EU	RU	unknown	unknown	http://www.eng.miet.ru/	Moscow Institute of Electronic Technology, TU MIET	55.59	37.11
+513	82.179.176.44	venus.silicon-valley.ru	EU	RU	unknown	unknown	http://www.eng.miet.ru/	Moscow Institute of Electronic Technology, TU MIET	55.59	37.11
+514	213.131.1.101	plab-1.sinp.msu.ru	EU	RU	unknown	unknown	http://smdc.sinp.msu.ru	Space Monitoring Data Center SINP MSU	55.6955	37.5347
+515	213.131.1.102	plab-2.sinp.msu.ru	EU	RU	unknown	unknown	http://smdc.sinp.msu.ru	Space Monitoring Data Center SINP MSU	55.6955	37.5347
+516	134.74.126.40	planetlabb.engr.ccny.cuny.edu	NA	US	New York County	NYC	http://www.ccny.cuny.edu/compsci/	CUNY City College	40.8197	-73.9511
+517	204.8.155.226	planetlab-01.bu.edu	NA	US	Suffolk County	Boston	http://www.cs.bu.edu/	Boston University	42.35	-71.1
+518	195.116.60.67	planetlab3.piotrkow.rd.tp.pl	EU	PL	gmina Moszczenica	unknown	http://www.tp-ir.pl/index.php?page=index&lang=en	PlanetLab Colo - TP Piotrkow Trybunalski	51.5	19.6833
+519	204.8.155.227	planetlab-02.bu.edu	NA	US	Suffolk County	Boston	http://www.cs.bu.edu/	Boston University	42.35	-71.1
+520	134.74.126.38	planetlaba.engr.ccny.cuny.edu	NA	US	New York County	NYC	http://www.ccny.cuny.edu/compsci/	CUNY City College	40.8197	-73.9511
+521	203.135.63.184	planetlab01.lums.edu.pk	AS	PK	Lahore District	unknown	http://www.lums.edu.pk/	Lahore University of Management Pakistan	31.4701	74.4099
+522	203.135.63.185	planetlab02.lums.edu.pk	AS	PK	Lahore District	unknown	http://www.lums.edu.pk/	Lahore University of Management Pakistan	31.4701	74.4099
+523	unknown	pli1-pa-5.hpl.hp.com	NA	US	Santa Clara County	Palo Alto	http://hpl.hp.com	HP Labs	37.44	-122.15
+524	132.170.3.32	planetlab1.eecs.ucf.edu	NA	US	Osceola County	unknown	http://www.eecs.ucf.edu	University of Central Florida - EECS	28.33	-81.23
+525	132.170.3.33	planetlab2.eecs.ucf.edu	NA	US	Osceola County	unknown	http://www.eecs.ucf.edu	University of Central Florida - EECS	28.33	-81.23
+526	unknown	planetlab3.poznan.rd.tp.pl	EU	PL	gmina Kórnik	unknown	http://www.tp-ir.pl/index.php?page=index&lang=en	PlanetLab Colo - TP Poznan	52.33	17.0
+527	unknown	planetlab4.poznan.rd.tp.pl	EU	PL	gmina Kórnik	unknown	http://www.tp-ir.pl/index.php?page=index&lang=en	PlanetLab Colo - TP Poznan	52.33	17.0
+528	195.116.53.14	planetlab4.warsaw.rd.tp.pl	EU	PL	Warszawa	Warszawa	http://www.orange.pl	Telekomunikacja Polska R&D at Warsaw	52.1763	21.0017
+529	137.165.1.111	planetlab1.williams.edu	NA	US	Berkshire	unknown	http://www.williams.edu	Williams College	42.71	-73.2
+530	137.165.1.112	planetlab2.williams.edu	NA	US	Berkshire	unknown	http://www.williams.edu	Williams College	42.71	-73.2
+531	137.165.1.113	planetlab3.williams.edu	NA	US	Berkshire	unknown	http://www.williams.edu	Williams College	42.71	-73.2
+532	unknown	pllab1.kamgu.ru	EU	RU	Вилючинский городской округ	unknown	http://www.kamgu.ru	Kamchatka State University named after Vitus Bering	53.0	158.38
+533	unknown	pllab2.kamgu.ru	EU	RU	Вилючинский городской округ	unknown	http://www.kamgu.ru	Kamchatka State University named after Vitus Bering	53.0	158.38
+534	unknown	planetlab1.nileu.edu.eg	AF	EG	unknown	unknown	http://www.nileu.edu.eg	Nile University	30.0722	31.0197
+535	128.143.6.134	planetlab01.sys.virginia.edu	NA	US	Albemarle County	unknown	http://www.virginia.edu	University of Virginia - Systems and Information Engineering	38.032	-78.5108
+536	128.143.6.130	planetlab02.sys.virginia.edu	NA	US	Albemarle County	unknown	http://www.virginia.edu	University of Virginia - Systems and Information Engineering	38.032	-78.5108
+537	195.116.60.210	planetlab2.lublin.rd.tp.pl	EU	PL	gmina Wólka	unknown	http://www.tp-ir.pl/index.php?page=index&lang=en	Telekomunikacja Polska R&D at Swidnik	51.25	22.686
+538	195.116.60.209	planetlab1.lublin.rd.tp.pl	EU	PL	gmina Wólka	unknown	http://www.tp-ir.pl/index.php?page=index&lang=en	Telekomunikacja Polska R&D at Swidnik	51.25	22.686
+539	unknown	pl1.planetlab.uvic.ca	NA	CA	Capital Regional District	Victoria	http://www.uvic.ca	University of Victoria	48.42	-123.37
+540	unknown	pl2.planetlab.uvic.ca	NA	CA	Capital Regional District	Victoria	http://www.uvic.ca	University of Victoria	48.42	-123.37
+541	unknown	pl3.planetlab.uvic.ca	NA	CA	Capital Regional District	Victoria	http://www.uvic.ca	University of Victoria	48.42	-123.37
+542	unknown	pl4.planetlab.uvic.ca	NA	CA	Capital Regional District	Victoria	http://www.uvic.ca	University of Victoria	48.42	-123.37
+543	unknown	pl5.planetlab.uvic.ca	NA	CA	Capital Regional District	Victoria	http://www.uvic.ca	University of Victoria	48.42	-123.37
+544	128.226.103.66	pluto.cs.binghamton.edu	NA	US	Broome County	unknown	http://www.binghamton.edu	SUNY Binghamton	42.088	-75.9687
+545	137.132.80.106	planetlab1.comp.nus.edu.sg	AS	SG	Northwest	unknown	http://www.comp.nus.edu.sg	National University of Singapore	1.37	103.8
+546	137.132.80.105	planetlab2.comp.nus.edu.sg	AS	SG	Northwest	unknown	http://www.comp.nus.edu.sg	National University of Singapore	1.37	103.8
+547	unknown	saturn.cs.brown.edu	NA	US	Providence	Providence	http://cs.brown.edu/	Brown University	41.82	-71.42
+548	192.91.235.232	jupiter.cs.brown.edu	NA	US	Providence	Providence	http://cs.brown.edu/	Brown University	41.82	-71.42
+549	192.91.235.230	pluto.cs.brown.edu	NA	US	Providence	Providence	http://cs.brown.edu/	Brown University	41.82	-71.42
+550	192.91.235.229	earth.cs.brown.edu	NA	US	Providence	Providence	http://cs.brown.edu/	Brown University	41.82	-71.42
+551	unknown	node01.verivue.princeton.edu	NA	US	Mercer County	Princeton	http://www.cs.princeton.edu/	Princeton	40.3502	-74.6524
+552	129.10.120.193	planetlabone.ccs.neu.edu	NA	US	Suffolk County	Boston	http://www.ccs.neu.edu	Northeastern University CCIS	42.37	-71.03
+553	103.27.9.4	vayu.iitd.ernet.in	AS	IN	unknown	unknown	http://agni.iitd.ernet.in	Indian Institute of Technology Delhi	28.4	77.13
+554	200.133.215.141	planet-lab1.ufabc.edu.br	SA	BR	Região Imediata de São Paulo	Santo André	http://www.ufabc.edu.br	Federal University of ABC - Computer Science	-23.6537	-46.5316
+555	200.133.215.142	planet-lab2.ufabc.edu.br	SA	BR	Região Imediata de São Paulo	Santo André	http://www.ufabc.edu.br	Federal University of ABC - Computer Science	-23.6537	-46.5316
+556	204.85.191.11	planetlab2.cs.unc.edu	NA	US	Orange County	unknown	http://www.cs.unc.edu/	University of North Carolina at Chapel Hill	35.92	-79.04
+557	unknown	planetlab1.iitr.ernet.in	AS	IN	unknown	Roorkee	http://www.iitr.ac.in	Indian Institute of Technology Roorkee	29.85	77.9
+558	unknown	mtuplanetlab1.cs.mtu.edu	NA	US	Houghton County	Houghton	http://www.mtu.edu	Michigan Technological University	47.1181	-88.5463
+559	128.111.52.63	planet3.cs.ucsb.edu	NA	US	Santa Barbara County	Santa Barbara	http://www.cs.ucsb.edu/	University of California at Santa Barbara	34.4285	-119.722
+560	128.223.8.111	planetlab1.cs.uoregon.edu	NA	US	Lane County	Eugene	http://netsec.cs.uoregon.edu/planetlab	University of Oregon	44.04	-123.06
+561	148.206.185.34	pl-dccd-02.cua.uam.mx	NA	MX	Miguel Hidalgo	Miguel Hidalgo	http://www.cua.uam.mx/	UAM-Cuajimalpa	19.3951	-99.2332
+562	146.57.249.99	planetlab2.dtc.umn.edu	NA	US	Hennepin County	Minneapolis	http://www.dtc.umn.edu	University of Minnesota	44.98	-93.24
+563	169.229.50.17	planetlab15.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+564	169.229.50.18	planetlab16.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+565	unknown	planet-2.utn.edu.ar	SA	AR	unknown	CABA	http://www.utn.edu.ar	Universidad Tecnologica Nacional	-34.58	-58.48
+566	200.129.0.162	planetlab2.pop-ce.rnp.br	SA	BR	Microrregião de Fortaleza	Fortaleza		RNP - Ceara	-3.7352	-38.5816
+567	unknown	plgmu2.ite.gmu.edu	NA	US	Charles County	unknown	http://ite.gmu.edu/	George Mason University	38.51	-77.18
+568	205.211.183.2	pl1.bit.uoit.ca	NA	CA	Durham Region	Oshawa	http://www.uoit.ca	University of Ontario Institute of Technology	43.9449	-78.8917
+569	205.211.183.4	pl2.bit.uoit.ca	NA	CA	Durham Region	Oshawa	http://www.uoit.ca	University of Ontario Institute of Technology	43.9449	-78.8917
+570	88.255.99.250	planet1.ku.edu.tr	AS	TR	Sarıyer	unknown	http://www.ku.edu.tr	Koc University	41.2072	29.0756
+571	88.255.99.251	planet2.ku.edu.tr	AS	TR	Sarıyer	unknown	http://www.ku.edu.tr	Koc University	41.2072	29.0756
+572	206.12.16.154	cs-planetlab3.cs.surrey.sfu.ca	NA	CA	Metro Vancouver	Township of Langley	http://www.cs.sfu.ca	Simon Fraser University	49.15	-122.57
+573	unknown	planetlab1.csie.nuk.edu.tw	AS	TW	unknown	高雄市	http://www.nuk.edu.tw/	National University of Kaohsiung	22.7328	120.286
+574	unknown	planetlab2.csie.nuk.edu.tw	AS	TW	unknown	高雄市	http://www.nuk.edu.tw/	National University of Kaohsiung	22.7328	120.286
+575	unknown	int-pl1.ise.eng.osaka-u.ac.jp	AS	JP	unknown	吹田市	http://www.ist.osaka-u.ac.jp	Osaka University	34.81	135.52
+576	131.247.2.247	planetlab3.csee.usf.edu	NA	US	Hillsborough County	Tampa	http://www.cse.usf.edu	University of South Florida (CSE)	28.0587	-82.4152
+577	156.56.250.226	pl1.ucs.indiana.edu	NA	US	Monroe County	Bloomington	http://anml.iu.edu	Indiana University (Bloomington)	39.1708	-86.5372
+578	156.56.250.227	pl2.ucs.indiana.edu	NA	US	Monroe County	Bloomington	http://anml.iu.edu	Indiana University (Bloomington)	39.1708	-86.5372
+579	unknown	planetlab1.n.info.eng.osaka-cu.ac.jp	AS	JP	unknown	大阪市	http://www.osaka-cu.ac.jp/	Osaka City University	34.5927	135.504
+580	158.121.252.20	planetlab1.cs.umb.edu	NA	US	Suffolk County	Boston	http://www.umb.edu	UMass Boston - Computer Science	42.3134	-71.0383
+581	158.121.252.21	planetlab2.cs.umb.edu	NA	US	Suffolk County	Boston	http://www.umb.edu	UMass Boston - Computer Science	42.3134	-71.0383
+582	unknown	planetlab4.csres.utexas.edu	NA	US	Travis County	Austin	http://boss.cias.utexas.edu/	University of Texas, Austin	30.2869	-97.7366
+583	206.12.16.155	cs-planetlab4.cs.surrey.sfu.ca	NA	CA	Metro Vancouver	Township of Langley	http://www.cs.sfu.ca	Simon Fraser University	49.15	-122.57
+584	unknown	planetlab5.csres.utexas.edu	NA	US	Travis County	Austin	http://boss.cias.utexas.edu/	University of Texas, Austin	30.2869	-97.7366
+585	131.247.2.245	planetlab4.csee.usf.edu	NA	US	Hillsborough County	Tampa	http://www.cse.usf.edu	University of South Florida (CSE)	28.0587	-82.4152
+586	unknown	netapp6.cs.kookmin.ac.kr	AS	KR	unknown	서울	http://www.kookmin.ac.kr	Kookmin University	37.6118	126.999
+587	unknown	netapp7.cs.kookmin.ac.kr	AS	KR	unknown	서울	http://www.kookmin.ac.kr	Kookmin University	37.6118	126.999
+588	129.105.15.38	planetlab3.eecs.northwestern.edu	NA	US	Cook County	Evanston	http://www.eecs.northwestern.edu/	Northwestern University (Illinois)	42.05	-87.69
+589	unknown	planetlab1.buaa.edu.cn	AS	CN	朝阳区 / Chaoyang	unknown	http://www.buaa.edu.cn	BeiHang University	39.9	116.5
+590	170.140.119.69	node1.planetlab.mathcs.emory.edu	NA	US	DeKalb County	unknown	http://www.emory.edu	Emory University	33.7895	-84.3255
+591	unknown	planetlab2.n.info.eng.osaka-cu.ac.jp	AS	JP	unknown	大阪市	http://www.osaka-cu.ac.jp/	Osaka City University	34.5927	135.504
+592	137.165.1.114	planetlab4.williams.edu	NA	US	Berkshire	unknown	http://www.williams.edu	Williams College	42.71	-73.2
+593	137.165.1.115	planetlab5.williams.edu	NA	US	Berkshire	unknown	http://www.williams.edu	Williams College	42.71	-73.2
+594	128.114.63.63	planetslug4.cse.ucsc.edu	NA	US	Santa Cruz County	Santa Cruz	http://www.soe.ucsc.edu/	University of California, Santa Cruz	37.0	-122.06
+595	128.114.63.64	planetslug5.cse.ucsc.edu	NA	US	Santa Cruz County	Santa Cruz	http://www.soe.ucsc.edu/	University of California, Santa Cruz	37.0	-122.06
+596	143.107.111.234	plab1.larc.usp.br	SA	BR	Região Imediata de São Paulo	SP	http://www.larc.usp.br	LARC - University of Sao Paulo	-23.5552	-46.5312
+597	143.107.111.235	plab2.larc.usp.br	SA	BR	Região Imediata de São Paulo	SP	http://www.larc.usp.br	LARC - University of Sao Paulo	-23.5552	-46.5312
+598	129.74.74.20	planetlab3.cse.nd.edu	NA	US	Saint Joseph County	unknown	http://www.cse.nd.edu/	University of Notre Dame	41.7	-86.2386
+599	129.74.74.19	planetlab4.cse.nd.edu	NA	US	Saint Joseph County	unknown	http://www.cse.nd.edu/	University of Notre Dame	41.7	-86.2386
+600	170.140.119.70	node2.planetlab.mathcs.emory.edu	NA	US	DeKalb County	unknown	http://www.emory.edu	Emory University	33.7895	-84.3255
+601	155.98.35.7	planetlab6.flux.utah.edu	NA	US	Salt Lake County	Salt Lake City	http://www.cs.utah.edu/	University of Utah	40.7686	-111.846
+602	155.98.35.8	planetlab7.flux.utah.edu	NA	US	Salt Lake County	Salt Lake City	http://www.cs.utah.edu/	University of Utah	40.7686	-111.846
+603	unknown	planetlab2.arizona-gigapop.net	NA	US	Pima County	Tucson	http://www.cs.arizona.edu/	University of Arizona	32.2333	-110.948
+604	unknown	mtuplanetlab2.cs.mtu.edu	NA	US	Houghton County	Houghton	http://www.mtu.edu	Michigan Technological University	47.1181	-88.5463
+605	unknown	planetlab4.eecs.umich.edu	NA	US	Washtenaw County	Ann Arbor	http://www.eecs.umich.edu/	University of Michigan	42.2944	-83.7126
+606	198.133.224.147	planetlab3.wail.wisc.edu	NA	US	Dane County	Madison	http://www.cs.wisc.edu/	University of Wisconsin	43.0757	-89.3867
+607	198.133.224.149	planetlab4.wail.wisc.edu	NA	US	Dane County	Madison	http://www.cs.wisc.edu/	University of Wisconsin	43.0757	-89.3867
+608	200.5.239.35	planet-lab1.itba.edu.ar	SA	AR	unknown	CABA	http://www.itba.edu.ar/	Instituto Tecnologico Buenos Aires	-34.6039	-58.3679
+609	129.93.229.138	planetlab1.unl.edu	NA	US	Lancaster County	Lincoln	http://cse.unl.edu/~byrav	University of Nebraska - Lincoln	40.8	-96.6667
+610	129.93.229.139	planetlab2.unl.edu	NA	US	Lancaster County	Lincoln	http://cse.unl.edu/~byrav	University of Nebraska - Lincoln	40.8	-96.6667
+611	137.132.80.110	planetlab3.comp.nus.edu.sg	AS	SG	Northwest	unknown	http://www.comp.nus.edu.sg	National University of Singapore	1.37	103.8
+612	129.110.125.51	planetlab1.utdallas.edu	NA	US	Collin County	unknown	http://www.utdallas.edu	University of Texas Dallas - Computer Science	32.9861	-96.75
+613	129.110.125.52	planetlab2.utdallas.edu	NA	US	Collin County	unknown	http://www.utdallas.edu	University of Texas Dallas - Computer Science	32.9861	-96.75
+614	169.235.24.232	planet-lab2.cs.ucr.edu	NA	US	Riverside County	Riverside	http://www.cs.ucr.edu	University of California, Riverside	33.95	-117.39
+615	unknown	server3.planetlab.iit-tech.net	NA	US	Cook County	Chicago	http://www.nsl.iit.edu	Illinois Institute of Technology	41.8383	-87.629
+616	unknown	nis-planet1.doshisha.ac.jp	AS	JP	unknown	京田辺市	http://w3.doshisha.ac.jp/	Doshisha University, Network Information Systems Laboratory	34.7995	135.768
+617	unknown	nis-planet2.doshisha.ac.jp	AS	JP	unknown	京田辺市	http://w3.doshisha.ac.jp/	Doshisha University, Network Information Systems Laboratory	34.7995	135.768
+618	131.247.2.241	planetlab1.csee.usf.edu	NA	US	Hillsborough County	Tampa	http://www.cse.usf.edu	University of South Florida (CSE)	28.0587	-82.4152
+619	208.94.63.193	planetlab-1.calpoly-netlab.net	NA	US	San Luis Obispo County	unknown	http://calpoly.edu/	Cal Poly State University SLO	35.3006	-120.662
+620	208.94.63.194	planetlab-2.calpoly-netlab.net	NA	US	San Luis Obispo County	unknown	http://calpoly.edu/	Cal Poly State University SLO	35.3006	-120.662
+621	206.117.37.6	planetlab3.postel.org	NA	US	Los Angeles County	unknown	http://www.isi.edu/	University of Southern California, ISI	33.9815	-118.46
+622	206.117.37.7	planetlab4.postel.org	NA	US	Los Angeles County	unknown	http://www.isi.edu/	University of Southern California, ISI	33.9815	-118.46
+623	unknown	plab3.eece.ksu.edu	NA	US	Riley County	Manhattan	http://www.ksu.edu	Kansas State University	39.19	-96.59
+624	157.92.44.101	planet-lab1.uba.ar	SA	AR	unknown	CABA	http://www.uba.ar/ingles/index01.php	Universidad de Buenos Aires	-34.5975	-58.3985
+625	200.5.239.36	planet-lab2.itba.edu.ar	SA	AR	unknown	CABA	http://www.itba.edu.ar/	Instituto Tecnologico Buenos Aires	-34.6039	-58.3679
+626	unknown	vn5.cse.wustl.edu	NA	US	St. Louis County	St. Louis	http://www.cs.wustl.edu/	Washington University in St Louis	38.6479	-90.3015
+627	169.229.50.16	planetlab14.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+628	129.97.74.14	plonk.cs.uwaterloo.ca	NA	CA	Waterloo Region	Waterloo	http://www.uwaterloo.ca/	University of Waterloo	43.4726	-80.5422
+629	200.17.202.194	planetlab1.c3sl.ufpr.br	SA	BR	Microrregião de Curitiba	Curitiba	http://www.c3sl.ufpr.br	C3SL - Centro de Computacao Cientifica e Software Livre 	-25.4507	-49.2318
+630	200.17.202.195	planetlab2.c3sl.ufpr.br	SA	BR	Microrregião de Curitiba	Curitiba	http://www.c3sl.ufpr.br	C3SL - Centro de Computacao Cientifica e Software Livre 	-25.4507	-49.2318
+631	193.63.58.70	planetlab1.cs.ucl.ac.uk	EU	GB	unknown	London	http://www.cs.ucl.ac.uk/	University College London	51.5	-0.17
+632	193.63.58.71	planetlab2.cs.ucl.ac.uk	EU	GB	unknown	London	http://www.cs.ucl.ac.uk/	University College London	51.5	-0.17
+633	unknown	int-pl2.ise.eng.osaka-u.ac.jp	AS	JP	unknown	吹田市	http://www.ist.osaka-u.ac.jp	Osaka University	34.81	135.52
+634	131.247.2.242	planetlab2.csee.usf.edu	NA	US	Hillsborough County	Tampa	http://www.cse.usf.edu	University of South Florida (CSE)	28.0587	-82.4152
+635	169.229.50.11	planetlab9.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+636	169.226.40.2	node1.planetlab.albany.edu	NA	US	Albany County	Albany	http://www.albany.edu/	University at Albany, State University of New York	42.6867	-73.8234
+637	169.226.40.4	node2.planetlab.albany.edu	NA	US	Albany County	Albany	http://www.albany.edu/	University at Albany, State University of New York	42.6867	-73.8234
+638	129.15.78.30	roam1.cs.ou.edu	NA	US	Cleveland County	Norman	http://www.ou.edu	University of Oklahoma	35.2098	-97.4424
+639	129.15.78.31	roam2.cs.ou.edu	NA	US	Cleveland County	Norman	http://www.ou.edu	University of Oklahoma	35.2098	-97.4424
+640	141.212.114.223	planetlab3.eecs.umich.edu	NA	US	Washtenaw County	Ann Arbor	http://www.eecs.umich.edu/	University of Michigan	42.2944	-83.7126
+641	unknown	datacomngn.cnu.ac.kr	AS	KR	unknown	unknown	http://www.cnu.ac.kr	Chungnam National University	37.0	127.5
+642	131.123.34.35	pl1.planet.cs.kent.edu	NA	US	Portage County	Kent	http://www.kent.edu	Kent State University	41.145	-81.3416
+643	128.8.126.78	osiris.planetlab.cs.umd.edu	NA	US	Prince George's County	unknown	http://www.cs.umd.edu/	University of Maryland	38.9886	-76.9445
+644	128.8.126.79	whitefall.planetlab.cs.umd.edu	NA	US	Prince George's County	unknown	http://www.cs.umd.edu/	University of Maryland	38.9886	-76.9445
+645	128.39.36.27	planetlab2.simula.no	EU	NO	Oslo	Oslo	http://www.simula.no	Simula Research Laboratory	59.93	10.75
+646	131.123.34.36	pl2.planet.cs.kent.edu	NA	US	Portage County	Kent	http://www.kent.edu	Kent State University	41.145	-81.3416
+647	unknown	node1.planet-lab.titech.ac.jp	AS	JP	unknown	目黒区	http://www.titech.ac.jp/	Tokyo Institute of Technology	35.6056	139.685
+648	unknown	node3.planet-lab.titech.ac.jp	AS	JP	unknown	目黒区	http://www.titech.ac.jp/	Tokyo Institute of Technology	35.6056	139.685
+649	unknown	node4.planet-lab.titech.ac.jp	AS	JP	unknown	目黒区	http://www.titech.ac.jp/	Tokyo Institute of Technology	35.6056	139.685
+650	128.238.88.65	planetlab2.poly.edu	NA	US	Kings County	NYC	http://www.poly.edu	Polytechnic Institute of NYU	40.69	-73.99
+651	157.92.44.102	planet-lab2.uba.ar	SA	AR	unknown	CABA	http://www.uba.ar/ingles/index01.php	Universidad de Buenos Aires	-34.5975	-58.3985
+652	130.245.191.59	pl1.cewit.stonybrook.edu	NA	US	Suffolk County	unknown	http://mnl.cs.stonybrook.edu/	Stony Brook University	40.91	-73.13
+653	130.245.191.60	pl2.cewit.stonybrook.edu	NA	US	Suffolk County	unknown	http://mnl.cs.stonybrook.edu/	Stony Brook University	40.91	-73.13
+654	unknown	planetlab03.uncc.edu	NA	US	Mecklenburg County	Charlotte	http://www.cyberdna.uncc.edu/~ehab	University of North Carolina at Charlotte	35.3061	-80.7326
+655	128.226.103.67	charon.cs.binghamton.edu	NA	US	Broome County	unknown	http://www.binghamton.edu	SUNY Binghamton	42.088	-75.9687
+656	unknown	planetlab04.uncc.edu	NA	US	Mecklenburg County	Charlotte	http://www.cyberdna.uncc.edu/~ehab	University of North Carolina at Charlotte	35.3061	-80.7326
+657	133.9.81.165	planetlab5.goto.info.waseda.ac.jp	AS	JP	unknown	綾瀬市	http://www.waseda.jp/	Waseda University	35.42	139.42
+658	128.112.139.42	planetlab-01.cs.princeton.edu	NA	US	Mercer County	Princeton	http://www.cs.princeton.edu/	Princeton	40.3502	-74.6524
+659	unknown	planetlab-02.cs.princeton.edu	NA	US	Mercer County	Princeton	http://www.cs.princeton.edu/	Princeton	40.3502	-74.6524
+660	128.112.139.97	planetlab-03.cs.princeton.edu	NA	US	Mercer County	Princeton	http://www.cs.princeton.edu/	Princeton	40.3502	-74.6524
+661	128.112.139.18	planetlab-04.cs.princeton.edu	NA	US	Mercer County	Princeton	http://www.cs.princeton.edu/	Princeton	40.3502	-74.6524
+662	140.112.107.80	planetlab1.ntu.nodes.planet-lab.org	AS	TW	南投縣	unknown	http://www.im.ntu.edu.tw/index_e.htm	National Taiwan University, Department of Information Management	23.5	121.0
+663	128.208.4.197	planetlab01.cs.washington.edu	NA	US	King County	Seattle	http://www.cs.washington.edu/	University of Washington	47.6531	-122.313
+664	58.60.106.66	pn1-planetlab.huawei.com	AS	CN	unknown	深圳市	http://www.huawei.com	Huawei Technologies Co., Ltd. 	22.6527	114.054
+665	58.60.106.70	pn2-planetlab.huawei.com	AS	CN	unknown	深圳市	http://www.huawei.com	Huawei Technologies Co., Ltd. 	22.6527	114.054
+666	130.216.1.22	planetlab-1.cs.auckland.ac.nz	OC	NZ	unknown	Waitemata	http://www.auckland.ac.nz	The University of Auckland	-36.8535	174.771
+667	130.216.1.23	planetlab-2.cs.auckland.ac.nz	OC	NZ	unknown	Waitemata	http://www.auckland.ac.nz	The University of Auckland	-36.8535	174.771
+668	unknown	planetlab3.n.info.eng.osaka-cu.ac.jp	AS	JP	unknown	大阪市	http://www.osaka-cu.ac.jp/	Osaka City University	34.5927	135.504
+669	216.48.80.12	pl1.rcc.uottawa.ca	NA	CA	unknown	Ottawa	http://www.uottawa.ca/	University of Ottawa	45.4205	-75.6813
+670	216.48.80.14	pl2.rcc.uottawa.ca	NA	CA	unknown	Ottawa	http://www.uottawa.ca/	University of Ottawa	45.4205	-75.6813
+671	unknown	planetlab4.n.info.eng.osaka-cu.ac.jp	AS	JP	unknown	大阪市	http://www.osaka-cu.ac.jp/	Osaka City University	34.5927	135.504
+672	203.30.39.243	planetlab4.singaren.net.sg	AS	MY	unknown	Pasir Gudang	http://www.singaren.net.sg	Singapore Advanced Research and Education Network	1.45141	103.918
+673	unknown	planetlab1.utep.edu	NA	US	El Paso County	El Paso	http://www.cs.utep.edu	University of Texas at El Paso	31.75	-106.49
+674	unknown	plab4.eece.ksu.edu	NA	US	Riley County	Manhattan	http://www.ksu.edu	Kansas State University	39.19	-96.59
+675	133.9.81.166	planetlab6.goto.info.waseda.ac.jp	AS	JP	unknown	綾瀬市	http://www.waseda.jp/	Waseda University	35.42	139.42
+676	128.208.4.199	planetlab03.cs.washington.edu	NA	US	King County	Seattle	http://www.cs.washington.edu/	University of Washington	47.6531	-122.313
+677	unknown	planetlab2.nileu.edu.eg	AF	EG	unknown	unknown	http://www.nileu.edu.eg	Nile University	30.0722	31.0197
+678	133.1.17.72	pl1-higashi.ics.es.osaka-u.ac.jp	AS	JP	unknown	吹田市	http://www.ist.osaka-u.ac.jp	Osaka University	34.81	135.52
+679	72.36.112.73	planetlab3.cs.uiuc.edu	NA	US	Champaign County	Urbana	http://www.cs.uiuc.edu/	University of Illinois at Urbana-Champaign	40.1103	-88.2272
+680	128.8.126.111	salt.planetlab.cs.umd.edu	NA	US	Prince George's County	unknown	http://www.cs.umd.edu/	University of Maryland	38.9886	-76.9445
+681	137.148.16.11	planetlab2.csuohio.edu	NA	US	Cuyahoga County	Cleveland	http://www.csuohio.edu/	Cleveland State University	41.5033	-81.6756
+682	137.148.16.10	planetlab1.csuohio.edu	NA	US	Cuyahoga County	Cleveland	http://www.csuohio.edu/	Cleveland State University	41.5033	-81.6756
+683	131.193.34.21	planetlab-1.cs.uic.edu	NA	US	Cook County	Chicago	http://www.uic.edu	University of Illinois at Chicago	41.8708	-87.6505
+684	131.193.34.38	planetlab-2.cs.uic.edu	NA	US	Cook County	Chicago	http://www.uic.edu	University of Illinois at Chicago	41.8708	-87.6505
+685	unknown	plnodea.plaust.edu.cn	AS	CN	unknown	南京市	http://www.plaust.edu.cn	PLA University of Science and Technology	32.06	118.79
+686	149.43.80.22	flow.colgate.edu	NA	US	Madison County	unknown	http://www.colgate.edu	Colgate University	42.8189	-75.5357
+687	147.126.66.15	node0.planetlab.etl.luc.edu	NA	US	Cook County	Chicago	http://www.luc.edu	Loyola University Chicago	41.8974	-87.6253
+688	147.126.66.17	node1.planetlab.etl.luc.edu	NA	US	Cook County	Chicago	http://www.luc.edu	Loyola University Chicago	41.8974	-87.6253
+689	unknown	planetlab-1.webedu.ccu.edu.tw	AS	TW	嘉義縣	unknown	http://www.cs.ccu.edu.tw/	National Chung Cheng University	23.5619	120.478
+690	unknown	planetlab-2.webedu.ccu.edu.tw	AS	TW	嘉義縣	unknown	http://www.cs.ccu.edu.tw/	National Chung Cheng University	23.5619	120.478
+691	198.82.160.238	planetlab-01.vt.nodes.planet-lab.org	NA	US	Montgomery County	unknown	http://www.arc.vt.edu/	Virginia Tech	37.2055	-80.4124
+692	198.82.160.239	planetlab-02.vt.nodes.planet-lab.org	NA	US	Montgomery County	unknown	http://www.arc.vt.edu/	Virginia Tech	37.2055	-80.4124
+693	192.138.213.238	metis.mcs.suffolk.edu	NA	US	Suffolk County	Boston	http://www.suffolk.edu	Suffolk University	42.3592	-71.0619
+694	192.138.213.236	adrastea.mcs.suffolk.edu	NA	US	Suffolk County	Boston	http://www.suffolk.edu	Suffolk University	42.3592	-71.0619
+695	128.223.8.114	planetlab4.cs.uoregon.edu	NA	US	Lane County	Eugene	http://netsec.cs.uoregon.edu/planetlab	University of Oregon	44.04	-123.06
+696	128.223.8.112	planetlab2.cs.uoregon.edu	NA	US	Lane County	Eugene	http://netsec.cs.uoregon.edu/planetlab	University of Oregon	44.04	-123.06
+697	128.223.8.113	planetlab3.cs.uoregon.edu	NA	US	Lane County	Eugene	http://netsec.cs.uoregon.edu/planetlab	University of Oregon	44.04	-123.06
+698	128.111.52.64	planet4.cs.ucsb.edu	NA	US	Santa Barbara County	Santa Barbara	http://www.cs.ucsb.edu/	University of California at Santa Barbara	34.4285	-119.722
+699	unknown	mlab1.gr-ix.gr	EU	GR	Δήμος Αθηναίων	Αθήνα	http://www.eett.gr/opencms/opencms/EETT_EN/index.html	Greek Research and Technology Network	37.9713	23.7424
+700	unknown	mlab2.gr-ix.gr	EU	GR	Δήμος Αθηναίων	Αθήνα	http://www.eett.gr/opencms/opencms/EETT_EN/index.html	Greek Research and Technology Network	37.9713	23.7424
+701	unknown	mlab3.gr-ix.gr	EU	GR	Δήμος Αθηναίων	Αθήνα	http://www.eett.gr/opencms/opencms/EETT_EN/index.html	Greek Research and Technology Network	37.9713	23.7424
+702	169.237.79.211	planetlab2.ece.ucdavis.edu	NA	US	Sacramento County	unknown	http://engineering.ucdavis.edu	University of California, Davis	38.72	-121.43
+703	131.179.150.70	planetlab1.cs.ucla.edu	NA	US	Los Angeles County	LA	http://www.cs.ucla.edu/	University of California at Los Angeles	34.0711	-118.442
+704	131.179.150.72	planetlab2.cs.ucla.edu	NA	US	Los Angeles County	LA	http://www.cs.ucla.edu/	University of California at Los Angeles	34.0711	-118.442
+705	169.229.50.6	planetlab4.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+706	169.229.50.14	planetlab12.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+707	169.229.50.7	planetlab5.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+708	169.229.50.15	planetlab13.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+709	202.112.28.98	planetlab-1.sjtu.edu.cn	AS	CN	徐汇区	徐汇区	http://www.sjtu.edu.cn/	Shanghai Jiao Tong University	31.1992	121.43
+710	202.112.28.100	planetlab-2.sjtu.edu.cn	AS	CN	徐汇区	徐汇区	http://www.sjtu.edu.cn/	Shanghai Jiao Tong University	31.1992	121.43
+711	169.229.50.8	planetlab6.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+712	169.229.50.9	planetlab7.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+713	169.229.50.12	planetlab10.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+714	169.229.50.13	planetlab11.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+715	87.236.232.153	planetlab1.just.edu.jo	AS	JO	unknown	إربد‎	http://www.just.edu.jo/	Jordan University of Science and Technology	32.4931	35.9875
+716	169.229.50.10	planetlab8.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+717	unknown	planetlab3.gmf.ufcg.edu.br	SA	BR	Microrregião de Campina Grande	unknown	http://www.ourgrid.org	Universidade Federal de Campina Grande - LaboratÃ³rio de Sistemas DistribuÃ­dos	-7.25	-35.8333
+718	132.72.23.10	planetlab1.bgu.ac.il	AS	IL	unknown	מועצה אזורית לכיש	http://www.cs.bgu.ac.il	Ben-Gurion University of the Negev	31.5	34.75
+719	132.72.23.11	planetlab2.bgu.ac.il	AS	IL	unknown	מועצה אזורית לכיש	http://www.cs.bgu.ac.il	Ben-Gurion University of the Negev	31.5	34.75
+720	unknown	vn4.cse.wustl.edu	NA	US	St. Louis County	St. Louis	http://www.cs.wustl.edu/	Washington University in St Louis	38.6479	-90.3015
+721	152.3.138.6	planetlab6.cs.duke.edu	NA	US	Durham County	Durham	http://www.cs.duke.edu/	Duke University	36.0088	-78.9427
+722	140.112.107.82	planetlab2.ntu.nodes.planet-lab.org	AS	TW	南投縣	unknown	http://www.im.ntu.edu.tw/index_e.htm	National Taiwan University, Department of Information Management	23.5	121.0
+723	152.3.138.7	planetlab7.cs.duke.edu	NA	US	Durham County	Durham	http://www.cs.duke.edu/	Duke University	36.0088	-78.9427
+724	unknown	planet11.csc.ncsu.edu	NA	US	Wake County	Raleigh	http://www.ncsu.edu	North Carolina State University	35.7667	-78.6333
+725	141.212.114.36	planetlab5.eecs.umich.edu	NA	US	Washtenaw County	Ann Arbor	http://www.eecs.umich.edu/	University of Michigan	42.2944	-83.7126
+726	unknown	planet12.csc.ncsu.edu	NA	US	Wake County	Raleigh	http://www.ncsu.edu	North Carolina State University	35.7667	-78.6333
+727	149.43.80.20	ebb.colgate.edu	NA	US	Madison County	unknown	http://www.colgate.edu	Colgate University	42.8189	-75.5357
+728	72.36.112.78	planetlab5.cs.uiuc.edu	NA	US	Champaign County	Urbana	http://www.cs.uiuc.edu/	University of Illinois at Urbana-Champaign	40.1103	-88.2272
+729	72.36.112.79	planetlab6.cs.uiuc.edu	NA	US	Champaign County	Urbana	http://www.cs.uiuc.edu/	University of Illinois at Urbana-Champaign	40.1103	-88.2272
+730	162.105.205.21	pl1.pku.edu.cn	AS	CN	unknown	海淀区	http://en.pku.edu.cn	Peking University	39.9887	116.307
+731	155.223.52.1	planetlab1.plab.ege.edu.tr	AS	TR	Bornova	unknown	http://www.ege.edu.tr	Ege Universitesi - International Computer Institute	38.4574	27.2145
+732	unknown	pl2snu.koren.kr	AS	KR	단원구	안산시	http://mmlab.snu.ac.kr/	Seoul National University - MMLAB	37.26	126.57
+733	198.82.160.220	planetlab-03.vt.nodes.planet-lab.org	NA	US	Montgomery County	unknown	http://www.arc.vt.edu/	Virginia Tech	37.2055	-80.4124
+734	198.82.160.221	planetlab-04.vt.nodes.planet-lab.org	NA	US	Montgomery County	unknown	http://www.arc.vt.edu/	Virginia Tech	37.2055	-80.4124
+735	unknown	mnc1.pusan.ac.kr	AS	KR	금정구	unknown	http://www.pusan.ac.kr	Pusan National University	35.2346	129.083
+736	155.223.52.3	planetlab2.plab.ege.edu.tr	AS	TR	Bornova	unknown	http://www.ege.edu.tr	Ege Universitesi - International Computer Institute	38.4574	27.2145
+737	unknown	planetlab05.cs.washington.edu	NA	US	King County	Seattle	http://www.cs.washington.edu/	University of Washington	47.6531	-122.313
+738	128.208.3.184	planetlab06.cs.washington.edu	NA	US	King County	Seattle	http://www.cs.washington.edu/	University of Washington	47.6531	-122.313
+739	unknown	mnc2.pusan.ac.kr	AS	KR	금정구	unknown	http://www.pusan.ac.kr	Pusan National University	35.2346	129.083
+740	140.115.156.144	nw144.csie.ncu.edu.tw	AS	TW	unknown	unknown	http://networklab.csie.ncu.edu.tw	Mobile Broadband NetworkLab	24.9676	121.188
+741	128.114.63.15	planetslug7.cse.ucsc.edu	NA	US	Santa Cruz County	Santa Cruz	http://www.soe.ucsc.edu/	University of California, Santa Cruz	37.0	-122.06
+742	128.195.54.212	planetlab-3.ics.uci.edu	NA	US	Orange County	Irvine	http://www.ics.uci.edu/~lbao/planetlab/	University of California, Irvine	33.67	-117.81
+743	128.138.207.45	planetlab2.cs.colorado.edu	NA	US	Boulder County	Boulder	http://serl.cs.colorado.edu	University of Colorado at Boulder	40.0072	-105.262
+744	217.9.80.144	planetlab1.keldysh.ru	EU	RU	Коломенский городской округ	Коломна	http://www.keldysh.ru	Keldysh Institute of Applied Mathematics	55.067	38.833
+745	131.247.2.246	planetlab5.csee.usf.edu	NA	US	Hillsborough County	Tampa	http://www.cse.usf.edu	University of South Florida (CSE)	28.0587	-82.4152
+746	217.9.80.145	planetlab2.keldysh.ru	EU	RU	Коломенский городской округ	Коломна	http://www.keldysh.ru	Keldysh Institute of Applied Mathematics	55.067	38.833
+747	129.22.150.29	planetlab-4.eecs.cwru.edu	NA	US	Cuyahoga County	Cleveland	http://engineering.case.edu/eecs/	Case Western Reserve University	41.5022	-81.6079
+748	130.194.252.8	pl1.eng.monash.edu.au	OC	AU	City of Monash	unknown	http://www.monash.edu.au/	Monash University	-37.9096	145.133
+749	128.220.231.4	planetlab3.cnds.jhu.edu	NA	US	unknown	Baltimore	http://www.cnds.jhu.edu	Johns Hopkins CNDS	39.33	-76.6
+750	128.220.231.5	planetlab4.cnds.jhu.edu	NA	US	unknown	Baltimore	http://www.cnds.jhu.edu	Johns Hopkins CNDS	39.33	-76.6
+751	130.194.252.9	pl2.eng.monash.edu.au	OC	AU	City of Monash	unknown	http://www.monash.edu.au/	Monash University	-37.9096	145.133
+752	unknown	planetlab4.cs.uchicago.edu	NA	US	Cook County	Chicago	http://www.cs.uchicago.edu/	University of Chicago	41.7894	-87.6011
+753	131.123.34.37	pl3.planet.cs.kent.edu	NA	US	Portage County	Kent	http://www.kent.edu	Kent State University	41.145	-81.3416
+754	unknown	planetlab-6.ece.iastate.edu	NA	US	Story County	unknown	http://www.ece.iastate.edu/	Iowa State University Electrical and Computer Engineering	42.02	-93.37
+755	165.242.90.128	pl1.sos.info.hiroshima-cu.ac.jp	AS	JP	unknown	広島市	http://www.hiroshima-cu.ac.jp/C/index.html	Hiroshima City University - Information Science	34.4403	132.415
+756	192.12.33.100	pl-node-0.csl.sri.com	NA	US	San Mateo County	unknown	http://www.sri.com	SRI International	37.4557	-122.178
+757	192.12.33.102	pl-node-1.csl.sri.com	NA	US	San Mateo County	unknown	http://www.sri.com	SRI International	37.4557	-122.178
+758	202.197.15.3	planetlab-2.pdl.nudt.edu.cn	AS	CN	开福区 (Kaifu)	开福区	http://www.nudt.edu.cn/	National University of Defense Technology	28.227	112.996
+759	202.197.15.1	planetlab-1.pdl.nudt.edu.cn	AS	CN	开福区 (Kaifu)	开福区	http://www.nudt.edu.cn/	National University of Defense Technology	28.227	112.996
+760	unknown	plgmu3.ite.gmu.edu	NA	US	Charles County	unknown	http://ite.gmu.edu/	George Mason University	38.51	-77.18
+761	unknown	plgmu4.ite.gmu.edu	NA	US	Charles County	unknown	http://ite.gmu.edu/	George Mason University	38.51	-77.18
+762	unknown	planetlab2.uta.edu	NA	US	Tarrant County	Arlington	http://isec.uta.edu	University of Texas at Arlington	32.73	-97.115
+763	unknown	pli1-pa-6.hpl.hp.com	NA	US	Santa Clara County	Palo Alto	http://hpl.hp.com	HP Labs	37.44	-122.15
+764	unknown	planetlab1.cs.dartmouth.edu	NA	US	Bristol County	Dartmouth	http://www.cs.dartmouth.edu	Dartmouth College, Computer Science	41.6167	-70.9667
+765	unknown	planetlab2.cs.dartmouth.edu	NA	US	Bristol County	Dartmouth	http://www.cs.dartmouth.edu	Dartmouth College, Computer Science	41.6167	-70.9667
+766	unknown	planetlab6.csres.utexas.edu	NA	US	Travis County	Austin	http://boss.cias.utexas.edu/	University of Texas, Austin	30.2869	-97.7366
+767	unknown	planetlab7.csres.utexas.edu	NA	US	Travis County	Austin	http://boss.cias.utexas.edu/	University of Texas, Austin	30.2869	-97.7366
+768	128.42.142.44	ricepl-4.cs.rice.edu	NA	US	Harris County	Houston	http://www.cs.rice.edu/	Rice University	29.7225	-95.3924
+769	128.42.142.45	ricepl-5.cs.rice.edu	NA	US	Harris County	Houston	http://www.cs.rice.edu/	Rice University	29.7225	-95.3924
+770	128.138.207.44	planetlab1.cs.colorado.edu	NA	US	Boulder County	Boulder	http://serl.cs.colorado.edu	University of Colorado at Boulder	40.0072	-105.262
+771	unknown	planetlab2.cs.unb.ca	NA	CA	York County	Fredericton	http://www.cs.unb.ca/acrl/	University of New Brunswick	45.9667	-66.65
+772	unknown	planetlab1.cs.unb.ca	NA	CA	York County	Fredericton	http://www.cs.unb.ca/acrl/	University of New Brunswick	45.9667	-66.65
+773	203.30.39.239	pnode2.pdcc-ntu.singaren.net.sg	AS	SG	Southwest	unknown	http://www.ntu.edu.sg/	Nanyang Technological University	1.34618	103.682
+774	162.105.205.22	pl2.pku.edu.cn	AS	CN	unknown	海淀区	http://en.pku.edu.cn	Peking University	39.9887	116.307
+775	128.8.126.98	miranda.planetlab.cs.umd.edu	NA	US	Prince George's County	unknown	http://www.cs.umd.edu/	University of Maryland	38.9886	-76.9445
+776	203.30.39.238	pnode1.pdcc-ntu.singaren.net.sg	AS	SG	Southwest	unknown	http://www.ntu.edu.sg/	Nanyang Technological University	1.34618	103.682
+777	128.39.36.26	planetlab1.simula.no	EU	NO	Oslo	Oslo	http://www.simula.no	Simula Research Laboratory	59.93	10.75
+778	138.238.250.155	nodea.howard.edu	NA	US	unknown	Washington	http://www.howard.edu	Howard University	38.91	-77.02
+779	138.238.250.157	nodeb.howard.edu	NA	US	unknown	Washington	http://www.howard.edu	Howard University	38.91	-77.02
+780	87.236.232.174	planetlab02.just.edu.jo	AS	JO	unknown	إربد‎	http://www.just.edu.jo/	Jordan University of Science and Technology	32.4931	35.9875
+781	unknown	plgmu5.ite.gmu.edu	NA	US	Charles County	unknown	http://ite.gmu.edu/	George Mason University	38.51	-77.18
+782	130.195.4.68	planetlab1.ecs.vuw.ac.nz	OC	NZ	Wellington City	Wellington	http://www.victoria.ac.nz	Victoria University of Wellington	-41.2902	174.768
+783	130.195.4.69	planetlab2.ecs.vuw.ac.nz	OC	NZ	Wellington City	Wellington	http://www.victoria.ac.nz	Victoria University of Wellington	-41.2902	174.768
+784	128.111.52.58	planet5.cs.ucsb.edu	NA	US	Santa Barbara County	Santa Barbara	http://www.cs.ucsb.edu/	University of California at Santa Barbara	34.4285	-119.722
+785	128.111.52.59	planet6.cs.ucsb.edu	NA	US	Santa Barbara County	Santa Barbara	http://www.cs.ucsb.edu/	University of California at Santa Barbara	34.4285	-119.722
+786	192.1.249.137	plnode-03.gpolab.bbn.com	NA	US	Middlesex County	unknown	http://www.bbn.com	BBN Technologies	42.3907	-71.1478
+787	192.1.249.138	plnode-04.gpolab.bbn.com	NA	US	Middlesex County	unknown	http://www.bbn.com	BBN Technologies	42.3907	-71.1478
+788	unknown	server1.planetlab.iit-tech.net	NA	US	Cook County	Chicago	http://www.nsl.iit.edu	Illinois Institute of Technology	41.8383	-87.629
+789	200.129.132.19	planetlab2.pop-pa.rnp.br	SA	BR	Microrregião de Belém	Belém	http://rnp.br	RNP  - Para	-1.46148	-48.4591
+790	unknown	planet1.cs.rochester.edu	NA	US	Monroe County	unknown	http://www.cs.rochester.edu/	University of Rochester	43.08	-77.63
+791	132.181.10.57	planetlab4.canterbury.ac.nz	OC	NZ	Christchurch City	Christchurch	http://www.cosc.canterbury.ac.nz/	University of Canterbury, New Zealand	-43.5271	172.649
+792	155.246.12.164	planetlab2.cs.stevens-tech.edu	NA	US	Hudson County	Hoboken	http://www.cs.stevens-tech.edu	Stevens Institute of Technology	40.75	-74.0333
+793	155.246.12.163	planetlab1.cs.stevens-tech.edu	NA	US	Hudson County	Hoboken	http://www.cs.stevens-tech.edu	Stevens Institute of Technology	40.75	-74.0333
+794	165.91.55.9	planetlab2.tamu.edu	NA	US	Brazos County	College Station	http://planetlab.tamu.edu	Texas AM University	30.61	-96.34
+795	200.129.132.18	planetlab1.pop-pa.rnp.br	SA	BR	Microrregião de Belém	Belém	http://rnp.br	RNP  - Para	-1.46148	-48.4591
+796	129.63.159.102	planetlab2.cs.uml.edu	NA	US	Middlesex County	Lowell	http://www.uml.edu/	University of Massachusetts Lowell	42.6544	-71.3266
+797	129.63.159.101	planetlab1.cs.uml.edu	NA	US	Middlesex County	Lowell	http://www.uml.edu/	University of Massachusetts Lowell	42.6544	-71.3266
+798	131.247.2.248	planetlab6.csee.usf.edu	NA	US	Hillsborough County	Tampa	http://www.cse.usf.edu	University of South Florida (CSE)	28.0587	-82.4152
+799	192.107.171.147	planetlab-n2.wand.net.nz	OC	NZ	Hamilton City	Hamilton	http://www.waikato.ac.nz/	The University of Waikato	-37.7892	175.318
+800	unknown	planet-plc-3.mpi-sws.org	EU	FR	Forbach-Boulay-Moselle	unknown	http://www.mpi-sws.org	Max Planck Institute for Software Systems	49.14	6.59
+801	169.237.79.210	planetlab1.ece.ucdavis.edu	NA	US	Sacramento County	unknown	http://engineering.ucdavis.edu	University of California, Davis	38.72	-121.43
+802	130.127.39.153	planetlab2.clemson.edu	NA	US	Pickens County	unknown	http://www.clemson.edu	Clemson University	34.6754	-82.8394
+803	unknown	planet-plc-4.mpi-sws.org	EU	FR	Forbach-Boulay-Moselle	unknown	http://www.mpi-sws.org	Max Planck Institute for Software Systems	49.14	6.59
+804	130.127.39.152	planetlab1.clemson.edu	NA	US	Pickens County	unknown	http://www.clemson.edu	Clemson University	34.6754	-82.8394
+805	136.159.220.42	planetlab-2.elisa.cpsc.ucalgary.ca	NA	CA	Calgary	Calgary	http://www.ucalgary.ca/	University of Calgary - Computer Science	51.0775	-114.133
+806	unknown	pl1.6test.edu.cn	AS	CN	unknown	海淀区	http://www.tsinghua.edu.cn	Tsinghua University	40.0	116.327
+807	unknown	pl2.6test.edu.cn	AS	CN	unknown	海淀区	http://www.tsinghua.edu.cn	Tsinghua University	40.0	116.327
+808	165.230.49.118	planetlab3.rutgers.edu	NA	US	Middlesex County	New Brunswick	http://www.cs.rutgers.edu	Rutgers University	40.4896	-74.4082
+809	165.230.49.119	planetlab4.rutgers.edu	NA	US	Middlesex County	New Brunswick	http://www.cs.rutgers.edu	Rutgers University	40.4896	-74.4082
+810	128.220.251.50	planetlab1.jhu.edu	NA	US	unknown	Baltimore	http://www.cs.jhu.edu/	Johns Hopkins Information Security Institute	39.33	-76.6
+811	128.220.251.52	planetlab2.jhu.edu	NA	US	unknown	Baltimore	http://www.cs.jhu.edu/	Johns Hopkins Information Security Institute	39.33	-76.6
+812	unknown	planetlab4.netmedia.gist.ac.kr	AS	KR	unknown	서울	http://nm.gist.ac.kr	GIST (Gwangju Institute of Science & Technology)	37.53	127.0
+813	66.140.111.5	ttu1-1.nodes.planet-lab.org	NA	US	Lubbock County	Lubbock	http://www.ttu.edu	Texas Tech University - Computer Science	33.5874	-101.875
+814	66.140.111.7	ttu2-1.nodes.planet-lab.org	NA	US	Lubbock County	Lubbock	http://www.ttu.edu	Texas Tech University - Computer Science	33.5874	-101.875
+815	202.141.161.43	planetlab1.ustc.edu.cn	AS	CN	合肥市区	三孝口街道	http://www.ustc.edu.cn/	University of Science and Technology of China	31.87	117.27
+816	unknown	planetlab1.bupt.edu.cn	AS	CN	unknown	西城区	http://www.bupt.edu.cn/	Beijing University of Posts and Telecommunications	39.9606	116.359
+817	unknown	planetlab2.bupt.edu.cn	AS	CN	unknown	西城区	http://www.bupt.edu.cn/	Beijing University of Posts and Telecommunications	39.9606	116.359
+818	165.242.90.129	pl2.sos.info.hiroshima-cu.ac.jp	AS	JP	unknown	広島市	http://www.hiroshima-cu.ac.jp/C/index.html	Hiroshima City University - Information Science	34.4403	132.415
+819	133.68.253.242	planet1.pnl.nitech.ac.jp	AS	JP	unknown	名古屋市	http://eng.nitech.ac.jp/	Nagoya Institute of Technology	35.1566	136.925
+820	133.68.253.243	planet2.pnl.nitech.ac.jp	AS	JP	unknown	名古屋市	http://eng.nitech.ac.jp/	Nagoya Institute of Technology	35.1566	136.925
+821	129.74.74.16	planetlab2.cse.nd.edu	NA	US	Saint Joseph County	unknown	http://www.cse.nd.edu/	University of Notre Dame	41.7	-86.2386
+822	210.75.225.60	planet1.dsp.ac.cn	AS	CN	朝阳区 / Chaoyang	朝阳区	http://www.3nmedia.cn	National NetWork New Media Engineering Research Center	39.92	116.46
+823	210.75.225.62	planet2.dsp.ac.cn	AS	CN	朝阳区 / Chaoyang	朝阳区	http://www.3nmedia.cn	National NetWork New Media Engineering Research Center	39.92	116.46
+824	156.62.231.242	planetlab1.aut.ac.nz	OC	NZ	unknown	Waitemata	http://www.aut.ac.nz	AUT University	-36.8538	174.766
+825	156.62.231.244	planetlab2.aut.ac.nz	OC	NZ	unknown	Waitemata	http://www.aut.ac.nz	AUT University	-36.8538	174.766
+826	128.36.233.154	pl2.cs.yale.edu	NA	US	New Haven County	New Haven	http://www.yale.edu/	Yale University	41.3134	-72.9251
+827	128.36.233.153	pl1.cs.yale.edu	NA	US	New Haven County	New Haven	http://www.yale.edu/	Yale University	41.3134	-72.9251
+828	unknown	pl1.cis.uab.edu	NA	US	Jefferson County	Birmingham	http://www.uab.edu	University of Alabama at Birmingham	33.5006	-86.8084
+829	202.116.81.194	planetlab-1.sysu.edu.cn	AS	CN	海珠区 (Haizhu)	广州市	http://eng.sysu.edu.cn/	Sun Yat-Sen University	23.0993	113.299
+830	202.116.81.195	planetlab-2.sysu.edu.cn	AS	CN	海珠区 (Haizhu)	广州市	http://eng.sysu.edu.cn/	Sun Yat-Sen University	23.0993	113.299
+831	unknown	planet2.cs.rochester.edu	NA	US	Monroe County	unknown	http://www.cs.rochester.edu/	University of Rochester	43.08	-77.63
+832	unknown	pl2.cis.uab.edu	NA	US	Jefferson County	Birmingham	http://www.uab.edu	University of Alabama at Birmingham	33.5006	-86.8084
+833	unknown	of-planet5.stanford.edu	NA	US	Santa Clara County	unknown	http://www.openflowswitch.org	Stanford University OpenFlow Projects	37.4294	-122.172
+834	108.58.13.205	planetlab1.cnis.nyit.edu	NA	US	Nassau County	unknown	http://www.nyit.edu	New York Institute of Technology	40.814	-73.6081
+835	108.58.13.206	planetlab2.cnis.nyit.edu	NA	US	Nassau County	unknown	http://www.nyit.edu	New York Institute of Technology	40.814	-73.6081
+836	148.206.185.33	pl-dccd-01.cua.uam.mx	NA	MX	Miguel Hidalgo	Miguel Hidalgo	http://www.cua.uam.mx/	UAM-Cuajimalpa	19.3951	-99.2332
+837	unknown	server4.planetlab.iit-tech.net	NA	US	Cook County	Chicago	http://www.nsl.iit.edu	Illinois Institute of Technology	41.8383	-87.629
+838	unknown	arari.snu.ac.kr	AS	KR	unknown	서울	http://dcslab.snu.ac.kr	Seoul National University	37.53	127.0
+839	147.46.240.165	recall.snu.ac.kr	AS	KR	unknown	서울	http://dcslab.snu.ac.kr	Seoul National University	37.53	127.0
+840	206.23.240.28	planetlab1.tsuniv.edu	NA	US	Davidson County	Nashville-Davidson	http://www.tnstate.edu	Tennessee State University	36.1659	-86.8313
+841	unknown	planetlab-5.ece.iastate.edu	NA	US	Story County	unknown	http://www.ece.iastate.edu/	Iowa State University Electrical and Computer Engineering	42.02	-93.37
+842	unknown	planetlab2.buaa.edu.cn	AS	CN	朝阳区 / Chaoyang	unknown	http://www.buaa.edu.cn	BeiHang University	39.9	116.5
+843	206.23.240.29	planetlab2.tsuniv.edu	NA	US	Davidson County	Nashville-Davidson	http://www.tnstate.edu	Tennessee State University	36.1659	-86.8313
+844	unknown	planetlab2.lsd.ufcg.edu.br	SA	BR	Microrregião de Campina Grande	unknown	http://www.ourgrid.org	Universidade Federal de Campina Grande - LaboratÃ³rio de Sistemas DistribuÃ­dos	-7.25	-35.8333
+845	103.49.160.131	planetlab1.ie.cuhk.edu.hk	AS	CN	油尖旺區 Yau Tsim Mong District	unknown	http://www.ie.cuhk.edu.hk/	The Chinese University of Hong Kong	22.3	114.166
+846	157.92.44.104	planet-lab4.uba.ar	SA	AR	unknown	CABA	http://www.uba.ar/ingles/index01.php	Universidad de Buenos Aires	-34.5975	-58.3985
+847	165.91.55.10	planetlab3.tamu.edu	NA	US	Brazos County	College Station	http://planetlab.tamu.edu	Texas AM University	30.61	-96.34
+848	165.91.55.11	planetlab4.tamu.edu	NA	US	Brazos County	College Station	http://planetlab.tamu.edu	Texas AM University	30.61	-96.34
+849	unknown	planetlab-4.ece.iastate.edu	NA	US	Story County	unknown	http://www.ece.iastate.edu/	Iowa State University Electrical and Computer Engineering	42.02	-93.37
+850	133.9.81.164	planetlab4.goto.info.waseda.ac.jp	AS	JP	unknown	綾瀬市	http://www.waseda.jp/	Waseda University	35.42	139.42
+851	134.88.5.251	planetlab1.umassd.edu	NA	US	Bristol County	Dartmouth	http://www.umassd.edu	University of Massachusetts Dartmouth	41.6286	-71.0061
+852	134.88.5.253	planetlab2.umassd.edu	NA	US	Bristol County	Dartmouth	http://www.umassd.edu	University of Massachusetts Dartmouth	41.6286	-71.0061
+853	202.141.161.44	planetlab2.ustc.edu.cn	AS	CN	合肥市区	三孝口街道	http://www.ustc.edu.cn/	University of Science and Technology of China	31.87	117.27
+854	202.125.215.10	pl01.comp.polyu.edu.hk	AS	CN	油尖旺區 Yau Tsim Mong District	unknown	http://www.polyu.edu.hk	The Hong Kong Polytechnic University	22.304	114.18
+855	192.248.16.111	planetlab0.ucsc.cmb.ac.lk	AS	LK	unknown	Colombo	http://www.ucsc.lk	University of Colombo School of Computing	6.90222	79.8613
+856	192.248.16.112	planetlab1.ucsc.cmb.ac.lk	AS	LK	unknown	Colombo	http://www.ucsc.lk	University of Colombo School of Computing	6.90222	79.8613
+857	134.117.226.180	saturn.planetlab.carleton.ca	NA	CA	unknown	Ottawa	http://www.carleton.ca	Carleton University	45.3847	-75.6982
+858	134.197.113.3	planetlab1.unr.edu	NA	US	Washoe County	Reno	http://www.unr.edu	University of Nevada, Reno	39.5398	-119.814
+859	unknown	planetlab4.bupt.edu.cn	AS	CN	unknown	西城区	http://www.bupt.edu.cn/	Beijing University of Posts and Telecommunications	39.9606	116.359
+860	unknown	planetlab3.bupt.edu.cn	AS	CN	unknown	西城区	http://www.bupt.edu.cn/	Beijing University of Posts and Telecommunications	39.9606	116.359
+861	134.117.226.181	jupiter.planetlab.carleton.ca	NA	CA	unknown	Ottawa	http://www.carleton.ca	Carleton University	45.3847	-75.6982
+862	unknown	planetlab1.hust.edu.cn	AS	CN	东湖新技术开发区（托管）	关东街道	http://www.hust.edu.cn/english/	Huazhong University of Science and Technology 	30.512	114.408
+863	unknown	planetlab2.hust.edu.cn	AS	CN	东湖新技术开发区（托管）	关东街道	http://www.hust.edu.cn/english/	Huazhong University of Science and Technology 	30.512	114.408
+864	218.94.106.114	planetlab-js2.cert.org.cn	AS	CN	unknown	南京市	http://www.cert.org.cn	National Computer Network Emergency Response Technical Team/Coodination Center of China	32.061	118.791
+865	unknown	planetlab1.cti.espol.edu.ec	SA	EC	Guayaquil	Guayaquil	http://www.espol.edu.ec	ESPOL University	-2.15	-79.96
+866	unknown	planetlab2.cti.espol.edu.ec	SA	EC	Guayaquil	Guayaquil	http://www.espol.edu.ec	ESPOL University	-2.15	-79.96
+867	75.130.96.12	75-130-96-12.static.oxfr.ma.charter.com	NA	US	Worcester	Worcester	http://www.cs.wpi.edu/	Worcester Polytechnic Institute	42.2736	-71.8098
+868	75.130.96.13	75-130-96-13.static.oxfr.ma.charter.com	NA	US	Worcester	Worcester	http://www.cs.wpi.edu/	Worcester Polytechnic Institute	42.2736	-71.8098
+869	202.125.215.12	pl02.comp.polyu.edu.hk	AS	CN	油尖旺區 Yau Tsim Mong District	unknown	http://www.polyu.edu.hk	The Hong Kong Polytechnic University	22.304	114.18
+870	202.202.43.199	planetlab2.cqupt.edu.cn	AS	CN	南岸区	渝中区	http://www.cqupt.edu.cn	Chongqing University of Posts and Telecommunications	29.5372	106.602
+871	unknown	planetlab1.cqupt.edu.cn	AS	CN	南岸区	渝中区	http://www.cqupt.edu.cn	Chongqing University of Posts and Telecommunications	29.5372	106.602
+872	210.32.133.7	pln.zju.edu.cn	AS	CN	西湖区 (Xihu)	灵隐街道	http://www.zju.edu.cn	Zhejiang University 	30.2636	120.121
+873	unknown	planetlab1.nakao-lab.org	AS	JP	unknown	東久留米市	http://www.planet-lab-jp.org	University of Tokyo	35.75	139.5
+874	unknown	planetlab2.nakao-lab.org	AS	JP	unknown	東久留米市	http://www.planet-lab-jp.org	University of Tokyo	35.75	139.5
+875	188.44.50.106	plab1.cs.msu.ru	EU	RU	unknown	Москва	http://www.cs.msu.ru/	Moscow State University	55.75	37.6
+876	93.180.19.232	plab3.cs.msu.ru	EU	RU	unknown	Москва	http://www.cs.msu.ru/	Moscow State University	55.75	37.6
+877	203.110.240.190	planetlab1.iitkgp.ac.in	AS	IN	unknown	Kharagpur	http://iitkgp.ac.in	IIT Kharagpur	22.3171	87.3122
+878	203.110.240.191	planetlab2.iitkgp.ac.in	AS	IN	unknown	Kharagpur	http://iitkgp.ac.in	IIT Kharagpur	22.3171	87.3122
+879	210.32.181.184	pl2.zju.edu.cn	AS	CN	西湖区 (Xihu)	灵隐街道	http://www.zju.edu.cn	Zhejiang University 	30.2636	120.121
+880	139.78.141.243	planetlab1.cs.okstate.edu	NA	US	Payne County	Stillwater	http://www.okstate.edu	Oklahoma State University	36.1222	-97.0714
+881	139.78.141.245	planetlab2.cs.okstate.edu	NA	US	Payne County	Stillwater	http://www.okstate.edu	Oklahoma State University	36.1222	-97.0714
+882	118.139.145.130	planetlab-1.infotech.monash.edu.my	AS	MY	unknown	Subang Jaya	http://www.monash.edu.my	MONASH University Sunway Campus	3.06432	101.601
+883	165.230.49.115	planetlab2.rutgers.edu	NA	US	Middlesex County	New Brunswick	http://www.cs.rutgers.edu	Rutgers University	40.4896	-74.4082
+884	200.159.254.91	planetlab1.pop-rj.rnp.br	SA	BR	Microrregião Rio de Janeiro	Rio de Janeiro		RNP - Rio de Janeiro	-22.9066	-43.1725
+885	200.159.254.92	planetlab2.pop-rj.rnp.br	SA	BR	Microrregião Rio de Janeiro	Rio de Janeiro		RNP - Rio de Janeiro	-22.9066	-43.1725
+886	129.32.84.160	planetlab1.temple.edu	NA	US	Philadelphia County	Philadelphia	http://www.temple.edu/cis/	Temple University	39.9809	-75.157
+887	129.32.84.161	planetlab2.temple.edu	NA	US	Philadelphia County	Philadelphia	http://www.temple.edu/cis/	Temple University	39.9809	-75.157
+888	unknown	planetlab2.iitb.ac.in	unknown	unknown	unknown	unknown	http://www.iitb.ac.in	Indian Institute Of Technology Bombay	18.58	72.5
+889	218.94.106.112	planetlab-js1.cert.org.cn	AS	CN	unknown	南京市	http://www.cert.org.cn	National Computer Network Emergency Response Technical Team/Coodination Center of China	32.061	118.791
+890	222.197.180.137	planetlab-1.scie.uestc.edu.cn	AS	CN	成华区 (Chenghua)	成华区	http://www.uestc.edu.cn	University of Electronic Science and Technology of China	30.6795	104.108
+891	128.84.167.123	planetlab3.cs.cornell.edu	NA	US	Ithaca Town	Ithaca	http://www.cs.cornell.edu/	Cornell University	42.4436	-76.4816
+892	128.84.167.124	planetlab4.cs.cornell.edu	NA	US	Ithaca Town	Ithaca	http://www.cs.cornell.edu/	Cornell University	42.4436	-76.4816
+893	64.106.82.9	pl2.cs.unm.edu	NA	US	Bernalillo County	ABQ	http://www.cs.unm.edu	University of New Mexico	35.08	-106.65
+894	64.106.82.10	pl3.cs.unm.edu	NA	US	Bernalillo County	ABQ	http://www.cs.unm.edu	University of New Mexico	35.08	-106.65
+895	64.106.82.11	pl4.cs.unm.edu	NA	US	Bernalillo County	ABQ	http://www.cs.unm.edu	University of New Mexico	35.08	-106.65
+896	153.90.1.34	pl1.cs.montana.edu	NA	US	Gallatin County	Bozeman	http://www.montana.edu	Montana State University	45.6666	-111.049
+897	153.90.1.35	pl2.cs.montana.edu	NA	US	Gallatin County	Bozeman	http://www.montana.edu	Montana State University	45.6666	-111.049
+898	unknown	planetlab02.alucloud.com	NA	US	DuPage County	Naperville	http://www.alcatel-lucent.com	Alcatel-Lucent Indy Hill Site	41.8124	-88.1197
+899	unknown	planetlab01.alucloud.com	NA	US	DuPage County	Naperville	http://www.alcatel-lucent.com	Alcatel-Lucent Indy Hill Site	41.8124	-88.1197
+900	unknown	plnodeb.plaust.edu.cn	AS	CN	unknown	南京市	http://www.plaust.edu.cn	PLA University of Science and Technology	32.06	118.79
+901	unknown	planetlab1.iitb.ac.in	unknown	unknown	unknown	unknown	http://www.iitb.ac.in	Indian Institute Of Technology Bombay	18.58	72.5
+902	140.192.249.203	planetlab1.mnlab.cti.depaul.edu	NA	US	Cook County	Chicago	http://www.mnlab.cs.depaul.edu	DePaul University	41.88	-87.63
+903	204.85.191.10	planetlab1.cs.unc.edu	NA	US	Orange County	unknown	http://www.cs.unc.edu/	University of North Carolina at Chapel Hill	35.92	-79.04
+904	unknown	planetlab2.iitr.ernet.in	AS	IN	unknown	Roorkee	http://www.iitr.ac.in	Indian Institute of Technology Roorkee	29.85	77.9
+905	unknown	planetlab2.een.orst.edu	NA	US	Linn County	unknown	http://eecs.oregonstate.edu	Oregon State University School of Electrical Engineering and Computer Science	44.34	-123.16
+906	unknown	planetlab1.een.orst.edu	NA	US	Linn County	unknown	http://eecs.oregonstate.edu	Oregon State University School of Electrical Engineering and Computer Science	44.34	-123.16
+907	unknown	node02.verivue.princeton.edu	NA	US	Mercer County	Princeton	http://www.cs.princeton.edu/	Princeton	40.3502	-74.6524
+908	unknown	planetlab3.arizona-gigapop.net	NA	US	Pima County	Tucson	http://www.cs.arizona.edu/	University of Arizona	32.2333	-110.948
+909	unknown	planet-plc-1.mpi-sws.org	EU	FR	Forbach-Boulay-Moselle	unknown	http://www.mpi-sws.org	Max Planck Institute for Software Systems	49.14	6.59
+910	unknown	planet-plc-2.mpi-sws.org	EU	FR	Forbach-Boulay-Moselle	unknown	http://www.mpi-sws.org	Max Planck Institute for Software Systems	49.14	6.59
+911	unknown	planetlab-1.ece.iastate.edu	NA	US	Story County	unknown	http://www.ece.iastate.edu/	Iowa State University Electrical and Computer Engineering	42.02	-93.37
+912	unknown	planetlab-2.ece.iastate.edu	NA	US	Story County	unknown	http://www.ece.iastate.edu/	Iowa State University Electrical and Computer Engineering	42.02	-93.37
+913	unknown	planet-plc-5.mpi-sws.org	EU	FR	Forbach-Boulay-Moselle	unknown	http://www.mpi-sws.org	Max Planck Institute for Software Systems	49.14	6.59
+914	unknown	planet-plc-6.mpi-sws.org	EU	FR	Forbach-Boulay-Moselle	unknown	http://www.mpi-sws.org	Max Planck Institute for Software Systems	49.14	6.59
+915	132.181.10.56	planetlab3.canterbury.ac.nz	OC	NZ	Christchurch City	Christchurch	http://www.cosc.canterbury.ac.nz/	University of Canterbury, New Zealand	-43.5271	172.649
+916	unknown	planetlab1.lsd.ufcg.edu.br	SA	BR	Microrregião de Campina Grande	unknown	http://www.ourgrid.org	Universidade Federal de Campina Grande - LaboratÃ³rio de Sistemas DistribuÃ­dos	-7.25	-35.8333
+917	unknown	opal.cnu.ac.kr	AS	KR	unknown	unknown	http://www.cnu.ac.kr	Chungnam National University	37.0	127.5
+918	130.253.21.121	planetlab1.cs.du.edu	NA	US	Denver County	Denver	http://www.du.edu	University of Denver	39.6798	-104.963
+919	unknown	planetlab1.aub.edu.lb	AS	LB	unknown	صيدا	http://www.aub.edu.lb	American University of Beirut	33.53	35.3
+920	unknown	planetlab2.aub.edu.lb	AS	LB	unknown	صيدا	http://www.aub.edu.lb	American University of Beirut	33.53	35.3
+921	130.253.21.123	planetlab2.cs.du.edu	NA	US	Denver County	Denver	http://www.du.edu	University of Denver	39.6798	-104.963
+922	157.92.44.103	planet-lab3.uba.ar	SA	AR	unknown	CABA	http://www.uba.ar/ingles/index01.php	Universidad de Buenos Aires	-34.5975	-58.3985
+923	136.159.220.40	planetlab-1.elisa.cpsc.ucalgary.ca	NA	CA	Calgary	Calgary	http://www.ucalgary.ca/	University of Calgary - Computer Science	51.0775	-114.133
+924	137.99.26.115	planetlab1.engr.uconn.edu	NA	US	New London County	unknown	http://www.cse.uconn.edu/	University of Connecticut	41.49	-72.15
+925	unknown	planetlab-3.ece.iastate.edu	NA	US	Story County	unknown	http://www.ece.iastate.edu/	Iowa State University Electrical and Computer Engineering	42.02	-93.37
+926	23.228.128.73	mlc1.measurementlab.net	NA	US	Santa Clara County	unknown	http://www.measurement-lab.org	MeasurementLab	37.4167	-122.059
+927	23.228.128.86	mlc2.measurementlab.net	NA	US	Santa Clara County	unknown	http://www.measurement-lab.org	MeasurementLab	37.4167	-122.059
+928	193.232.27.246	planet-lab.iki.rssi.ru	EU	RU	unknown	Обручевский район	http://www.sim-mipt.ru	Moscow Institute of Physics and Technology	55.65	37.5
+929	195.113.161.84	planetlab3.cesnet.cz	EU	CZ	okres Hlavní město Praha	Praha	http://www.ces.net/about/	CESNET - Czech Education and Research Network	50.102	14.3916
+930	128.227.150.11	planetlab1.acis.ufl.edu	NA	US	Alachua County	City of Gainesville Municipal Boundaries	http://www.acis.ufl.edu	University of Florida - ACIS Lab	29.68	-82.27
+931	128.227.150.12	planetlab2.acis.ufl.edu	NA	US	Alachua County	City of Gainesville Municipal Boundaries	http://www.acis.ufl.edu	University of Florida - ACIS Lab	29.68	-82.27
+932	192.52.240.213	planetlab1.cs.pitt.edu	NA	US	Washington County	Union Township	http://www.cs.pitt.edu	University of Pittsburgh	40.26	-80.0
+933	192.52.240.214	planetlab2.cs.pitt.edu	NA	US	Washington County	Union Township	http://www.cs.pitt.edu	University of Pittsburgh	40.26	-80.0
+934	134.197.113.4	planetlab2.unr.edu	NA	US	Washoe County	Reno	http://www.unr.edu	University of Nevada, Reno	39.5398	-119.814
+935	222.99.146.81	pl1.yonsei.ac.kr	AS	KR	unknown	서울	http://win.yonsei.ac.kr	Yonsei University	37.53	127.0
+936	222.99.146.83	pl2.yonsei.ac.kr	AS	KR	unknown	서울	http://win.yonsei.ac.kr	Yonsei University	37.53	127.0
+937	unknown	planet1.cdacb.ernet.in	AS	IN	Kanakapura taluk	unknown	http://www.cdac.in	Centre for Development of Advanced Computing	12.59	77.35
+938	103.49.160.132	planetlab2.ie.cuhk.edu.hk	AS	CN	油尖旺區 Yau Tsim Mong District	unknown	http://www.ie.cuhk.edu.hk/	The Chinese University of Hong Kong	22.3	114.166
+939	141.217.48.50	planetlab1.cs.wayne.edu	NA	US	Wayne County	Detroit	http://www.cs.wayne.edu	Wayne State University	42.3573	-83.0677
+940	141.217.48.51	planetlab2.cs.wayne.edu	NA	US	Wayne County	Detroit	http://www.cs.wayne.edu	Wayne State University	42.3573	-83.0677
+941	192.107.171.145	planetlab-n1.wand.net.nz	OC	NZ	Hamilton City	Hamilton	http://www.waikato.ac.nz/	The University of Waikato	-37.7892	175.318
+942	unknown	plgmu1.ite.gmu.edu	NA	US	Charles County	unknown	http://ite.gmu.edu/	George Mason University	38.51	-77.18
+943	23.228.128.99	ks.measurementlab.net	NA	US	Santa Clara County	unknown	http://www.measurement-lab.org	MeasurementLab	37.4167	-122.059
+944	195.116.53.11	planetlab1.warsaw.rd.tp.pl	EU	PL	Warszawa	Warszawa	http://www.orange.pl	Telekomunikacja Polska R&D at Warsaw	52.1763	21.0017
+945	118.139.145.131	planetlab-2.infotech.monash.edu.my	AS	MY	unknown	Subang Jaya	http://www.monash.edu.my	MONASH University Sunway Campus	3.06432	101.601
+946	140.115.156.142	nw142.csie.ncu.edu.tw	AS	TW	unknown	unknown	http://networklab.csie.ncu.edu.tw	Mobile Broadband NetworkLab	24.9676	121.188
+947	unknown	planetlab1.iiitb.ac.in	AS	IN	Bangalore Urban	Bengaluru	http://planetlab.iiitb.ac.in/	Indian Institute of Information Technology, Bangalore	12.97	77.58
+948	unknown	planet2.cdacb.ernet.in	AS	IN	Kanakapura taluk	unknown	http://www.cdac.in	Centre for Development of Advanced Computing	12.59	77.35
+949	192.16.125.11	planetlab-1.ssvl.kth.se	EU	SE	Enköping	unknown	http://www.tslab.ssvl.kth.se	Royal Institute of Technology (KTH), Sweden	59.52	17.38
+950	unknown	planetlab1.ewi.tudelft.nl	EU	NL	unknown	Delft	http://www.nas.its.tudelft.nl/people/people.htm	Delft University of Technology	52.02	4.35
+951	unknown	planetlab2.ewi.tudelft.nl	EU	NL	unknown	Delft	http://www.nas.its.tudelft.nl/people/people.htm	Delft University of Technology	52.02	4.35
+952	unknown	planetlab2.iiitb.ac.in	AS	IN	Bangalore Urban	Bengaluru	http://planetlab.iiitb.ac.in/	Indian Institute of Information Technology, Bangalore	12.97	77.58
+953	129.10.120.194	planetlabtwo.ccs.neu.edu	NA	US	Suffolk County	Boston	http://www.ccs.neu.edu	Northeastern University CCIS	42.37	-71.03
+954	192.16.125.12	planetlab-2.ssvl.kth.se	EU	SE	Enköping	unknown	http://www.tslab.ssvl.kth.se	Royal Institute of Technology (KTH), Sweden	59.52	17.38
+955	unknown	planetlab-01.naist.jp	AS	JP	unknown	和泉市		Nara Institute of Science and Technology	34.41	135.5
+956	unknown	planetlab-02.naist.jp	AS	JP	unknown	和泉市		Nara Institute of Science and Technology	34.41	135.5
+957	169.229.50.5	planetlab3.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+958	169.229.50.3	planetlab1.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+959	169.229.50.4	planetlab2.millennium.berkeley.edu	NA	US	Alameda County	Berkeley	http://www.cs.berkeley.edu/	University of California at Berkeley	37.8757	-122.259
+960	140.192.249.204	planetlab2.mnlab.cti.depaul.edu	NA	US	Cook County	Chicago	http://www.mnlab.cs.depaul.edu	DePaul University	41.88	-87.63
+961	unknown	plab2.nec-labs.com	NA	US	Mercer County	Princeton	http://www.nec-labs.com	NEC Laboratories	40.37	-74.64
+962	unknown	plab1.nec-labs.com	NA	US	Mercer County	Princeton	http://www.nec-labs.com	NEC Laboratories	40.37	-74.64
+963	165.230.49.114	planetlab1.rutgers.edu	NA	US	Middlesex County	New Brunswick	http://www.cs.rutgers.edu	Rutgers University	40.4896	-74.4082
+964	195.116.60.34	planetlab2.olsztyn.rd.tp.pl	EU	PL	gmina Barczewo	unknown	http://www.tp-ir.pl/index.php?page=index&lang=en	Telekomunikacja Polska R&D at Olsztyn	53.86	20.59
+965	132.227.123.41	ple41.planet-lab.eu	EU	FR	Paris	Paris	http://www.lip6.fr	Universite Pierre et Marie Curie	48.8473	2.35749
+966	132.227.123.42	ple42.planet-lab.eu	EU	FR	Paris	Paris	http://www.lip6.fr	Universite Pierre et Marie Curie	48.8473	2.35749
+967	194.42.17.164	planetlab-2.cs.ucy.ac.cy	AS	CY	Λευκωσία - Lefkoşa	unknown	http://grid.ucy.ac.cy/planetlab	University of Cyprus	35.15	33.36
+968	132.227.123.43	ple43.planet-lab.eu	EU	FR	Paris	Paris	http://www.lip6.fr	Universite Pierre et Marie Curie	48.8473	2.35749
+969	132.227.123.44	ple44.planet-lab.eu	EU	FR	Paris	Paris	http://www.lip6.fr	Universite Pierre et Marie Curie	48.8473	2.35749
+970	193.0.109.23	kulcha.mimuw.edu.pl	EU	PL	Warszawa	Warszawa	http://www.uw.edu.pl/en/	University of Warsaw	52.211	20.981
+971	193.0.109.25	puri.mimuw.edu.pl	EU	PL	Warszawa	Warszawa	http://www.uw.edu.pl/en/	University of Warsaw	52.211	20.981
+972	132.69.247.20	pl-node-1.technion.ac.il	AS	IL	unknown	חיפה	http://webee.technion.ac.il/	Technion Israel Institute of Technology	32.777	35.023
+973	132.227.123.5	nuc1.planet-lab.eu	EU	FR	Paris	Paris	http://www.lip6.fr	Universite Pierre et Marie Curie	48.8473	2.35749
+974	132.65.240.102	planet3.cs.huji.ac.il	AS	IL	unknown	ירושלים	http://www.cs.huji.ac.il/labs/danss	The Hebrew University of Jerusalem	31.7857	35.2007
+975	132.65.240.103	planet4.cs.huji.ac.il	AS	IL	unknown	ירושלים	http://www.cs.huji.ac.il/labs/danss	The Hebrew University of Jerusalem	31.7857	35.2007
+976	132.69.247.22	pl-node-2.technion.ac.il	AS	IL	unknown	חיפה	http://webee.technion.ac.il/	Technion Israel Institute of Technology	32.777	35.023
+977	86.50.18.18	planetlab1.tb.hiit.fi	EU	FI	Helsingin seutukunta	Helsinki	http://www.hiit.fi	Helsinki Institute for Information Technology	60.1	25.0
+978	86.50.18.19	planetlab2.tb.hiit.fi	EU	FI	Helsingin seutukunta	Helsinki	http://www.hiit.fi	Helsinki Institute for Information Technology	60.1	25.0
+979	129.16.20.71	cse-white.cse.chalmers.se	EU	SE	Göteborg	Gbg	www.chalmers.se	Chalmers University of Technology	57.6884	11.9778
+980	129.16.20.70	cse-yellow.cse.chalmers.se	EU	SE	Göteborg	Gbg	www.chalmers.se	Chalmers University of Technology	57.6884	11.9778
+981	139.30.241.191	pl1.uni-rostock.de	EU	DE	Rostock	Rostock	http://www.uni-rostock.de	University of Rostock	54.13	12.145
+982	139.30.241.192	pl2.uni-rostock.de	EU	DE	Rostock	Rostock	http://www.uni-rostock.de	University of Rostock	54.13	12.145
+983	138.37.32.12	plab1.eecs.qmul.ac.uk	EU	GB	unknown	London	http://www.dcs.qmul.ac.uk/	Queen Mary, University of London	51.5	-0.1
+984	138.37.32.13	plab2.eecs.qmul.ac.uk	EU	GB	unknown	London	http://www.dcs.qmul.ac.uk/	Queen Mary, University of London	51.5	-0.1
+985	121.52.147.94	plue1.uetpeshawar.edu.pk	AS	PK	Peshāwar District	پشاور‎	http://www.uetpeshawar.edu.pk	University of Engineering & Technology Peshawar	34.0024	71.4845
+986	195.251.248.180	planetlab1.cs.aueb.gr	EU	GR	Δήμος Αθηναίων	Αθήνα	http://mm.aueb.gr/	Athens Univ. of Economics & Business	37.9966	23.7399
+987	141.22.213.35	mars.planetlab.haw-hamburg.de	EU	DE	unknown	unknown	http://www.haw-hamburg.de	HAW Hamburg	53.5686	10.0386
+988	141.22.213.34	merkur.planetlab.haw-hamburg.de	EU	DE	unknown	unknown	http://www.haw-hamburg.de	HAW Hamburg	53.5686	10.0386
+989	130.192.157.131	planetlab1.di.unito.it	EU	IT	TO	Torino	http://www.di.unito.it	Dipartimento di Informatica di Torino	45.07	7.67
+990	130.192.157.132	planetlab2.di.unito.it	EU	IT	TO	Torino	http://www.di.unito.it	Dipartimento di Informatica di Torino	45.07	7.67
+991	130.192.157.138	planetlab3.di.unito.it	EU	IT	TO	Torino	http://www.di.unito.it	Dipartimento di Informatica di Torino	45.07	7.67
+992		planetlab-1.tagus.ist.utl.pt	EU	PT	OER	unknown	http://www.ist.utl.pt	Instituto Superior Tecnico	38.7373	-9.30324
+993		planetlab-2.tagus.ist.utl.pt	EU	PT	OER	unknown	http://www.ist.utl.pt	Instituto Superior Tecnico	38.7373	-9.30324
+994	155.54.239.65	planetlab2.um.es	EU	ES	Área Metropolitana de Murcia	Murcia	http://www.um.es	University of Murcia	38.0232	-1.17473
+995	192.33.193.16	icnalplabs1.epfl.ch	EU	CH	District de l'Ouest lausannois	unknown	www.epfl.ch	École Polytechnique Fédérale de Lausanne	46.5203	6.5656
+996	192.33.193.18	icnalplabs2.epfl.ch	EU	CH	District de l'Ouest lausannois	unknown	www.epfl.ch	École Polytechnique Fédérale de Lausanne	46.5203	6.5656
+997	131.246.19.201	planetlab1.informatik.uni-kl.de	EU	DE	unknown	unknown	http://www.haw-hamburg.de	HAW Hamburg	53.5686	10.0386

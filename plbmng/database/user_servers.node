@@ -1,0 +1,10 @@
+# When you adding a new server, please do use format below!
+# IP	DNS	CONTINENT	COUNTRY	REGION	CITY	URL	FULL NAME	LATITUDE	LONGITUDE
+# The one and only mandatory item is IP
+# If you do not specify all items, 
+# program automatically add "uknown" to every column from the last specified item
+# Examples:
+# Correct:
+# 192.168.122.97
+# 192.168.122.97 test1.vutbr.cz unknown CZ
+# Check default.node for more examples
