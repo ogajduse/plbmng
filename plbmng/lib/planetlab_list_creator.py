@@ -115,7 +115,7 @@ def get_ip_address(hostname):
     :param hostname: HOSTNAME\n
     :return: if hostname cannot be translated to IP address returns None. Otherwise it returns IP address as a string.
     """
-    if hostname is not None or hostname is not '':
+    if hostname is not None or hostname == '':
         try:
             ip_addr = socket.gethostbyname(hostname)
             return ip_addr
@@ -269,19 +269,9 @@ def run(path=None, username=None, password=None, start_id=None, quiet=False, ret
     if return_output:
         return all_nodes
 
-#TODO: musis dodelat predavani parametru
-def setLocalVariables():
-    print("TBD")
-
-def listCreatorMain():
-    print("Start: %s" % asctime(localtime(time())))
-    arguments()
-    run()
-    print("Finish: %s" % asctime(localtime(time())))
 
 if __name__ == "__main__":
     print("Start: %s" % asctime(localtime(time())))
     arguments()
     run()
     print("Finish: %s" % asctime(localtime(time())))
-

@@ -2,8 +2,7 @@
 plbmng
 ======
 
-.. image:: source/images/plbmng.png
-    :scale: 50 %
+.. image:: images/plbmng.png
     :alt: plbmng main menu
     :align: center
 
@@ -46,9 +45,15 @@ Install dialog-like engine. If you are using Fedora-like distributions:
 
         $ sudo yum install -y dialog
 
+On Mac OS you can install it from brew:
+
+.. code-block:: bash
+
+        $ brew install dialog
+
 Basic usage
 -----------
-When you run plbmng for the first time, please add your credentials for Planetlab network. If you don't want to add your credentials right away, you can skip it and add it in the settings later.
+When you run plbmng for the first time, please add your credentials for PlanetLab network. If you don't want to add your credentials right away, you can skip it and add it in the settings later.
 
 Once you have added your credentials, use ``Update server list now`` option in the Monitor servers menu. In default you will have old data which can be updated by this function. It downloads all servers from your slice and exports it as ``default.node`` file.
 
@@ -56,23 +61,57 @@ Once you have added your credentials, use ``Update server list now`` option in t
 
 ``Access servers``: If you are looking for some specific node or set of nodes, use ``Access servers`` option. In the next screen you can choose from four options: access last server, search by DNS, IP or location. If you choose search by DNS or IP you will be prompted to type a string, which indicates the domain you are looking for. If you want to search by location, you will be asked to choose a continent and a country. Then you will see all available nodes from this selected country and you can choose one of them to see more detailes about this particular node. At the bottom of the information screen you can choose from three options.
 
-``Monitor servers``: Monitoring tools are there.
-                 -  ``Update server list now``, here you can update your list of servers.
-                 -  ``Update server status now``, here you can update your list of available servers.
+.. image:: images/access_servers.png
+    :alt: plbmng access servers menu
+    :align: center
+
+``Monitor servers``: Menu contains monitoring tools.
+                 -  ``Update server list now`` - here you can update your list of servers.
+                 -  ``Update server status now`` - here you can update your list of available servers.
+
+.. image:: images/monitoring.png
+    :alt: plbmng monitor servers menu
+    :align: center
 
 ``Plot servers on map``:
-             ``Generate map``, will create a map with all or specific nodes from ``planetlab.node`` file.
+             - ``Plot all servers`` - will create and open HTML file with plotted servers on map.
+             - ``Plot servers responding to ping``
+             - ``Plot ssh available servers``
+
+.. image:: images/plot.png
+    :alt: plbmng plot servers on map menu
+    :align: center
+
 ``Set credentials``:
       Will open interactive editor for you to insert your credentials to PlanetLab network.
+
+.. image:: images/set_credentials.png
+    :alt: plbmng plot servers on map menu
+    :align: center
 
 Extras
 ------
 In the extras menu you can find tool for managing your own server by adding them to the database. Another new feature added to extras menu is parallel copy to server/servers from database.
 
+.. image:: images/extras.png
+    :alt: plbmng plot servers on map menu
+    :align: center
+
 ``Add server to database``: Allows user to add a server to the plbmng database. By adding info about server to the prepared file, you are able to filter and monitor your server with this tool just like with the others within PlanetLab network.
+
+.. image:: images/add_server.png
+    :alt: plbmng plot servers on map menu
+    :align: center
 
 ``Copy files to server/servers``: User is prompted to select file/files, server/servers from plbmng database and destination path on the target. DO NOT FORGET TO SET PATH TO SSH KEY AND SLICE NAME(user on the target) IN THE CONFIG FILE!
 
+.. image:: images/select.png
+    :alt: plbmng plot servers on map menu
+    :align: center
+
+.. image:: images/target.png
+    :alt: plbmng plot servers on map menu
+    :align: center
 
 
 Authors

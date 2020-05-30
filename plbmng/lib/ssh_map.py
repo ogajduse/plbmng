@@ -1,11 +1,11 @@
 import folium
 import csv
-from folium.plugins import MarkerCluster
 
 
 def main():
     """
-    Creates a map of nodes with available SSH connection.\n
+    Creates a map of nodes with available SSH connection.
+
     :return: map_ssh.html file
     """
     map_ssh = folium.Map(location=[45.523, -122.675],

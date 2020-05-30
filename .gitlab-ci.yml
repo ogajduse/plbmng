@@ -1,0 +1,33 @@
+
+image: fedora:latest
+
+before_script:
+  - python3 -V
+  - dnf install -y which python-pip gcc python3-devel dialog
+  - pip install setuptools cython numpy pandas
+
+test:
+  script:
+    - python3 setup.py test
+    - pip3 install flake8
+    - flake8 --ignore=E741,W504,W503 --max-line-length=120 plbmng
+
+run:
+  script:
+    - python3 setup.py sdist
+  artifacts:
+    paths:
+      - dist/*.tar.gz
+
+pages:
+  stage: deploy
+  script:
+  - python3 setup.py install
+  - pip3 install -U sphinx
+  - sphinx-build -b html source public
+  artifacts:
+    paths:
+    - public
+  only:
+    - master
+

@@ -5,7 +5,8 @@ import os
 
 def main():
     """
-    Creates a map with location of a node .\n
+    Creates a map with location of a node.
+
     :return: map_one.html file
     """
     latitude = float(sys.argv[1])

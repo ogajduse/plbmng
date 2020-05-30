@@ -1,11 +1,11 @@
 import folium
 import csv
-from folium.plugins import MarkerCluster
 
 
 def main():
     """
-        Creates a map with ICMP responses for all selected nodes.\n
+        Creates a map with ICMP responses for all selected nodes.
+
         :return: map_icmp.html file
         """
     map_icmp = folium.Map(location=[45.523, -122.675],

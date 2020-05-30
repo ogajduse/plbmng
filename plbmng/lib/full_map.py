@@ -1,13 +1,13 @@
 import pandas as pd
 from vincent import Visualization, Scale, DataRef, Data, PropertySet, \
     Axis, ValueRef, MarkRef, MarkProperties, Mark
-import json
 import folium
-import csv
+
 
 def plot_server_on_map(nodes=None):
     """
-    Creates a map of every known node and generates chart with information about their's latency.\n
+    Creates a map of every known node and generates chart with information about their's latency.
+
     :return: map_full.html file
     """
     df = pd.DataFrame({'Data 1': [1, 2, 3, 4, 5, 6, 7, 12],
@@ -46,7 +46,6 @@ def plot_server_on_map(nodes=None):
                           zoom_start=2)
 
     for node in nodes:
-        name = node[2]
         if node[-2] == 'unknown' or node[-1] == 'unknown':
             continue
         x = float(node[-2])
@@ -63,7 +62,7 @@ def plot_server_on_map(nodes=None):
                    node[9],
                    node[10])
         popup = folium.Popup(text.strip().replace('\n', '<br>'), max_width=1000)
-        folium.Marker([x, y],popup=popup).add_to(map_full)
+        folium.Marker([x, y], popup=popup).add_to(map_full)
 
     map_full.save('plbmng_server_map.html')
 
