@@ -382,7 +382,7 @@ def execute_command(cmd, connection, output_format=None, timeout=None, connectio
             logger.error(f"[Captured stdout]\n{stdout.read()}\n-----\n")
             logger.error(f"[Captured stderr]\n{stderr.read()}\n-----\n")
             raise SSHCommandTimeoutError(
-                "ssh command: {} \n did not respond in the predefined time " "(timeout={})".format(cmd, timeout)
+                f"ssh command: {cmd} \n did not respond in the predefined time (timeout={timeout})"
             )
 
     errorcode = stdout.channel.recv_exit_status()

@@ -338,12 +338,12 @@ def connect(mode: int, node: list):
             + node[OPTION_IP]
         )
         if return_value != 0:
-            raise ConnectionError("SSH failed with error code %s" % return_value)
+            raise ConnectionError(f"SSH failed with error code {return_value}")
     elif mode == 2:
         os.system("ssh-add " + key)
         return_value = os.system("mc sh://" + user + "@" + node[OPTION_IP] + ":/home")
         if return_value != 0:
-            raise ConnectionError("MC failed with error code %s" % return_value)
+            raise ConnectionError(f"MC failed with error code {return_value}")
 
 
 def show_on_map(node: list, node_info="") -> None:

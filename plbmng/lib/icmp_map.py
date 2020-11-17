@@ -17,7 +17,7 @@ def main():
             try:
                 x = float(row[1])
                 y = float(row[2])
-                print(" %s " % name)
+                print(f" {name} ")
                 folium.Marker([x, y], popup=name).add_to(map_icmp)
             except ValueError:
                 pass

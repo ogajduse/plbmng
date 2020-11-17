@@ -142,7 +142,7 @@ class PlbmngDb:
         # Initialize filtering settings
         if choose_software_hardware:
             tags = {"1": "gcc", "2": "python", "3": "kernel", "4": "mem"}
-            sql = "SELECT * from programs where s%s not like 'unknown'" % tags[choose_software_hardware]
+            sql = f"SELECT * from programs where s{tags[choose_software_hardware]} not like 'unknown'"
         if choose_availability_option is None and choose_software_hardware is None:
             self.cursor.execute("SELECT * from configuration where senabled='T';")
             configuration = self.cursor.fetchall()

@@ -63,7 +63,7 @@ class Engine:
         :type: str
         """
         with open(self.path + "/logs/plbmng.log", "a") as log:
-            log.write("[%s] INFO: %s\n" % (datetime.now(), msg))
+            log.write(f"[{datetime.now()}] INFO: {msg}\n")
 
     def init_interface(self) -> None:
         """

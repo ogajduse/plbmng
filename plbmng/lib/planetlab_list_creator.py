@@ -19,7 +19,7 @@ auth = {"AuthMethod": "password", "AuthString": "", "Username": ""}
 
 arg = {"path": "", "id": 1, "start_id": 1, "quiet": False}
 
-api_url = "https://%s:443/PLCAPI/" % plc_host
+api_url = f"https://{plc_host}:443/PLCAPI/"
 plc_api = xmlrpc.client.ServerProxy(api_url, allow_none=True)
 
 locations = {}
@@ -503,7 +503,7 @@ def run(path=None, username=None, password=None, start_id=None, quiet=False, ret
 
 
 if __name__ == "__main__":
-    print("Start: %s" % asctime(localtime(time())))
+    print(f"Start: {asctime(localtime(time()))}")
     arguments()
     run()
-    print("Finish: %s" % asctime(localtime(time())))
+    print(f"Finish: {asctime(localtime(time()))}")
