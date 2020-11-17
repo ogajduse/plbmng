@@ -1,6 +1,6 @@
 Welcome to plbmng's documentation!
 ==================================
-   
+
 .. image:: images/plbmng.png
     :alt: plbmng main menu
     :align: center

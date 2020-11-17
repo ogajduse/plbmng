@@ -1,26 +1,23 @@
 #!/usr/bin/env python
-
-import xmlrpc.client
-import geocoder
-import codecs
 import argparse
-import sys
+import codecs
 import os
 import socket
+import sys
 import traceback
-from time import sleep, asctime, localtime, time
+import xmlrpc.client
+from time import asctime
+from time import localtime
+from time import sleep
+from time import time
+
+import geocoder
 
 plc_host = "www.planet-lab.eu"
 
-auth = {'AuthMethod': 'password',
-        'AuthString': '',
-        'Username': ''
-        }
+auth = {"AuthMethod": "password", "AuthString": "", "Username": ""}
 
-arg = {"path": "",
-       "id": 1,
-       "start_id": 1,
-       "quiet": False}
+arg = {"path": "", "id": 1, "start_id": 1, "quiet": False}
 
 api_url = "https://%s:443/PLCAPI/" % plc_host
 plc_api = xmlrpc.client.ServerProxy(api_url, allow_none=True)
@@ -28,33 +25,245 @@ plc_api = xmlrpc.client.ServerProxy(api_url, allow_none=True)
 locations = {}
 
 continents = {
-    "AD": "EU", "AE": "AS", "AF": "AS", "AG": "NA", "AI": "NA", "AL": "EU", "AM": "AS", "AN": "NA", "AO": "AF",
-    "AQ": "AQ", "AR": "SA", "AS": "OC", "AT": "EU", "AU": "OC", "AW": "NA", "AZ": "AS", "BA": "EU", "BB": "NA",
-    "BD": "AS", "BE": "EU", "BF": "AF", "BG": "EU", "BH": "AS", "BI": "AF", "BJ": "AF", "BM": "NA", "BN": "AS",
-    "BO": "SA", "BR": "SA", "BS": "NA", "BT": "AS", "BW": "AF", "BY": "EU", "BZ": "NA", "CA": "NA", "CC": "AS",
-    "CD": "AF", "CF": "AF", "CG": "AF", "CH": "EU", "CI": "AF", "CK": "OC", "CL": "SA", "CM": "AF", "CN": "AS",
-    "CO": "SA", "CR": "NA", "CU": "NA", "CV": "AF", "CX": "AS", "CY": "AS", "CZ": "EU", "DE": "EU", "DJ": "AF",
-    "DK": "EU", "DM": "NA", "DO": "NA", "DZ": "AF", "EC": "SA", "EE": "EU", "EG": "AF", "EH": "AF", "ER": "AF",
-    "ES": "EU", "ET": "AF", "FI": "EU", "FJ": "OC", "FK": "SA", "FM": "OC", "FO": "EU", "FR": "EU", "GA": "AF",
-    "GB": "EU", "GD": "NA", "GE": "AS", "GF": "SA", "GG": "EU", "GH": "AF", "GI": "EU", "GL": "NA", "GM": "AF",
-    "GN": "AF", "GP": "NA", "GQ": "AF", "GR": "EU", "GS": "AQ", "GT": "NA", "GU": "OC", "GW": "AF", "GY": "SA",
-    "HK": "AS", "HN": "NA", "HR": "EU", "HT": "NA", "HU": "EU", "ID": "AS", "IE": "EU", "IL": "AS", "IM": "EU",
-    "IN": "AS", "IO": "AS", "IQ": "AS", "IR": "AS", "IS": "EU", "IT": "EU", "JE": "EU", "JM": "NA", "JO": "AS",
-    "JP": "AS", "KE": "AF", "KG": "AS", "KH": "AS", "KI": "OC", "KM": "AF", "KN": "NA", "KP": "AS", "KR": "AS",
-    "KW": "AS", "KY": "NA", "KZ": "AS", "LA": "AS", "LB": "AS", "LC": "NA", "LI": "EU", "LK": "AS", "LR": "AF",
-    "LS": "AF", "LT": "EU", "LU": "EU", "LV": "EU", "LY": "AF", "MA": "AF", "MC": "EU", "MD": "EU", "ME": "EU",
-    "MG": "AF", "MH": "OC", "MK": "EU", "ML": "AF", "MM": "AS", "MN": "AS", "MO": "AS", "MP": "OC", "MQ": "NA",
-    "MR": "AF", "MS": "NA", "MT": "EU", "MU": "AF", "MV": "AS", "MW": "AF", "MX": "NA", "MY": "AS", "MZ": "AF",
-    "NA": "AF", "NC": "OC", "NE": "AF", "NF": "OC", "NG": "AF", "NI": "NA", "NL": "EU", "NO": "EU", "NP": "AS",
-    "NR": "OC", "NU": "OC", "NZ": "OC", "OM": "AS", "PA": "NA", "PE": "SA", "PF": "OC", "PG": "OC", "PH": "AS",
-    "PK": "AS", "PL": "EU", "PM": "NA", "PN": "OC", "PR": "NA", "PS": "AS", "PT": "EU", "PW": "OC", "PY": "SA",
-    "QA": "AS", "RE": "AF", "RO": "EU", "RS": "EU", "RU": "EU", "RW": "AF", "SA": "AS", "SB": "OC", "SC": "AF",
-    "SD": "AF", "SE": "EU", "SG": "AS", "SH": "AF", "SI": "EU", "SJ": "EU", "SK": "EU", "SL": "AF", "SM": "EU",
-    "SN": "AF", "SO": "AF", "SR": "SA", "ST": "AF", "SV": "NA", "SY": "AS", "SZ": "AF", "TC": "NA", "TD": "AF",
-    "TF": "AQ", "TG": "AF", "TH": "AS", "TJ": "AS", "TK": "OC", "TM": "AS", "TN": "AF", "TO": "OC", "TR": "AS",
-    "TT": "NA", "TV": "OC", "TW": "AS", "TZ": "AF", "UA": "EU", "UG": "AF", "US": "NA", "UY": "SA", "UZ": "AS",
-    "VC": "NA", "VE": "SA", "VG": "NA", "VI": "NA", "VN": "AS", "VU": "OC", "WF": "OC", "WS": "OC", "YE": "AS",
-    "YT": "AF", "ZA": "AF", "ZM": "AF", "ZW": "AF"}
+    "AD": "EU",
+    "AE": "AS",
+    "AF": "AS",
+    "AG": "NA",
+    "AI": "NA",
+    "AL": "EU",
+    "AM": "AS",
+    "AN": "NA",
+    "AO": "AF",
+    "AQ": "AQ",
+    "AR": "SA",
+    "AS": "OC",
+    "AT": "EU",
+    "AU": "OC",
+    "AW": "NA",
+    "AZ": "AS",
+    "BA": "EU",
+    "BB": "NA",
+    "BD": "AS",
+    "BE": "EU",
+    "BF": "AF",
+    "BG": "EU",
+    "BH": "AS",
+    "BI": "AF",
+    "BJ": "AF",
+    "BM": "NA",
+    "BN": "AS",
+    "BO": "SA",
+    "BR": "SA",
+    "BS": "NA",
+    "BT": "AS",
+    "BW": "AF",
+    "BY": "EU",
+    "BZ": "NA",
+    "CA": "NA",
+    "CC": "AS",
+    "CD": "AF",
+    "CF": "AF",
+    "CG": "AF",
+    "CH": "EU",
+    "CI": "AF",
+    "CK": "OC",
+    "CL": "SA",
+    "CM": "AF",
+    "CN": "AS",
+    "CO": "SA",
+    "CR": "NA",
+    "CU": "NA",
+    "CV": "AF",
+    "CX": "AS",
+    "CY": "AS",
+    "CZ": "EU",
+    "DE": "EU",
+    "DJ": "AF",
+    "DK": "EU",
+    "DM": "NA",
+    "DO": "NA",
+    "DZ": "AF",
+    "EC": "SA",
+    "EE": "EU",
+    "EG": "AF",
+    "EH": "AF",
+    "ER": "AF",
+    "ES": "EU",
+    "ET": "AF",
+    "FI": "EU",
+    "FJ": "OC",
+    "FK": "SA",
+    "FM": "OC",
+    "FO": "EU",
+    "FR": "EU",
+    "GA": "AF",
+    "GB": "EU",
+    "GD": "NA",
+    "GE": "AS",
+    "GF": "SA",
+    "GG": "EU",
+    "GH": "AF",
+    "GI": "EU",
+    "GL": "NA",
+    "GM": "AF",
+    "GN": "AF",
+    "GP": "NA",
+    "GQ": "AF",
+    "GR": "EU",
+    "GS": "AQ",
+    "GT": "NA",
+    "GU": "OC",
+    "GW": "AF",
+    "GY": "SA",
+    "HK": "AS",
+    "HN": "NA",
+    "HR": "EU",
+    "HT": "NA",
+    "HU": "EU",
+    "ID": "AS",
+    "IE": "EU",
+    "IL": "AS",
+    "IM": "EU",
+    "IN": "AS",
+    "IO": "AS",
+    "IQ": "AS",
+    "IR": "AS",
+    "IS": "EU",
+    "IT": "EU",
+    "JE": "EU",
+    "JM": "NA",
+    "JO": "AS",
+    "JP": "AS",
+    "KE": "AF",
+    "KG": "AS",
+    "KH": "AS",
+    "KI": "OC",
+    "KM": "AF",
+    "KN": "NA",
+    "KP": "AS",
+    "KR": "AS",
+    "KW": "AS",
+    "KY": "NA",
+    "KZ": "AS",
+    "LA": "AS",
+    "LB": "AS",
+    "LC": "NA",
+    "LI": "EU",
+    "LK": "AS",
+    "LR": "AF",
+    "LS": "AF",
+    "LT": "EU",
+    "LU": "EU",
+    "LV": "EU",
+    "LY": "AF",
+    "MA": "AF",
+    "MC": "EU",
+    "MD": "EU",
+    "ME": "EU",
+    "MG": "AF",
+    "MH": "OC",
+    "MK": "EU",
+    "ML": "AF",
+    "MM": "AS",
+    "MN": "AS",
+    "MO": "AS",
+    "MP": "OC",
+    "MQ": "NA",
+    "MR": "AF",
+    "MS": "NA",
+    "MT": "EU",
+    "MU": "AF",
+    "MV": "AS",
+    "MW": "AF",
+    "MX": "NA",
+    "MY": "AS",
+    "MZ": "AF",
+    "NA": "AF",
+    "NC": "OC",
+    "NE": "AF",
+    "NF": "OC",
+    "NG": "AF",
+    "NI": "NA",
+    "NL": "EU",
+    "NO": "EU",
+    "NP": "AS",
+    "NR": "OC",
+    "NU": "OC",
+    "NZ": "OC",
+    "OM": "AS",
+    "PA": "NA",
+    "PE": "SA",
+    "PF": "OC",
+    "PG": "OC",
+    "PH": "AS",
+    "PK": "AS",
+    "PL": "EU",
+    "PM": "NA",
+    "PN": "OC",
+    "PR": "NA",
+    "PS": "AS",
+    "PT": "EU",
+    "PW": "OC",
+    "PY": "SA",
+    "QA": "AS",
+    "RE": "AF",
+    "RO": "EU",
+    "RS": "EU",
+    "RU": "EU",
+    "RW": "AF",
+    "SA": "AS",
+    "SB": "OC",
+    "SC": "AF",
+    "SD": "AF",
+    "SE": "EU",
+    "SG": "AS",
+    "SH": "AF",
+    "SI": "EU",
+    "SJ": "EU",
+    "SK": "EU",
+    "SL": "AF",
+    "SM": "EU",
+    "SN": "AF",
+    "SO": "AF",
+    "SR": "SA",
+    "ST": "AF",
+    "SV": "NA",
+    "SY": "AS",
+    "SZ": "AF",
+    "TC": "NA",
+    "TD": "AF",
+    "TF": "AQ",
+    "TG": "AF",
+    "TH": "AS",
+    "TJ": "AS",
+    "TK": "OC",
+    "TM": "AS",
+    "TN": "AF",
+    "TO": "OC",
+    "TR": "AS",
+    "TT": "NA",
+    "TV": "OC",
+    "TW": "AS",
+    "TZ": "AF",
+    "UA": "EU",
+    "UG": "AF",
+    "US": "NA",
+    "UY": "SA",
+    "UZ": "AS",
+    "VC": "NA",
+    "VE": "SA",
+    "VG": "NA",
+    "VI": "NA",
+    "VN": "AS",
+    "VU": "OC",
+    "WF": "OC",
+    "WS": "OC",
+    "YE": "AS",
+    "YT": "AF",
+    "ZA": "AF",
+    "ZM": "AF",
+    "ZW": "AF",
+}
 
 
 def arguments():
@@ -66,7 +275,8 @@ def arguments():
         prog="planetlab_list_creator",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description="Plb list creator is script, which will return you file with all available nodes from"
-                    " www.planet-lab.eu. \nRequired arguments: USERNAME, PASSWORD and OUTPUT.")
+        " www.planet-lab.eu. \nRequired arguments: USERNAME, PASSWORD and OUTPUT.",
+    )
     parser.add_argument("-u", "--username", required=True)
     parser.add_argument("-p", "--password", required=True)
     parser.add_argument("-o", "--output", required=True, action="store", help="Path where you want to save output.")
@@ -115,7 +325,7 @@ def get_ip_address(hostname):
     :param hostname: HOSTNAME\n
     :return: if hostname cannot be translated to IP address returns None. Otherwise it returns IP address as a string.
     """
-    if hostname is not None or hostname == '':
+    if hostname is not None or hostname == "":
         try:
             ip_addr = socket.gethostbyname(hostname)
             return ip_addr
@@ -131,7 +341,7 @@ def append_to_file(node):
     """
     if arg["id"] == arg["start_id"]:
         try:
-            f = open(os.path.join(arg["path"] + '/database/default2.node'), "w")
+            f = open(os.path.join(arg["path"] + "/database/default2.node"), "w")
             f.write("# ID\tIP\tDNS\tCONTINENT\tCOUNTRY\tREGION\tCITY\tURL\tFULL NAME\tLATITUDE\tLONGITUDE\n")
             f.close()
         except Exception as err:
@@ -140,14 +350,22 @@ def append_to_file(node):
             sys.exit(1)
 
     try:
-        with codecs.open(os.path.join(arg["path"] + '/database/default2.node'),
-                         mode="a", encoding="utf-8") as f:
-            f.write("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(str(arg["id"]), node["ip"],
-                                                                          node["hostname"],
-                                                                          node["continent"], node["country"],
-                                                                          node["region"],
-                                                                          node["city"], node["url"], node["name"],
-                                                                          node["latitude"], node["longitude"]))
+        with codecs.open(os.path.join(arg["path"] + "/database/default2.node"), mode="a", encoding="utf-8") as f:
+            f.write(
+                "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(
+                    str(arg["id"]),
+                    node["ip"],
+                    node["hostname"],
+                    node["continent"],
+                    node["country"],
+                    node["region"],
+                    node["city"],
+                    node["url"],
+                    node["name"],
+                    node["latitude"],
+                    node["longitude"],
+                )
+            )
     except Exception as err:
         traceback.print_exc()
         print(err)
@@ -159,19 +377,32 @@ def print_info(node):
     Function prints information about a node.\n
     :param node:  dictionary containing information about the node
     """
-    print("ID: %s \n"
-          "IP ADDRESS: \t%s\n"
-          "HOSTNAME: \t%s\n"
-          "CONTINENT: \t%s\n"
-          "COUNTRY: \t%s\n"
-          "REGION: \t%s\n"
-          "CITY: \t\t%s\n"
-          "URL: \t\t%s\n"
-          "NAME: \t\t%s\n"
-          "LATITUDE: \t%s\n"
-          "LONGITUDE: \t%s\n\n"
-          % (arg["id"], node["ip"], node["hostname"], node["continent"], node["country"], node["region"],
-             node["city"], node["url"], node["name"], node["latitude"], node["longitude"]))
+    print(
+        "ID: %s \n"
+        "IP ADDRESS: \t%s\n"
+        "HOSTNAME: \t%s\n"
+        "CONTINENT: \t%s\n"
+        "COUNTRY: \t%s\n"
+        "REGION: \t%s\n"
+        "CITY: \t\t%s\n"
+        "URL: \t\t%s\n"
+        "NAME: \t\t%s\n"
+        "LATITUDE: \t%s\n"
+        "LONGITUDE: \t%s\n\n"
+        % (
+            arg["id"],
+            node["ip"],
+            node["hostname"],
+            node["continent"],
+            node["country"],
+            node["region"],
+            node["city"],
+            node["url"],
+            node["name"],
+            node["latitude"],
+            node["longitude"],
+        )
+    )
 
 
 def run(path=None, username=None, password=None, start_id=None, quiet=False, return_output=False):
@@ -229,7 +460,8 @@ def run(path=None, username=None, password=None, start_id=None, quiet=False, ret
             if node["site_id"] in list(locations.keys()):
                 location = locations[node["site_id"]]
                 node.update(
-                    {"city": location[0], "region": location[1], "country": location[2], "continent": location[3]})
+                    {"city": location[0], "region": location[1], "country": location[2], "continent": location[3]}
+                )
             else:
                 sleep(1)  # Usage policy https://operations.osmfoundation.org/policies/nominatim/
                 if node["latitude"] is not None and node["longitude"] is not None:
@@ -242,10 +474,10 @@ def run(path=None, username=None, password=None, start_id=None, quiet=False, ret
                         node["country"] = g.country_code.upper()
                         node["continent"] = get_continent(g.country_code)
                     locations.update(
-                        {node["site_id"]: [node["city"], node["region"], node["country"], node["continent"]]})
+                        {node["site_id"]: [node["city"], node["region"], node["country"], node["continent"]]}
+                    )
                 else:
-                    node.update(
-                        {"city": "unknown", "region": "unknown", "country": "unknown", "continent": "unknown"})
+                    node.update({"city": "unknown", "region": "unknown", "country": "unknown", "continent": "unknown"})
 
             # if value is None it is changed to unknown in info dictionary about node
             for value in list(node.values()):

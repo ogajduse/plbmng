@@ -2,7 +2,6 @@
 # Author: Martin Kacmarcik
 # License: MIT
 # For my Diploma thesis at Faculty of Electrical Engineering -- Brno, University of Technology
-
 import socket
 import sys
 

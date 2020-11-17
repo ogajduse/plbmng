@@ -1,14 +1,17 @@
-from plbmng.lib.library import get_path, get_custom_servers
-import sqlite3
 import csv
 import re
+import sqlite3
+
+from plbmng.lib.library import get_custom_servers
+from plbmng.lib.library import get_path
 
 
 class PlbmngDb:
     """
     Class provides basic interaction with plbmng database.
     """
-    _db_path = '/database/internal.db'
+
+    _db_path = "/database/internal.db"
 
     def __init__(self):
         self.db = sqlite3.connect(get_path() + self._db_path)
@@ -76,16 +79,16 @@ class PlbmngDb:
 
         :rtype: str
         """
-        self.cursor.execute('SELECT * from configuration;')
+        self.cursor.execute("SELECT * from configuration;")
         configuration = self.cursor.fetchall()
         for item in configuration:
-            if item[1] == 'ssh':
-                if item[2] == 'T':
+            if item[1] == "ssh":
+                if item[2] == "T":
                     ssh_filter = True
                 else:
                     ssh_filter = False
-            elif item[1] == 'ping':
-                if item[2] == 'T':
+            elif item[1] == "ping":
+                if item[2] == "T":
                     ping_filter = True
                 else:
                     ping_filter = False
@@ -106,25 +109,22 @@ class PlbmngDb:
         :param tag: Number as string. If '1' is given, change ssh to enabled. If '2' is given, change ping to enabled.
         :type tag: str
         """
-        if '1' in tag:
-            self.cursor.execute(
-                'UPDATE configuration SET senabled="T" where sname="ssh"')
+        if "1" in tag:
+            self.cursor.execute('UPDATE configuration SET senabled="T" where sname="ssh"')
             self.db.commit()
-        elif '1' not in tag:
-            self.cursor.execute(
-                'UPDATE configuration SET senabled="F" where sname="ssh"')
+        elif "1" not in tag:
+            self.cursor.execute('UPDATE configuration SET senabled="F" where sname="ssh"')
             self.db.commit()
-        if '2' in tag:
-            self.cursor.execute(
-                'UPDATE configuration SET senabled="T" where sname="ping"')
+        if "2" in tag:
+            self.cursor.execute('UPDATE configuration SET senabled="T" where sname="ping"')
             self.db.commit()
-        elif '2' not in tag:
-            self.cursor.execute(
-                'UPDATE configuration SET senabled="F" where sname="ping"')
+        elif "2" not in tag:
+            self.cursor.execute('UPDATE configuration SET senabled="F" where sname="ping"')
             self.db.commit()
 
-    def get_nodes(self, check_configuration=True, choose_availability_option=None,
-                  choose_software_hardware=None, path="/"):
+    def get_nodes(
+        self, check_configuration=True, choose_availability_option=None, choose_software_hardware=None, path="/"
+    ):
         """
         Return all nodes from default.node file plus all user specified nodes from user_servers.node.
 
@@ -141,23 +141,20 @@ class PlbmngDb:
         """
         # Initialize filtering settings
         if choose_software_hardware:
-            tags = {"1": "gcc",
-                    "2": "python",
-                    "3": "kernel",
-                    "4": "mem"}
-            sql = 'SELECT * from programs where s%s not like \'unknown\'' % tags[choose_software_hardware]
+            tags = {"1": "gcc", "2": "python", "3": "kernel", "4": "mem"}
+            sql = "SELECT * from programs where s%s not like 'unknown'" % tags[choose_software_hardware]
         if choose_availability_option is None and choose_software_hardware is None:
-            self.cursor.execute('SELECT * from configuration where senabled=\'T\';')
+            self.cursor.execute("SELECT * from configuration where senabled='T';")
             configuration = self.cursor.fetchall()
             if not configuration:
-                sql = 'select shostname from availability'
+                sql = "select shostname from availability"
             else:
-                sql = 'select shostname from availability where'
+                sql = "select shostname from availability where"
                 for item in configuration:
-                    if re.match(r'.*where$', sql):
-                        sql = sql + ' b' + item[1] + '=\'T\''
+                    if re.match(r".*where$", sql):
+                        sql = sql + " b" + item[1] + "='T'"
                     else:
-                        sql = sql + ' and b' + item[1] + '=\'T\''
+                        sql = sql + " and b" + item[1] + "='T'"
         elif choose_availability_option == 1:
             sql = "select shostname from availability where bping='T'"
         elif choose_availability_option == 2:
@@ -173,12 +170,12 @@ class PlbmngDb:
             else:
                 server_list[item[0]] = ""
         # open node file and append to the nodes if the element exists in the server_list
-        node_file = path + '/database/default.node'
+        node_file = path + "/database/default.node"
         nodes = []
         with open(node_file) as tsv:
-            lines = csv.reader(tsv, delimiter='\t')
+            lines = csv.reader(tsv, delimiter="\t")
             for line in lines:
-                if line[0] == '# ID':
+                if line[0] == "# ID":
                     continue
                 try:
                     if check_configuration:

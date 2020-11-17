@@ -1,14 +1,18 @@
+import hashlib
+import os
+import re
+import sqlite3
+import subprocess
+import webbrowser
+from multiprocessing import Lock
+from multiprocessing import Pool
+from multiprocessing import Value
 from platform import system
+
+import folium
+
 from plbmng.lib import full_map
 from plbmng.lib import port_scanner
-from multiprocessing import Pool, Lock, Value
-import subprocess
-import re
-import os
-import webbrowser
-import folium
-import sqlite3
-import hashlib
 
 # global variables
 base = None
@@ -66,7 +70,7 @@ def get_custom_servers(start_id: str) -> list:
     for line in lines:
         if not line:
             continue
-        if line[0].startswith('#'):
+        if line[0].startswith("#"):
             continue
         columns = line.split()
         columns.insert(0, start_id)
@@ -96,7 +100,7 @@ def run_command(cmd: str) -> (int, str):
     except subprocess.TimeoutExpired:
         process.kill()
         return process.returncode, "unknown"
-    stdout = stdout.decode('ascii', 'ignore')
+    stdout = stdout.decode("ascii", "ignore")
     stdout = stdout.rstrip("\n")
     return_code = process.returncode
     return return_code, stdout
@@ -113,15 +117,20 @@ def get_server_params(ip_or_hostname: str, ssh=False) -> list:
     :return: List of requested info as string
     :rtype: list
     """
-    commands = ["gcc -dumpversion", "python3 --version", "uname -r",
-                "grep MemTotal /proc/meminfo | awk '{print $2 / 1024}'",
-                ]
+    commands = [
+        "gcc -dumpversion",
+        "python3 --version",
+        "uname -r",
+        "grep MemTotal /proc/meminfo | awk '{print $2 / 1024}'",
+    ]
     if not ssh:
         # return list of unknown string depending on number of commands
         return ["unknown" for x in range(len(commands))]
-    cmd = 'ssh -o PasswordAuthentication=no -o UserKnownHostsFile=/dev/null ' \
-          '-o StrictHostKeyChecking=no -o LogLevel=QUIET -o ConnectTimeout=10 ' \
-          '-i %s %s@%s ' % (get_ssh_key(), get_ssh_user(), ip_or_hostname)
+    cmd = (
+        "ssh -o PasswordAuthentication=no -o UserKnownHostsFile=/dev/null "
+        "-o StrictHostKeyChecking=no -o LogLevel=QUIET -o ConnectTimeout=10 "
+        "-i %s %s@%s " % (get_ssh_key(), get_ssh_user(), ip_or_hostname)
+    )
     output = []
     for command in commands:
         try:
@@ -148,10 +157,10 @@ def get_ssh_key() -> str:
     :rtype: str
     """
     ssh_path = ""
-    with open(get_path() + PLBMNG_CONF, 'r') as config:
+    with open(get_path() + PLBMNG_CONF, "r") as config:
         for line in config:
-            if re.search('SSH_KEY', line):
-                ssh_path = (re.sub('SSH_KEY=', '', line)).rstrip()
+            if re.search("SSH_KEY", line):
+                ssh_path = (re.sub("SSH_KEY=", "", line)).rstrip()
     return ssh_path
 
 
@@ -163,10 +172,10 @@ def get_ssh_user() -> str:
     :rtype: str
     """
     user = ""
-    with open(get_path() + PLBMNG_CONF, 'r') as config:
+    with open(get_path() + PLBMNG_CONF, "r") as config:
         for line in config:
-            if re.search('SLICE=', line):
-                user = (re.sub('SLICE=', '', line)).rstrip()
+            if re.search("SLICE=", line):
+                user = (re.sub("SLICE=", "", line)).rstrip()
     return user
 
 
@@ -178,10 +187,10 @@ def get_user() -> str:
     :rtype: str
     """
     user = ""
-    with open(get_path() + PLBMNG_CONF, 'r') as config:
+    with open(get_path() + PLBMNG_CONF, "r") as config:
         for line in config:
-            if re.search('USERNAME=', line):
-                user = (re.sub('USERNAME=', '', line)).rstrip()
+            if re.search("USERNAME=", line):
+                user = (re.sub("USERNAME=", "", line)).rstrip()
     return user
 
 
@@ -193,10 +202,10 @@ def get_passwd() -> str:
     :rtype: str
     """
     passwd = ""
-    with open(get_path() + PLBMNG_CONF, 'r') as config:
+    with open(get_path() + PLBMNG_CONF, "r") as config:
         for line in config:
-            if re.search('PASSWORD=', line):
-                passwd = (re.sub('PASSWORD=', '', line)).rstrip()
+            if re.search("PASSWORD=", line):
+                passwd = (re.sub("PASSWORD=", "", line)).rstrip()
     return passwd
 
 
@@ -212,7 +221,8 @@ def get_all_nodes():
     if user != "" and passwd != "":
         os.system(
             "myPwd=$(pwd); cd " + get_path() + "; python3 lib/planetlab_list_creator.py "
-                                               "-u \"" + user + "\" -p \"" + passwd + "\" -o ./; cd $(echo $myPwd)")
+            '-u "' + user + '" -p "' + passwd + '" -o ./; cd $(echo $myPwd)'
+        )
     else:
         raise NeedToFillPasswdFirstInfo
 
@@ -226,10 +236,10 @@ def is_first_run() -> bool:
     :rtype: bool
     """
     is_first = get_path() + FIRST_RUN_FILE
-    with open(is_first, 'r') as isFirstFile:
-        bool_is_first = isFirstFile.read().strip('\n')
+    with open(is_first, "r") as isFirstFile:
+        bool_is_first = isFirstFile.read().strip("\n")
     if bool_is_first == "True":
-        with open(is_first, 'w') as is_first_file:
+        with open(is_first, "w") as is_first_file:
             is_first_file.write("False")
         return True
     else:
@@ -319,12 +329,18 @@ def connect(mode: int, node: list):
     user = get_ssh_user()
     if mode == 1:
         return_value = os.system(
-            "ssh -o \"StrictHostKeyChecking = no\" -o \"UserKnownHostsFile=\
-            /dev/null\" -i " + key + " " + user + "@" + node[OPTION_IP])
+            'ssh -o "StrictHostKeyChecking = no" -o "UserKnownHostsFile=\
+            /dev/null" -i '
+            + key
+            + " "
+            + user
+            + "@"
+            + node[OPTION_IP]
+        )
         if return_value != 0:
             raise ConnectionError("SSH failed with error code %s" % return_value)
     elif mode == 2:
-        os.system('ssh-add ' + key)
+        os.system("ssh-add " + key)
         return_value = os.system("mc sh://" + user + "@" + node[OPTION_IP] + ":/home")
         if return_value != 0:
             raise ConnectionError("MC failed with error code %s" % return_value)
@@ -351,16 +367,15 @@ def show_on_map(node: list, node_info="") -> None:
 
     latitude = float(node[OPTION_LAT])
     longitude = float(node[OPTION_LON])
-    popup = folium.Popup(node_info["text"].strip().replace('\n', '<br>'), max_width=1000)
-    node_map = folium.Map(location=[latitude, longitude],
-                          zoom_start=2, min_zoom=2)
+    popup = folium.Popup(node_info["text"].strip().replace("\n", "<br>"), max_width=1000)
+    node_map = folium.Map(location=[latitude, longitude], zoom_start=2, min_zoom=2)
     if node_info == "":
         folium.Marker([latitude, longitude], popup=popup).add_to(node_map)
     else:
         folium.Marker([latitude, longitude], popup).add_to(node_map)
-    node_map.save('/tmp/map_plbmng.html')
+    node_map.save("/tmp/map_plbmng.html")
     try:
-        webbrowser.get().open('file://' + os.path.realpath('/tmp/map_plbmng.html'))
+        webbrowser.get().open("file://" + os.path.realpath("/tmp/map_plbmng.html"))
     finally:
         os.close(fd)
         os.dup2(_stderr, 2)
@@ -388,7 +403,7 @@ def plot_servers_on_map(nodes: list, path: str) -> None:
     # update base_data.txt file based on latest database with nodes
     full_map.plot_server_on_map(nodes)
     try:
-        webbrowser.get().open('file://' + os.path.realpath(path + "/" + MAP_FILE))
+        webbrowser.get().open("file://" + os.path.realpath(path + "/" + MAP_FILE))
     finally:
         os.close(fd)
         os.dup2(_stderr, 2)
@@ -434,7 +449,9 @@ def get_server_info(server_id: int, option: int, nodes: list) -> (dict, list):
         info_about_node_dic["icmp"] = test_ping(ip_or_hostname)
         info_about_node_dic["sshAvailable"] = test_ssh(ip_or_hostname)
         programs = get_server_params(ip_or_hostname, info_about_node_dic["sshAvailable"])
-        info_about_node_dic["text"] = """
+        info_about_node_dic[
+            "text"
+        ] = """
             NODE: %s
             IP: %s
             CONTINENT: %s, COUNTRY: %s, REGION: %s, CITY: %s
@@ -444,21 +461,23 @@ def get_server_info(server_id: int, option: int, nodes: list) -> (dict, list):
             CURRENT ICMP RESPOND: %s
             CURRENT SSH AVAILABILITY: %r
             GCC version: %s Python: %s Kernel version: %s
-            """ % (chosen_one[OPTION_DNS],
-                   chosen_one[OPTION_IP],
-                   chosen_one[OPTION_CONTINENT],
-                   chosen_one[OPTION_COUNTRY],
-                   info_about_node_dic["region"],
-                   info_about_node_dic["city"],
-                   info_about_node_dic["url"],
-                   info_about_node_dic["fullname"],
-                   info_about_node_dic["lat"],
-                   info_about_node_dic["lon"],
-                   info_about_node_dic["icmp"],
-                   info_about_node_dic["sshAvailable"],
-                   programs[0],
-                   programs[1],
-                   programs[2])
+            """ % (
+            chosen_one[OPTION_DNS],
+            chosen_one[OPTION_IP],
+            chosen_one[OPTION_CONTINENT],
+            chosen_one[OPTION_COUNTRY],
+            info_about_node_dic["region"],
+            info_about_node_dic["city"],
+            info_about_node_dic["url"],
+            info_about_node_dic["fullname"],
+            info_about_node_dic["lat"],
+            info_about_node_dic["lon"],
+            info_about_node_dic["icmp"],
+            info_about_node_dic["sshAvailable"],
+            programs[0],
+            programs[1],
+            programs[2],
+        )
         if info_about_node_dic["sshAvailable"] is True or info_about_node_dic["sshAvailable"] is False:
             # update last server access database
             update_last_server_access(info_about_node_dic, chosen_one, get_path())
@@ -532,24 +551,22 @@ def test_ping(target: str, return_bool=False):
     :type return_bool: bool
     :return: Return message or bool value with ping result.
     """
-    if system().lower() == 'windows':
-        ping_param = '-n'
+    if system().lower() == "windows":
+        ping_param = "-n"
     else:
-        ping_param = '-c'
+        ping_param = "-c"
     # for Linux ping parameter takes seconds while MAC OS ping takes milliseconds
-    if system().lower() == 'linux':
+    if system().lower() == "linux":
         ping_packet_wait_time = 1
     else:
         ping_packet_wait_time = 800
-    command = ['ping', ping_param, '1', target, '-W', str(ping_packet_wait_time)]
-    p = subprocess.Popen(command, stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE)
+    command = ["ping", ping_param, "1", target, "-W", str(ping_packet_wait_time)]
+    p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     # prepare the regular expression to get time
-    if system().lower() == 'windows':
-        avg = re.compile('Average = ([0-9]+)ms')
+    if system().lower() == "windows":
+        avg = re.compile("Average = ([0-9]+)ms")
     else:
-        avg = re.compile(
-            'min/avg/max/[a-z]+ = [0-9.]+/([0-9.]+)/[0-9.]+/[0-9.]+')
+        avg = re.compile("min/avg/max/[a-z]+ = [0-9.]+/([0-9.]+)/[0-9.]+/[0-9.]+")
     avg_str = avg.findall(str(p.communicate()[0]))
     if p.returncode != 0:
         if not return_bool:
@@ -588,14 +605,14 @@ def verify_api_credentials_exist(path: str) -> bool:
     :return: Return False if USERNAME or PASSWORD is not set. If both are set, return True.
     :rtype: bool
     """
-    with open(path + "/conf/plbmng.conf", 'r') as config:
+    with open(path + "/conf/plbmng.conf", "r") as config:
         for line in config:
-            if re.search('USERNAME', line):
-                username = re.sub('USERNAME="(.*)"', r'\1', line).rstrip()
+            if re.search("USERNAME", line):
+                username = re.sub('USERNAME="(.*)"', r"\1", line).rstrip()
                 if not username:
                     return False
-            elif re.search('PASSWORD', line):
-                password = re.sub('PASSWORD="(.*)"', r'\1', line).rstrip()
+            elif re.search("PASSWORD", line):
+                password = re.sub('PASSWORD="(.*)"', r"\1", line).rstrip()
                 if not password:
                     return False
     return True
@@ -610,14 +627,14 @@ def verify_ssh_credentials_exist(path: str) -> bool:
     :return: Return False if SLICE_NAME or SSH_KEY is not set. If both are set, return True.
     :rtype: bool
     """
-    with open(path + PLBMNG_CONF, 'r') as config:
+    with open(path + PLBMNG_CONF, "r") as config:
         for line in config:
-            if re.search('SLICE', line):
-                planetlab_slice = re.sub('SLICE="(.*)"', r'\1', line).rstrip()
+            if re.search("SLICE", line):
+                planetlab_slice = re.sub('SLICE="(.*)"', r"\1", line).rstrip()
                 if not planetlab_slice:
                     return False
-            elif re.search('SSH_KEY', line):
-                key = re.sub('SSH_KEY="(.*)"', r'\1', line).rstrip()
+            elif re.search("SSH_KEY", line):
+                key = re.sub('SSH_KEY="(.*)"', r"\1", line).rstrip()
                 if not key:
                     return False
     return True
@@ -636,7 +653,7 @@ def update_last_server_access(info_about_node_dic: dict, chosen_node: list, path
     :type path: str
     """
     last_server_file = path + LAST_SERVER
-    with open(last_server_file, 'w') as last_server_file:
+    with open(last_server_file, "w") as last_server_file:
         last_server_file.write(repr((info_about_node_dic, chosen_node)))
 
 
@@ -652,8 +669,8 @@ def get_last_server_access(path: str) -> (dict, list):
     last_server_file = path + LAST_SERVER
     if not os.path.exists(last_server_file):
         raise FileNotFoundError
-    with open(last_server_file, 'r') as last_server_file:
-        info_about_node_dic, chosen_node = eval(last_server_file.read().strip('\n'))
+    with open(last_server_file, "r") as last_server_file:
+        info_about_node_dic, chosen_node = eval(last_server_file.read().strip("\n"))
     return info_about_node_dic, chosen_node
 
 
@@ -693,15 +710,21 @@ def update_availability_database_parent(dialog, nodes=None) -> None:
     :rtype: None
     """
     global DIALOG
-    increment = Value('f', 0)
+    increment = Value("f", 0)
     increment.value = float(100 / len(nodes))
-    base = Value('f', 0)
+    base = Value("f", 0)
     lock = Lock()
     DIALOG = dialog
     dialog.gauge_start()
     try:
-        pool = Pool(initializer=multi_processing_init,
-                    initargs=(lock, base, increment,))
+        pool = Pool(
+            initializer=multi_processing_init,
+            initargs=(
+                lock,
+                base,
+                increment,
+            ),
+        )
     except sqlite3.OperationalError:
         dialog.msgbox("Could not update database")
     pool.map(update_availability_database, nodes)
@@ -747,33 +770,81 @@ def update_availability_database(node: list) -> None:
     # action block
     ip_or_hostname = node[2] if node[2] else node[1]
     hash_object = hashlib.md5(ip_or_hostname.encode())
-    ssh_result = 'T' if test_ssh(ip_or_hostname) is True else 'F'
-    ping_result = 'T' if test_ping(ip_or_hostname, True) is True else 'F'
-    ssh = True if ssh_result == 'T' else False
+    ssh_result = "T" if test_ssh(ip_or_hostname) is True else "F"
+    ping_result = "T" if test_ping(ip_or_hostname, True) is True else "F"
+    ssh = True if ssh_result == "T" else False
     programs = get_server_params(ip_or_hostname, ssh)
     # find if object exists in the database
-    cursor.execute('SELECT nkey from AVAILABILITY where \
-                shash = \"' + str(hash_object.hexdigest()) + '\";')
+    cursor.execute(
+        'SELECT nkey from AVAILABILITY where \
+                shash = "'
+        + str(hash_object.hexdigest())
+        + '";'
+    )
     if cursor.fetchone() is None:
-        cursor.execute("INSERT into AVAILABILITY(shash, shostname, bssh, bping) VALUES\
-                            (\"" + hash_object.hexdigest() + "\", \"" + ip_or_hostname + "\",\
-                            \"" + ssh_result + "\", \"" + ping_result + "\")")
+        cursor.execute(
+            'INSERT into AVAILABILITY(shash, shostname, bssh, bping) VALUES\
+                            ("'
+            + hash_object.hexdigest()
+            + '", "'
+            + ip_or_hostname
+            + '",\
+                            "'
+            + ssh_result
+            + '", "'
+            + ping_result
+            + '")'
+        )
     else:
-        cursor.execute("UPDATE availability SET bssh=\"" + ssh_result + "\", bping=\"" +
-                       ping_result + "\" WHERE shash=\"" + hash_object.hexdigest() + "\"")
+        cursor.execute(
+            'UPDATE availability SET bssh="'
+            + ssh_result
+            + '", bping="'
+            + ping_result
+            + '" WHERE shash="'
+            + hash_object.hexdigest()
+            + '"'
+        )
 
-    cursor.execute('SELECT nkey from PROGRAMS where \
-                shash = \"' + str(hash_object.hexdigest()) + '\";')
+    cursor.execute(
+        'SELECT nkey from PROGRAMS where \
+                shash = "'
+        + str(hash_object.hexdigest())
+        + '";'
+    )
     if cursor.fetchone() is None:
-        cursor.execute("INSERT into PROGRAMS(shash, shostname, "
-                       "sgcc, spython, skernel, smem) VALUES\
-                        (\"" + hash_object.hexdigest() + "\", \"" + ip_or_hostname + "\", \"" + programs[0] + "\",\
-                                    \"" + programs[1] + "\", \"" + programs[2] + "\", \"" + programs[3] + "\")")
+        cursor.execute(
+            "INSERT into PROGRAMS(shash, shostname, "
+            'sgcc, spython, skernel, smem) VALUES\
+                        ("'
+            + hash_object.hexdigest()
+            + '", "'
+            + ip_or_hostname
+            + '", "'
+            + programs[0]
+            + '",\
+                                    "'
+            + programs[1]
+            + '", "'
+            + programs[2]
+            + '", "'
+            + programs[3]
+            + '")'
+        )
     else:
-        cursor.execute("UPDATE programs SET sgcc=\"" + programs[0] + "\", spython=\"" +
-                       programs[1] + "\", skernel=\"" + programs[2] + "\", smem=\"" + programs[
-                           3] + "\" WHERE shash=\""
-                       + hash_object.hexdigest() + "\"")
+        cursor.execute(
+            'UPDATE programs SET sgcc="'
+            + programs[0]
+            + '", spython="'
+            + programs[1]
+            + '", skernel="'
+            + programs[2]
+            + '", smem="'
+            + programs[3]
+            + '" WHERE shash="'
+            + hash_object.hexdigest()
+            + '"'
+        )
     # clean up
 
     lock.acquire()
@@ -796,9 +867,11 @@ def secure_copy(host: str):
     global SOURCE_PATH, DESTINATION_PATH
     ssh_key = get_ssh_key()
     user = get_ssh_user()
-    cmd = "scp -r -o PasswordAuthentication=no -o UserKnownHostsFile=/dev/null " \
-          "-o StrictHostKeyChecking=no -o LogLevel=QUIET " \
-          "-i %s %s %s@%s:%s" % (ssh_key, SOURCE_PATH, user, host, DESTINATION_PATH)
+    cmd = (
+        "scp -r -o PasswordAuthentication=no -o UserKnownHostsFile=/dev/null "
+        "-o StrictHostKeyChecking=no -o LogLevel=QUIET "
+        "-i %s %s %s@%s:%s" % (ssh_key, SOURCE_PATH, user, host, DESTINATION_PATH)
+    )
     ret, stdout = run_command(cmd)
     lock.acquire()
     base.value = base.value + increment.value
@@ -826,14 +899,20 @@ def parallel_copy(dialog, source_path: str, hosts: list, destination_path: str) 
     DIALOG = dialog
     SOURCE_PATH = source_path
     DESTINATION_PATH = destination_path
-    increment = Value('f', 0)
+    increment = Value("f", 0)
     increment.value = float(100 / len(hosts))
-    base = Value('f', 0)
+    base = Value("f", 0)
     lock = Lock()
     DIALOG = dialog
     dialog.gauge_start()
-    pool = Pool(initializer=multi_processing_init,
-                initargs=(lock, base, increment,))
+    pool = Pool(
+        initializer=multi_processing_init,
+        initargs=(
+            lock,
+            base,
+            increment,
+        ),
+    )
     ret = pool.map(secure_copy, hosts)
     pool.close()
     pool.join()

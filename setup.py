@@ -1,15 +1,17 @@
-from setuptools import setup, find_packages
-import platform
 import os
+import platform
 
-install_requires = ['vincent', 'folium', 'numpy', 'pandas', 'geocoder', 'paramiko', 'pythondialog']
+from setuptools import find_packages
+from setuptools import setup
+
+install_requires = ["vincent", "folium", "numpy", "pandas", "geocoder", "paramiko", "pythondialog"]
 
 
 def install_dialog_engine():
     """
     Try to install dialog if user is running setup for the first time. Supported OS are Fedora-like distributions.
     """
-    with open("plbmng/database/first.boolean", 'r') as first:
+    with open("plbmng/database/first.boolean", "r") as first:
         run = first.read().strip("\n")
     distribution = platform.platform()
     distro_check = False
@@ -22,27 +24,28 @@ def install_dialog_engine():
 
 
 ret = install_dialog_engine()
-setup(name='plbmng',
-      description='Tool for monitoring PlanetLab network',
-      version="0.4.2.post1",
-      license='MIT',
-      packages=find_packages(),
-      package_data={},
-      include_package_data=True,
-      install_requires=install_requires,
-      dependency_links=['https://github.com/pandas-dev/pandas/archive/master.zip?ref=master#egg=pandas'],
-      url='https://gitlab.com/utko-planetlab/plbmng',
-      # author='',
-      # author_email='xandra03@stud.feec.vutbr.cz',
-      maintainer='Dan Komosny',
-      maintainer_email='komosny@feec.vutbr.cz',
-      project_urls={
-          "Bug Tracker": "https://gitlab.com/utko-planetlab/plbmng/-/issues",
-          "Documentation": "https://utko-planetlab.gitlab.io/plbmng/",
-      },
-      long_description=open("README.rst").read(),
-      scripts=['bin/plbmng'],
-      )
+setup(
+    name="plbmng",
+    description="Tool for monitoring PlanetLab network",
+    version="0.4.2.post1",
+    license="MIT",
+    packages=find_packages(),
+    package_data={},
+    include_package_data=True,
+    install_requires=install_requires,
+    dependency_links=["https://github.com/pandas-dev/pandas/archive/master.zip?ref=master#egg=pandas"],
+    url="https://gitlab.com/utko-planetlab/plbmng",
+    # author='',
+    # author_email='xandra03@stud.feec.vutbr.cz',
+    maintainer="Dan Komosny",
+    maintainer_email="komosny@feec.vutbr.cz",
+    project_urls={
+        "Bug Tracker": "https://gitlab.com/utko-planetlab/plbmng/-/issues",
+        "Documentation": "https://utko-planetlab.gitlab.io/plbmng/",
+    },
+    long_description=open("README.rst").read(),
+    scripts=["bin/plbmng"],
+)
 
 if ret != 0:
     print("INFO: Please make sure you have installed dialog-like engine!")
