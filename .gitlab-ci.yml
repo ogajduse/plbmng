@@ -3,14 +3,16 @@ image: fedora:latest
 
 before_script:
   - python3 -V
-  - dnf install -y which python-pip gcc python3-devel dialog
-  - pip install setuptools cython numpy pandas
+  - rpm -q fedora-release-common
+  - dnf install -y which python-pip gcc python3-devel dialog git
+  - pip install setuptools cython numpy pandas flake8 pre-commit
 
-test:
+lint:
   script:
-    - python3 setup.py test
-    - pip3 install flake8
-    - flake8 --ignore=E741,W504,W503 --max-line-length=120 plbmng
+    - pre-commit clean
+    - pre-commit run --all-files
+  after_script:
+    - git diff
 
 run:
   script:
