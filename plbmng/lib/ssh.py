@@ -176,6 +176,33 @@ def get_sftp_session(hostname=None, username=None, password=None, key_filename=N
             sftp.close()
 
 
+@contextmanager
+def get_transport(hostname=None, username=None, password=None, key_filename=None, timeout=None, port=22):
+    client = get_client(hostname, username, password, key_filename, timeout, port)
+    transport = client.get_transport()
+    try:
+        logger.debug(f"Instantiated Paramiko client {client._id}")
+        logger.debug(f"Instantiated Paramiko transport {transport.native_id}")
+        logger.info("Connected to [%s]", hostname)
+        yield transport
+    finally:
+        transport.close()
+        logger.debug(f"Destroyed Paramiko transport {transport.native_id}")
+        client.close()
+        logger.debug(f"Destroyed Paramiko client {client._id}")
+
+
+@contextmanager
+def get_channel(hostname=None, username=None, password=None, key_filename=None, timeout=None, port=22):
+    with get_transport(hostname, username, password, key_filename, timeout, port) as transport:
+        try:
+            channel = transport.open_session()
+            yield channel
+        finally:
+            channel.close()
+            pass
+
+
 def add_authorized_key(key, hostname=None, username=None, password=None, key_filename=None, timeout=None):
     """Appends a local public ssh key to remote authorized keys
     refer to: remote_execution_ssh_keys provisioning template
@@ -237,7 +264,7 @@ def add_authorized_key(key, hostname=None, username=None, password=None, key_fil
         execute_command(cmd, con)
 
 
-def upload_file(local_file, remote_file, key_filename=None, hostname=None):
+def upload_file(local_file, remote_file, key_filename=None, hostname=None, username=None):
     """Upload a local file to a remote machine
     :param local_file: either a file path or a file-like object to be uploaded.
     :param remote_file: a remote file path where the uploaded file will be
@@ -249,7 +276,7 @@ def upload_file(local_file, remote_file, key_filename=None, hostname=None):
         configuration's ``server`` section will be used.
     """
 
-    with get_sftp_session(hostname=hostname, key_filename=key_filename) as sftp:
+    with get_sftp_session(hostname=hostname, username=username, key_filename=key_filename) as sftp:
         _upload_file(sftp, local_file, remote_file)
 
 
@@ -315,6 +342,7 @@ def command(
     timeout=None,
     connection_timeout=None,
     port=22,
+    background=False,
 ):
     """Executes SSH command(s) on remote hostname.
     :param str cmd: The command to run
@@ -339,15 +367,26 @@ def command(
         timeout = COMMAND_TIMEOUT
     if connection_timeout is None:
         connection_timeout = CONNECTION_TIMEOUT
-    with get_connection(
-        hostname=hostname,
-        username=username,
-        password=password,
-        key_filename=key_filename,
-        timeout=connection_timeout,
-        port=port,
-    ) as connection:
-        return execute_command(cmd, connection, output_format, timeout, connection_timeout)
+    if background:
+        with get_channel(
+            hostname=hostname,
+            username=username,
+            password=password,
+            key_filename=key_filename,
+            timeout=timeout,
+            port=22,
+        ) as channel:
+            channel.exec_command(cmd)
+    else:
+        with get_connection(
+            hostname=hostname,
+            username=username,
+            password=password,
+            key_filename=key_filename,
+            timeout=connection_timeout,
+            port=port,
+        ) as connection:
+            return execute_command(cmd, connection, output_format, timeout, connection_timeout)
 
 
 def execute_command(cmd, connection, output_format=None, timeout=None, connection_timeout=None):
