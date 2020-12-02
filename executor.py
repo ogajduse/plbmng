@@ -5,6 +5,8 @@ import json
 import os
 import platform
 import sched
+import shlex
+import subprocess
 import time
 from datetime import datetime
 from pathlib import Path
@@ -35,22 +37,59 @@ def main():
     print("START:", time.time())
 
     # enters queue using enterabs method
-    scheduler.enterabs(run_at, 1, runner, argument=(args.job_id,))
+    scheduler.enterabs(
+        run_at,
+        1,
+        runner,
+        argument=(
+            args.job_id,
+            args.run_cmd,
+        ),
+    )
 
     # executing the event
     scheduler.run()
 
 
-def runner(job_id):
-    print("EVENT:", time.time(), job_id)
+def runner(job_id, cmd_argv):
+    started_at = datetime.now()
+    print("EVENT:", started_at.timestamp(), job_id)
     with PlbmngJobsFile(JOBS_FILE) as jf:
-        jf.set_started_at(job_id, datetime.now())
+        jf.set_started_at(job_id, started_at)
+        jf.set_job_state(job_id, PlbmngJobState.running)
 
-    time.sleep(1.5)
+    result, ended_at = run_command(job_id, cmd_argv)
 
-    ended_at = datetime.now()
     with PlbmngJobsFile(JOBS_FILE) as jf:
         jf.set_ended_at(job_id, ended_at)
+        jf.set_job_state(job_id, PlbmngJobState.stopped)
+        jf.set_job_result(job_id, result)
+
+
+def run_command(job_id, cmd_argv):
+    cmd_argv = shlex.split(cmd_argv)
+    proc = subprocess.run(cmd_argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    ended_at = datetime.now()
+    create_artifacts(job_id, proc.stdout, proc.stderr)
+    if proc.returncode == 0:
+        return PlbmngJobResult.success, ended_at
+    else:
+        return PlbmngJobResult.error, ended_at
+
+
+def create_artifacts(job_id, stdout, stderr):
+    if stdout:
+        f_path = JOBS_DIR + "/" + str(job_id) + "/artifacts/stdout"
+        with open(f_path, "wb") as write_file:
+            write_file.write(stdout)
+    if stderr:
+        f_path = JOBS_DIR + "/" + str(job_id) + "/artifacts/stderr"
+        with open(f_path, "wb") as write_file:
+            write_file.write(stderr)
+
+
+def save_artifacts_file(job_id, out):
+    pass
 
 
 def _ensure_base_dir():
@@ -59,7 +98,7 @@ def _ensure_base_dir():
 
 def _ensure_jobs_dir():
     _ensure_base_dir()
-    Path(PLBMNG_DIR).mkdir(exist_ok=True)
+    Path(JOBS_DIR).mkdir(exist_ok=True)
 
 
 def _ensure_jobs_json():
@@ -74,15 +113,16 @@ def ensure_basic_structure():
 
 
 def create_job_dir(job_id):
-    jobs_dir = JOBS_DIR + str(job_id)
-    Path(jobs_dir).mkdir(exist_ok=True)
-    Path(job_id + "/artifacts").mkdir(exist_ok=True)
-    return jobs_dir
+    job_dir = JOBS_DIR + "/" + str(job_id)
+    Path(job_dir).mkdir(exist_ok=True)
+    Path(job_dir + "/artifacts").mkdir(exist_ok=True)
+    return job_dir
 
 
 def create_job(job_id, cmd_argv, scheduled_at):
     with PlbmngJobsFile(JOBS_FILE) as jf:
         jf.add_job(job_id, cmd_argv, scheduled_at=time_from_timestamp(scheduled_at))
+    create_job_dir(job_id)
 
 
 def get_local_tz_name():
