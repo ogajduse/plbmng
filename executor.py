@@ -70,25 +70,25 @@ def run_command(job_id, cmd_argv):
     cmd_argv = shlex.split(cmd_argv)
     proc = subprocess.run(cmd_argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     ended_at = datetime.now()
-    create_artifacts(job_id, proc.stdout, proc.stderr)
+    create_artefacts(job_id, proc.stdout, proc.stderr)
     if proc.returncode == 0:
         return PlbmngJobResult.success, ended_at
     else:
         return PlbmngJobResult.error, ended_at
 
 
-def create_artifacts(job_id, stdout, stderr):
+def create_artefacts(job_id, stdout, stderr):
     if stdout:
-        f_path = JOBS_DIR + "/" + str(job_id) + "/artifacts/stdout"
+        f_path = JOBS_DIR + "/" + str(job_id) + "/artefacts/stdout"
         with open(f_path, "wb") as write_file:
             write_file.write(stdout)
     if stderr:
-        f_path = JOBS_DIR + "/" + str(job_id) + "/artifacts/stderr"
+        f_path = JOBS_DIR + "/" + str(job_id) + "/artefacts/stderr"
         with open(f_path, "wb") as write_file:
             write_file.write(stderr)
 
 
-def save_artifacts_file(job_id, out):
+def save_artefacts_file(job_id, out):
     pass
 
 
@@ -115,7 +115,7 @@ def ensure_basic_structure():
 def create_job_dir(job_id):
     job_dir = JOBS_DIR + "/" + str(job_id)
     Path(job_dir).mkdir(exist_ok=True)
-    Path(job_dir + "/artifacts").mkdir(exist_ok=True)
+    Path(job_dir + "/artefacts").mkdir(exist_ok=True)
     return job_dir
 
 
