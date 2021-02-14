@@ -236,3 +236,4 @@ dmypy.json
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/vscode,python,pycharm+all
+public/

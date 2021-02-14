@@ -318,13 +318,15 @@ def _upload_file(sftp, local_file, remote_file):
         sftp.put(local_file, remote_file)
 
 
-def download_file(remote_file, local_file=None, hostname=None):
+def download_file(remote_file, local_file=None, key_filename=None, hostname=None, username=None):
     """Download a remote file to the local machine. If ``hostname`` is not
     provided will be used the server.
     """
     if local_file is None:  # pragma: no cover
         local_file = remote_file
-    with get_connection(hostname=hostname) as connection:  # pragma: no cover
+    with get_connection(
+        hostname=hostname, username=username, key_filename=key_filename
+    ) as connection:  # pragma: no cover
         try:
             sftp = connection.open_sftp()
             sftp.get(remote_file, local_file)

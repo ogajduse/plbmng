@@ -34,6 +34,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.coverage",
     "sphinx.ext.napoleon",
+    "rst2pdf.pdfbuilder",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -43,6 +44,11 @@ templates_path = ["_templates"]
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
+
+
+pdf_documents = [
+    ("index", u"rst2pdf", u"Sample rst2pdf doc", u"Your Name"),
+]
 
 
 # -- Options for HTML output -------------------------------------------------
