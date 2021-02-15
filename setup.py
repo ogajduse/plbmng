@@ -44,7 +44,8 @@ setup(
         "Documentation": "https://utko-planetlab.gitlab.io/plbmng/",
     },
     long_description=open("README.rst").read(),
-    scripts=["bin/plbmng"],
+    # scripts=["bin/plbmng"],
+    entry_points={"console_scripts": ["plbmng=plbmng.__main__:main"]},
 )
 
 if ret != 0:

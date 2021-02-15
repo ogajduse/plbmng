@@ -88,6 +88,7 @@ class Engine:
                     ("3", "Plot servers on map"),
                     ("4", "Set credentials"),
                     ("5", "Extras"),
+                    ("6", "New Features"),
                 ],
                 title="MAIN MENU",
             )
@@ -107,9 +108,29 @@ class Engine:
                     self.set_credentials_gui()
                 elif tag == "5":
                     self.extras_menu()
+                elif tag == "6":
+                    self.new_features_menu()
             else:
                 clear()
                 exit(0)
+
+    def new_features_menu(self):
+        code, tag = self.d.menu(
+            "Choose one of the following options:",
+            choices=[
+                ("1", "Copy files to server/servers"),
+                ("2", "Run remote command"),
+                ("3", "Schedule remote job"),
+            ],
+            title="New features menu",
+        )
+        if code == self.d.OK:
+            if tag == "1":
+                self.copy_file()
+            elif tag == "2":
+                pass
+            elif tag == "3":
+                pass
 
     def extras_menu(self):
         """
@@ -322,7 +343,7 @@ class Engine:
         """
         text = "Type in destination path on the target/targets."
         init = "/home/" + get_ssh_user()
-        code, source_path = self.d.fselect(filepath="/home/", height=10, width=0)
+        code, source_path = self.d.fselect(filepath="/home/", height=40, width=60)
         if code == self.d.OK:
             servers = self.access_servers_gui(checklist=True)
         else:
