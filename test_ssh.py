@@ -11,13 +11,16 @@ TESTING_SCRIPT_PATH = pathlib.Path().absolute().parent.joinpath("testing_script.
 HOSTNAME = "localhost"  # ple1.cesnet.cz
 USER = "ogajduse"  # cesnetple_vut_utko
 KEYFILE = "/home/ogajduse/.ssh/id_rsa"  # students_planetlab
+TEST_SCR_DST_PATH = "/tmp/scr.sh"
+EXEC_SCR_DST_PATH = "/tmp/executor.py"
 
-ssh.upload_file(EXECUTOR_SCRIPT_PATH, "/tmp/executor.py", key_filename=KEYFILE, hostname=HOSTNAME, username=USER)
-res = ssh.upload_file(TESTING_SCRIPT_PATH, "/tmp/scr.sh", key_filename=KEYFILE, hostname=HOSTNAME, username=USER)
+
+ssh.upload_file(EXECUTOR_SCRIPT_PATH, EXEC_SCR_DST_PATH, key_filename=KEYFILE, hostname=HOSTNAME, username=USER)
+ssh.upload_file(TESTING_SCRIPT_PATH, TEST_SCR_DST_PATH, key_filename=KEYFILE, hostname=HOSTNAME, username=USER)
 
 JOB_UUID = str(uuid.uuid4())
 RUN_AT = int(time.time()) + 10
-EXEC_CMD = f"python3 /tmp/executor.py --run-at {RUN_AT} --run-cmd 'bash /tmp/scr.sh' --job-id {JOB_UUID}"
+EXEC_CMD = f"python3 {EXEC_SCR_DST_PATH} --run-at {RUN_AT} --run-cmd 'bash {TEST_SCR_DST_PATH}' --job-id {JOB_UUID}"
 ssh.command(EXEC_CMD, hostname=HOSTNAME, username=USER, key_filename=KEYFILE, background=True)
 
 running = True
