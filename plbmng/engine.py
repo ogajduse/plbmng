@@ -130,7 +130,7 @@ class Engine:
             elif tag == "2":
                 pass
             elif tag == "3":
-                pass
+                self.schedule_remote_cmd()
 
     def extras_menu(self):
         """
@@ -336,6 +336,22 @@ class Engine:
                         continue
             else:
                 return
+
+    def pick_date(self):
+        text = "Select date you want to run the job at."
+        code, date = self.d.calendar(text=text, height=None, width=50)
+        code, time = self.d.timebox(text, height=20, width=50)
+        return datetime.strptime(
+            f"{date[0]:0>2}, {date[1]:0>2}, {date[2]:0>2}, {time[0]:0>2}, {time[1]:0>2}, {time[2]:0>2}",
+            "%d, %m, %Y, %H, %M, %S",
+        )
+
+    def schedule_remote_cmd(self):
+        text = "Type in the remote command"
+        init = ""
+        self.pick_date()
+        code, remote_cmd = self.d.inputbox(text=text, init=init, height=0, width=0)
+        # TODO execute cmd
 
     def copy_file(self):
         """
