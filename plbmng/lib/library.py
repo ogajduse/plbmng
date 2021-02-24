@@ -11,6 +11,7 @@ from platform import system
 
 import folium
 
+from plbmng.lib import conf as plbmngconf
 from plbmng.lib import full_map
 from plbmng.lib import port_scanner
 
@@ -65,7 +66,7 @@ def get_custom_servers(start_id: str) -> list:
     :rtype: list
     """
     user_nodes = []
-    with open(get_path() + USER_NODES) as tsv:
+    with open(plbmngconf.get_path() + USER_NODES) as tsv:
         lines = tsv.read().split("\n")
     for line in lines:
         if not line:
@@ -129,7 +130,7 @@ def get_server_params(ip_or_hostname: str, ssh=False) -> list:
     cmd = (
         "ssh -o PasswordAuthentication=no -o UserKnownHostsFile=/dev/null "
         "-o StrictHostKeyChecking=no -o LogLevel=QUIET -o ConnectTimeout=10 "
-        "-i %s %s@%s " % (get_ssh_key(), get_ssh_user(), ip_or_hostname)
+        "-i %s %s@%s " % (plbmngconf.get_ssh_key(), plbmngconf.get_ssh_user(), ip_or_hostname)
     )
     output = []
     for command in commands:
@@ -149,66 +150,6 @@ def get_server_params(ip_or_hostname: str, ssh=False) -> list:
     return output
 
 
-def get_ssh_key() -> str:
-    """
-    Return path to the ssh key from plbmng conf file as string.
-
-    return: Path to the ssh key as string.
-    :rtype: str
-    """
-    ssh_path = ""
-    with open(get_path() + PLBMNG_CONF, "r") as config:
-        for line in config:
-            if re.search("SSH_KEY", line):
-                ssh_path = (re.sub("SSH_KEY=", "", line)).rstrip()
-    return ssh_path
-
-
-def get_ssh_user() -> str:
-    """
-    Return slice name(remote user) from plbmng conf file as string.
-
-    :return: Slice name(remote user) as string.
-    :rtype: str
-    """
-    user = ""
-    with open(get_path() + PLBMNG_CONF, "r") as config:
-        for line in config:
-            if re.search("SLICE=", line):
-                user = (re.sub("SLICE=", "", line)).rstrip()
-    return user
-
-
-def get_user() -> str:
-    """
-    Return user name from plbmng conf file as string.
-
-    :return: User name as string.
-    :rtype: str
-    """
-    user = ""
-    with open(get_path() + PLBMNG_CONF, "r") as config:
-        for line in config:
-            if re.search("USERNAME=", line):
-                user = (re.sub("USERNAME=", "", line)).rstrip()
-    return user
-
-
-def get_passwd() -> str:
-    """
-    Return password from plbmng conf file as string.
-
-    :return: Password as string.
-    :rtype: str
-    """
-    passwd = ""
-    with open(get_path() + PLBMNG_CONF, "r") as config:
-        for line in config:
-            if re.search("PASSWORD=", line):
-                passwd = (re.sub("PASSWORD=", "", line)).rstrip()
-    return passwd
-
-
 def get_all_nodes():
     """
     Get all nodes from plbmng using planetlab_list_creator script.
@@ -216,11 +157,11 @@ def get_all_nodes():
     :raise: NeedToFillPasswdFirstInfo
     :return: Create file default.node in plbmng database directory
     """
-    user = get_user()
-    passwd = get_passwd()
+    user = plbmngconf.get_user()
+    passwd = plbmngconf.get_passwd()
     if user != "" and passwd != "":
         os.system(
-            "myPwd=$(pwd); cd " + get_path() + "; python3 lib/planetlab_list_creator.py "
+            "myPwd=$(pwd); cd " + plbmngconf.get_path() + "; python3 lib/planetlab_list_creator.py "
             '-u "' + user + '" -p "' + passwd + '" -o ./; cd $(echo $myPwd)'
         )
     else:
@@ -235,7 +176,7 @@ def is_first_run() -> bool:
     :return: True if user is using plbmng for the first time.
     :rtype: bool
     """
-    is_first = get_path() + FIRST_RUN_FILE
+    is_first = plbmngconf.get_path() + FIRST_RUN_FILE
     with open(is_first, "r") as isFirstFile:
         bool_is_first = isFirstFile.read().strip("\n")
     if bool_is_first == "True":
@@ -325,8 +266,8 @@ def connect(mode: int, node: list):
     :raises: ConnectionError
     """
     clear()
-    key = get_ssh_key()
-    user = get_ssh_user()
+    key = plbmngconf.get_ssh_key()
+    user = plbmngconf.get_ssh_user()
     if mode == 1:
         return_value = os.system(
             'ssh -o "StrictHostKeyChecking = no" -o "UserKnownHostsFile=\
@@ -480,7 +421,7 @@ def get_server_info(server_id: int, option: int, nodes: list) -> (dict, list):
         )
         if info_about_node_dic["sshAvailable"] is True or info_about_node_dic["sshAvailable"] is False:
             # update last server access database
-            update_last_server_access(info_about_node_dic, chosen_one, get_path())
+            update_last_server_access(info_about_node_dic, chosen_one, plbmngconf.get_path())
             return info_about_node_dic, chosen_one
         else:
             return {}, []
@@ -519,18 +460,6 @@ def remove_cron():
         line = "@monthly plbmng crontab"
     os.system("echo \"$(crontab -l ; echo " + line + ")\" | crontab -")
 """
-
-
-def get_path() -> str:
-    """
-    Return absolute path to the source directory of plbmng.
-
-    :return: absolute path to the source directory of plbmng as str.
-    :rtype: str
-    """
-    path = os.path.dirname(os.path.realpath(__file__)).rstrip("/lib")
-    os.chdir(path)
-    return path
 
 
 def clear() -> None:
@@ -765,7 +694,7 @@ def update_availability_database(node: list) -> None:
     """
     # inint block
     global PLBMNG_DATABASE, DIALOG
-    db = sqlite3.connect(get_path() + PLBMNG_DATABASE)
+    db = sqlite3.connect(plbmngconf.get_path() + PLBMNG_DATABASE)
     cursor = db.cursor()
     # action block
     ip_or_hostname = node[2] if node[2] else node[1]
@@ -865,8 +794,8 @@ def secure_copy(host: str):
     :rtype: bool
     """
     global SOURCE_PATH, DESTINATION_PATH
-    ssh_key = get_ssh_key()
-    user = get_ssh_user()
+    ssh_key = plbmngconf.get_ssh_key()
+    user = plbmngconf.get_ssh_user()
     cmd = (
         "scp -r -o PasswordAuthentication=no -o UserKnownHostsFile=/dev/null "
         "-o StrictHostKeyChecking=no -o LogLevel=QUIET "

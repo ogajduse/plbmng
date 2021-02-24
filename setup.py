@@ -4,7 +4,7 @@ import platform
 from setuptools import find_packages
 from setuptools import setup
 
-install_requires = ["vincent", "folium", "numpy", "pandas", "geocoder", "paramiko", "pythondialog"]
+install_requires = ["vincent", "folium", "geocoder", "paramiko", "pythondialog"]
 
 
 def install_dialog_engine():

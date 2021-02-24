@@ -8,16 +8,16 @@ from fnmatch import fnmatch
 
 import paramiko
 
-from plbmng.lib import library
+from plbmng.lib import conf as plbmngconf
 
 logger = logging.getLogger(__name__)
 
 CONNECTION_TIMEOUT = 30
 COMMAND_TIMEOUT = 60
 HOSTNAME = "ple1.cesnet.cz"
-SSH_USERNAME = library.get_ssh_user()
+SSH_USERNAME = plbmngconf.get_ssh_user()
 SSH_PASSWORD = None
-SSH_KEY = library.get_ssh_key()
+SSH_KEY = plbmngconf.get_ssh_key()
 
 
 class SSHCommandTimeoutError(Exception):

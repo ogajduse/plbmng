@@ -8,13 +8,13 @@ from datetime import datetime
 
 from dialog import Dialog
 
+from plbmng.lib.conf import get_path
+from plbmng.lib.conf import get_ssh_user
 from plbmng.lib.database import PlbmngDb
 from plbmng.lib.library import clear
 from plbmng.lib.library import get_all_nodes
 from plbmng.lib.library import get_last_server_access
-from plbmng.lib.library import get_path
 from plbmng.lib.library import get_server_info
-from plbmng.lib.library import get_ssh_user
 from plbmng.lib.library import is_first_run
 from plbmng.lib.library import NeedToFillPasswdFirstInfo
 from plbmng.lib.library import OPTION_DNS
@@ -118,7 +118,7 @@ class Engine:
         code, tag = self.d.menu(
             "Choose one of the following options:",
             choices=[
-                ("1", "Copy files to server/servers"),
+                ("1", "Copy files to server(s)"),
                 ("2", "Run remote command"),
                 ("3", "Schedule remote job"),
             ],

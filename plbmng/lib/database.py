@@ -2,8 +2,8 @@ import csv
 import re
 import sqlite3
 
+from plbmng.lib.conf import get_path
 from plbmng.lib.library import get_custom_servers
-from plbmng.lib.library import get_path
 
 
 class PlbmngDb:
