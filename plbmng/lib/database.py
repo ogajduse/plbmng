@@ -2,8 +2,11 @@ import csv
 import re
 import sqlite3
 
-from plbmng.lib.conf import get_path
 from plbmng.lib.library import get_custom_servers
+from plbmng.utils.config import get_db_path
+from plbmng.utils.logger import logger
+
+# from plbmng.lib.conf import get_path
 
 
 class PlbmngDb:
@@ -11,17 +14,64 @@ class PlbmngDb:
     Class provides basic interaction with plbmng database.
     """
 
-    _db_path = "/database/internal.db"
-
     def __init__(self):
-        self.db = sqlite3.connect(get_path() + self._db_path)
+        self._db_path = get_db_path("plbmng_database")  # "/database/internal.db"
+        self.db = sqlite3.connect(self._db_path)
         self.cursor = self.db.cursor()
+
+    @staticmethod
+    def init_db_schema():
+        try:
+            get_db_path("plbmng_database")
+        except FileNotFoundError:
+            # TODO: use sqlalchemy models here in the future
+            db_path = get_db_path("plbmng_database", failsafe=True)
+            db = sqlite3.connect(db_path)
+            cursor = db.cursor()
+            cursor.execute(
+                """CREATE TABLE availability(
+                                nkey INTEGER PRIMARY KEY,
+                                shash TEXT,
+                                shostname TEXT,
+                                bssh TEXT,
+                                bping TEXT
+                              )"""
+            )
+            cursor.execute(
+                """CREATE TABLE configuration (
+                                id INTEGER PRIMARY KEY,
+                                sname TEXT,
+                                senabled TEXT
+                              )"""
+            )
+            cursor.execute(
+                """CREATE TABLE programs(
+                                nkey integer primary key,
+                                shash text not null,
+                                shostname text not null,
+                                sgcc text not null,
+                                spython text not null,
+                                skernel text not null,
+                                smem TEXT
+                              )"""
+            )
+
+            # Data
+            cursor.execute(
+                """INSERT INTO "configuration" ("id","sname","senabled")
+                   VALUES (1,'ssh','F'),
+                       (2,'ping','F')"""
+            )
+            db.commit()
+            db.close()
+            return
+        logger.error("Database init was not performed. Database already exists.")
 
     def connect(self) -> None:
         """
         Connect to plbmng database
         """
-        self.db = sqlite3.connect(get_path() + self._db_path)
+        self.db = sqlite3.connect(self._db_path)
         self.cursor = self.db.cursor()
 
     def close(self) -> None:
@@ -170,7 +220,11 @@ class PlbmngDb:
             else:
                 server_list[item[0]] = ""
         # open node file and append to the nodes if the element exists in the server_list
-        node_file = path + "/database/default.node"
+        # node_file = path + "/database/default.node"
+        try:
+            node_file = get_db_path("default_node")
+        except FileNotFoundError:
+            return []
         nodes = []
         with open(node_file) as tsv:
             lines = csv.reader(tsv, delimiter="\t")

@@ -139,7 +139,9 @@ def time_from_iso(dt):
 
 
 def time_to_iso(dt):
-    return dt.isoformat(timespec="milliseconds")
+    return dt.isoformat(
+        timespec="milliseconds"
+    )  # removed timespec="milliseconds" due to the python 3.5 does not support it
 
 
 def time_from_timestamp(timestamp_in):
@@ -167,7 +169,7 @@ class PlbmngJob:
         mandatory_attr = ["job_id", "cmd_argv"]
         for attr in mandatory_attr:
             if attr not in kwargs:
-                raise ValueError(f"Attribute {attr} is needed while creating {self.__class__.__name__}")
+                raise ValueError("Attribute {} is needed while creating {}".format(attr, self.__class__.__name__))
         default_attr = dict(
             state=PlbmngJobState.scheduled,
             result=PlbmngJobResult.pending,
@@ -250,14 +252,14 @@ class PlbmngJobsFile:
                 with open(self.file_path, "w") as write_file:
                     json.dump([], write_file)
             else:
-                raise Exception(f"File {self.file_path} does not exist.")
+                raise Exception("File {} does not exist.".format(self.file_path))
         else:
             if not is_json():
-                raise Exception(f"File {self.file_path} is not valid JSON.")
+                raise Exception("File {} is not valid JSON.".format(self.file_path))
 
     def add_job(self, job_id, cmd_argv, *args, **kwargs):
         if self.get_job(job_id, failsafe=True):
-            raise Exception(f"Job with id {job_id} already exists. There can be only one job with such ID.")
+            raise Exception("Job with id {} already exists. There can be only one job with such ID.".format(job_id))
         job = PlbmngJob(job_id=job_id, cmd_argv=cmd_argv, *args, **kwargs)
         self.jobs.append(job)
 
@@ -270,7 +272,7 @@ class PlbmngJobsFile:
             if failsafe:
                 return None
             else:
-                raise Exception(f"No job found with ID: {job_id}")
+                raise Exception("No job found with ID: {}".format(job_id))
         return jobs_found[0]
 
     def del_job(self, job_id):
@@ -279,25 +281,28 @@ class PlbmngJobsFile:
 
     def set_job_result(self, job_id, result):
         if not isinstance(result, PlbmngJobResult):
-            raise Exception(f"Type {PlbmngJobResult} expected, got {type(result)} instead.")
+            raise Exception("Type {} expected, got {} instead.".format(PlbmngJobResult, type(result)))
         job = self.get_job(job_id)
         job.result = result
 
     def set_job_state(self, job_id, state):
         if not isinstance(state, PlbmngJobState):
-            raise Exception(f"Type {PlbmngJobState} expected, got {type(state)} instead.")
+            raise Exception("Type {} expected, got {} instead.".format(PlbmngJobState, type(state)))
         job = self.get_job(job_id)
         job.state = state
 
     def set_started_at(self, job_id, started_at):
         if not isinstance(started_at, datetime):
-            raise Exception(f"Type {datetime} expected, got {type(started_at)} instead.")
+            raise Exception("Type {} expected, got {} instead.".format(datetime, type(started_at)))
         job = self.get_job(job_id)
         job.started_at = time_to_iso(started_at)
 
     def set_ended_at(self, job_id, ended_at):
+        import pdb
+
+        pdb.set_trace()
         if not isinstance(ended_at, datetime):
-            raise Exception(f"Type {datetime} expected, got {type(ended_at)} instead.")
+            raise Exception("Type {} expected, got {} instead.".format(datetime, type(ended_at)))
         job = self.get_job(job_id)
         job.ended_at = time_to_iso(ended_at)
         self._set_execution_time(job, ended_at)

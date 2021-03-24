@@ -11,8 +11,11 @@ from vincent import Scale
 from vincent import ValueRef
 from vincent import Visualization
 
+from plbmng.utils.config import get_map_path
+from plbmng.utils.logger import logger
 
-def plot_server_on_map(nodes=None):
+
+def plot_server_on_map(nodes=None, file_path=None):
     """
     Creates a map of every known node and generates chart with information about their's latency.
 
@@ -73,7 +76,9 @@ def plot_server_on_map(nodes=None):
         popup = folium.Popup(text.strip().replace("\n", "<br>"), max_width=1000)
         folium.Marker([x, y], popup=popup).add_to(map_full)
 
-    map_full.save("plbmng_server_map.html")
+    save_path = file_path or get_map_path("map_file")
+    map_full.save(save_path)
+    logger.info(f"Map file was created at {save_path}")
 
 
 if __name__ == "__main__":

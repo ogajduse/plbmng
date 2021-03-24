@@ -3,6 +3,8 @@ import os
 import re
 import sqlite3
 import subprocess
+import sys
+import uuid
 import webbrowser
 from multiprocessing import Lock
 from multiprocessing import Pool
@@ -10,10 +12,18 @@ from multiprocessing import Value
 from platform import system
 
 import folium
+from dialog import Dialog
 
-from plbmng.lib import conf as plbmngconf
+import plbmng.lib.planetlab_list_creator
+from plbmng import executor
 from plbmng.lib import full_map
 from plbmng.lib import port_scanner
+from plbmng.lib import ssh as sshlib
+from plbmng.utils.config import get_db_path
+from plbmng.utils.config import get_install_dir
+from plbmng.utils.config import get_map_path
+from plbmng.utils.config import settings
+
 
 # global variables
 base = None
@@ -66,7 +76,7 @@ def get_custom_servers(start_id: str) -> list:
     :rtype: list
     """
     user_nodes = []
-    with open(plbmngconf.get_path() + USER_NODES) as tsv:
+    with open(get_db_path("user_nodes")) as tsv:
         lines = tsv.read().split("\n")
     for line in lines:
         if not line:
@@ -107,6 +117,24 @@ def run_command(cmd: str) -> (int, str):
     return return_code, stdout
 
 
+def schedule_remote_command(cmd, date, hosts):
+    ssh_key = settings.remote_execution.ssh_key
+    user = settings.planetlab.slice
+    executor_dst_path = "~/.plbmng/executor.py"
+    # TODO: verify that paths are instances of Path()
+    executor_path = executor.__path__
+    job_uuid = str(uuid.uuid4())
+    # TODO: write it to the local database
+    executor_cmd = f"python3 {executor_dst_path} --run-at {date} --run-cmd '{cmd}' --job-id {job_uuid}"
+    for host in hosts:
+        sshlib.upload_file(executor_path, executor_dst_path, key_filename=ssh_key, hostname=host, username=user)
+        job_uuid = str(uuid.uuid4())
+        # TODO: write it to the local database
+        executor_cmd = f"python3 {executor_dst_path} --run-at {date} --run-cmd '{cmd}' --job-id {job_uuid}"
+        sshlib.command(executor_cmd, hostname=host, username=user, key_filename=ssh_key)
+    return True
+
+
 def get_server_params(ip_or_hostname: str, ssh=False) -> list:
     """
     Return versions of prepared commands as list.
@@ -130,7 +158,7 @@ def get_server_params(ip_or_hostname: str, ssh=False) -> list:
     cmd = (
         "ssh -o PasswordAuthentication=no -o UserKnownHostsFile=/dev/null "
         "-o StrictHostKeyChecking=no -o LogLevel=QUIET -o ConnectTimeout=10 "
-        "-i %s %s@%s " % (plbmngconf.get_ssh_key(), plbmngconf.get_ssh_user(), ip_or_hostname)
+        "-i %s %s@%s " % (settings.remote_execution.ssh_key, settings.planetlab.slice, ip_or_hostname)
     )
     output = []
     for command in commands:
@@ -157,34 +185,16 @@ def get_all_nodes():
     :raise: NeedToFillPasswdFirstInfo
     :return: Create file default.node in plbmng database directory
     """
-    user = plbmngconf.get_user()
-    passwd = plbmngconf.get_passwd()
+    user = settings.planetlab.username
+    passwd = settings.planetlab.password
     if user != "" and passwd != "":
         os.system(
-            "myPwd=$(pwd); cd " + plbmngconf.get_path() + "; python3 lib/planetlab_list_creator.py "
-            '-u "' + user + '" -p "' + passwd + '" -o ./; cd $(echo $myPwd)'
+            f"pushd {get_install_dir()}; {sys.executable} {plbmng.lib.planetlab_list_creator.__file__} "
+            f"-u '{user}' -p '{passwd}' -o {get_db_path('default_node')}; popd"
         )
+        # TODO: show output in case of fail
     else:
         raise NeedToFillPasswdFirstInfo
-
-
-def is_first_run() -> bool:
-    """
-    Check first.boolean file in database directory if the user is
-    using plbmng for the first time. If so, rewrites the value in the file.
-
-    :return: True if user is using plbmng for the first time.
-    :rtype: bool
-    """
-    is_first = plbmngconf.get_path() + FIRST_RUN_FILE
-    with open(is_first, "r") as isFirstFile:
-        bool_is_first = isFirstFile.read().strip("\n")
-    if bool_is_first == "True":
-        with open(is_first, "w") as is_first_file:
-            is_first_file.write("False")
-        return True
-    else:
-        return False
 
 
 def search_by_regex(nodes: list, option: int, regex: str) -> list:
@@ -266,8 +276,8 @@ def connect(mode: int, node: list):
     :raises: ConnectionError
     """
     clear()
-    key = plbmngconf.get_ssh_key()
-    user = plbmngconf.get_ssh_user()
+    key = settings.remote_execution.ssh_key
+    user = settings.planetlab.slice
     if mode == 1:
         return_value = os.system(
             'ssh -o "StrictHostKeyChecking = no" -o "UserKnownHostsFile=\
@@ -344,7 +354,7 @@ def plot_servers_on_map(nodes: list, path: str) -> None:
     # update base_data.txt file based on latest database with nodes
     full_map.plot_server_on_map(nodes)
     try:
-        webbrowser.get().open("file://" + os.path.realpath(path + "/" + MAP_FILE))
+        webbrowser.get().open(f"file://{get_map_path('map_file')}")
     finally:
         os.close(fd)
         os.dup2(_stderr, 2)
@@ -421,7 +431,7 @@ def get_server_info(server_id: int, option: int, nodes: list) -> (dict, list):
         )
         if info_about_node_dic["sshAvailable"] is True or info_about_node_dic["sshAvailable"] is False:
             # update last server access database
-            update_last_server_access(info_about_node_dic, chosen_one, plbmngconf.get_path())
+            update_last_server_access(info_about_node_dic, chosen_one)
             return info_about_node_dic, chosen_one
         else:
             return {}, []
@@ -534,42 +544,31 @@ def verify_api_credentials_exist(path: str) -> bool:
     :return: Return False if USERNAME or PASSWORD is not set. If both are set, return True.
     :rtype: bool
     """
-    with open(path + "/conf/plbmng.conf", "r") as config:
-        for line in config:
-            if re.search("USERNAME", line):
-                username = re.sub('USERNAME="(.*)"', r"\1", line).rstrip()
-                if not username:
-                    return False
-            elif re.search("PASSWORD", line):
-                password = re.sub('PASSWORD="(.*)"', r"\1", line).rstrip()
-                if not password:
-                    return False
+    # TODO: use dynaconf validators here?
+    try:
+        assert settings.planetlab.username and settings.planetlab.username != ""
+        assert settings.planetlab.password and settings.planetlab.password != ""
+    except AssertionError:
+        return False
     return True
 
 
-def verify_ssh_credentials_exist(path: str) -> bool:
+def verify_ssh_credentials_exist() -> bool:
     """
     Verify that SLICE NAME(user acc on remote host) and path to SSH key are set in the plbmng conf file.
 
-    :param path: Path to the source directory of plbmng.
-    :type path: str
     :return: Return False if SLICE_NAME or SSH_KEY is not set. If both are set, return True.
     :rtype: bool
     """
-    with open(path + PLBMNG_CONF, "r") as config:
-        for line in config:
-            if re.search("SLICE", line):
-                planetlab_slice = re.sub('SLICE="(.*)"', r"\1", line).rstrip()
-                if not planetlab_slice:
-                    return False
-            elif re.search("SSH_KEY", line):
-                key = re.sub('SSH_KEY="(.*)"', r"\1", line).rstrip()
-                if not key:
-                    return False
+    try:
+        assert settings.planetlab.slice and settings.planetlab.slice != ""
+        assert settings.remote_execution.ssh_key and settings.remote_execution.ssh_key != ""
+    except AssertionError:
+        return False
     return True
 
 
-def update_last_server_access(info_about_node_dic: dict, chosen_node: list, path: str) -> None:
+def update_last_server_access(info_about_node_dic: dict, chosen_node: list) -> None:
     """
     Update file which contains all the information about last accessed node by user.
 
@@ -581,7 +580,7 @@ def update_last_server_access(info_about_node_dic: dict, chosen_node: list, path
     :param path: Path to the source directory of plbmng.
     :type path: str
     """
-    last_server_file = path + LAST_SERVER
+    last_server_file = get_db_path("last_server")
     with open(last_server_file, "w") as last_server_file:
         last_server_file.write(repr((info_about_node_dic, chosen_node)))
 
@@ -595,7 +594,7 @@ def get_last_server_access(path: str) -> (dict, list):
     :return: info_about_node_dic and chosen_node.
     :rtype: tuple
     """
-    last_server_file = path + LAST_SERVER
+    last_server_file = get_db_path("last_server")
     if not os.path.exists(last_server_file):
         raise FileNotFoundError
     with open(last_server_file, "r") as last_server_file:
@@ -688,13 +687,13 @@ def update_availability_database(node: list) -> None:
     Update database with given information from :param node.
 
     :param node: List which contains all information from planetlab\
-    network about the node(must follow template from default.node).
+    network about the node (must follow template from default.node).
     :type node: list
     :rtype: None
     """
     # inint block
-    global PLBMNG_DATABASE, DIALOG
-    db = sqlite3.connect(plbmngconf.get_path() + PLBMNG_DATABASE)
+    global DIALOG  # ,PLBMNG_DATABASE
+    db = sqlite3.connect(get_db_path("plbmng_database"))
     cursor = db.cursor()
     # action block
     ip_or_hostname = node[2] if node[2] else node[1]
@@ -794,8 +793,8 @@ def secure_copy(host: str):
     :rtype: bool
     """
     global SOURCE_PATH, DESTINATION_PATH
-    ssh_key = plbmngconf.get_ssh_key()
-    user = plbmngconf.get_ssh_user()
+    ssh_key = settings.remote_execution.ssh_key
+    user = settings.planetlab.slice
     cmd = (
         "scp -r -o PasswordAuthentication=no -o UserKnownHostsFile=/dev/null "
         "-o StrictHostKeyChecking=no -o LogLevel=QUIET "
@@ -852,3 +851,25 @@ def parallel_copy(dialog, source_path: str, hosts: list, destination_path: str) 
         return False
     # any -> If at least one scp command failed(secure_copy returned True), return False
     return not any(ret)
+
+
+def copy_files(dialog: Dialog, source_path: str, hosts: list, destination_path: str) -> bool:
+    ssh_key = settings.remote_execution.ssh_key
+    user = settings.planetlab.slice
+    dialog.gauge_start()
+    # TODO: verify that paths are instances of Path()
+    for host in hosts:
+        sshlib.upload_file(source_path, destination_path, key_filename=ssh_key, hostname=host, username=user)
+    dialog.gauge_update(100, "Completed")
+    return True
+
+
+def run_remote_command(dialog: Dialog, command: str, hosts: list) -> bool:
+    ssh_key = settings.remote_execution.ssh_key
+    user = settings.planetlab.slice
+    dialog.gauge_start()
+    # TODO: verify that paths are instances of Path()
+    for host in hosts:
+        sshlib.command(command, hostname=host, username=user, key_filename=ssh_key)
+    dialog.gauge_update(100, "Completed")
+    return True

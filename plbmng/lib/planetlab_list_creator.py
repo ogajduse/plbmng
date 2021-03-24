@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 import argparse
 import codecs
-import os
 import socket
 import sys
 import traceback
 import xmlrpc.client
+from pathlib import Path
 from time import asctime
 from time import localtime
 from time import sleep
@@ -279,7 +279,7 @@ def arguments():
     )
     parser.add_argument("-u", "--username", required=True)
     parser.add_argument("-p", "--password", required=True)
-    parser.add_argument("-o", "--output", required=True, action="store", help="Path where you want to save output.")
+    parser.add_argument("-o", "--output", required=True, action="store", help="File where you want to save output.")
     parser.add_argument("--start_id", type=int, help="ID for the first node")
     parser.add_argument("-q", "--quiet", action="store_true", default=False, help="Suppress stdout")
     args, unknown_argument = parser.parse_known_args()
@@ -288,9 +288,10 @@ def arguments():
     if args.password:
         auth["AuthString"] = args.password
     if args.output:
-        if not os.path.isdir(args.output):
-            print("Directory doesn't exist.")
-            sys.exit(1)
+        if not Path(args.output).parent.exists():
+            print("Parent directory does not exist. Create the directory")
+            exit(1)
+
         arg["path"] = args.output
 
     if args.start_id:
@@ -341,7 +342,7 @@ def append_to_file(node):
     """
     if arg["id"] == arg["start_id"]:
         try:
-            f = open(os.path.join(arg["path"] + "/database/default2.node"), "w")
+            f = open(arg["path"], "w")
             f.write("# ID\tIP\tDNS\tCONTINENT\tCOUNTRY\tREGION\tCITY\tURL\tFULL NAME\tLATITUDE\tLONGITUDE\n")
             f.close()
         except Exception as err:
@@ -350,7 +351,7 @@ def append_to_file(node):
             sys.exit(1)
 
     try:
-        with codecs.open(os.path.join(arg["path"] + "/database/default2.node"), mode="a", encoding="utf-8") as f:
+        with codecs.open(arg["path"], mode="a", encoding="utf-8") as f:
             f.write(
                 "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(
                     str(arg["id"]),

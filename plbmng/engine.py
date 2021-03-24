@@ -8,14 +8,12 @@ from datetime import datetime
 
 from dialog import Dialog
 
-from plbmng.lib.conf import get_path
-from plbmng.lib.conf import get_ssh_user
 from plbmng.lib.database import PlbmngDb
 from plbmng.lib.library import clear
+from plbmng.lib.library import copy_files
 from plbmng.lib.library import get_all_nodes
 from plbmng.lib.library import get_last_server_access
 from plbmng.lib.library import get_server_info
-from plbmng.lib.library import is_first_run
 from plbmng.lib.library import NeedToFillPasswdFirstInfo
 from plbmng.lib.library import OPTION_DNS
 from plbmng.lib.library import OPTION_GCC
@@ -23,8 +21,9 @@ from plbmng.lib.library import OPTION_IP
 from plbmng.lib.library import OPTION_KERNEL
 from plbmng.lib.library import OPTION_MEM
 from plbmng.lib.library import OPTION_PYTHON
-from plbmng.lib.library import parallel_copy
 from plbmng.lib.library import plot_servers_on_map
+from plbmng.lib.library import run_remote_command
+from plbmng.lib.library import schedule_remote_command
 from plbmng.lib.library import search_by_location
 from plbmng.lib.library import search_by_regex
 from plbmng.lib.library import search_by_sware_hware
@@ -32,6 +31,15 @@ from plbmng.lib.library import server_choices
 from plbmng.lib.library import update_availability_database_parent
 from plbmng.lib.library import verify_api_credentials_exist
 from plbmng.lib.library import verify_ssh_credentials_exist
+from plbmng.utils.config import first_run
+from plbmng.utils.config import get_plbmng_user_dir
+from plbmng.utils.config import settings
+from plbmng.utils.logger import init_logger
+from plbmng.utils.logger import logger
+
+# from dynaconf import settings
+# from plbmng.lib.conf import get_path
+# from plbmng.lib.conf import get_ssh_user
 
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 
@@ -41,29 +49,28 @@ class Engine:
     Class used for the interaction with the user and decision making based on user's input.
     """
 
-    VERSION = "0.4.2"
-    _conf_path = "/conf/plbmng.conf"
+    # _conf_path = "/conf/plbmng.conf"
     user_nodes = "/database/user_servers.node"
     path = ""
     _debug = False
     _filtering_options = None
 
     def __init__(self):
+        from plbmng import __version__
+
         self.d = Dialog(dialog="dialog")
+        try:  # check whether it is first run
+            settings.first_run
+            PlbmngDb.init_db_schema()
+        except AttributeError:
+            pass
         self.db = PlbmngDb()
         locale.setlocale(locale.LC_ALL, "")
-        self.d.set_background_title("Planetlab Server Manager " + self.VERSION)
-        self.path = get_path()
+        self.d.set_background_title("Planetlab Server Manager " + __version__)
+        self.path = get_plbmng_user_dir()
+        init_logger()
 
-    def _log_message(self, msg) -> None:
-        """
-        Write :param message to the plbmng log file.
-
-        :param msg: Message to be written into the log file.
-        :type: str
-        """
-        with open(self.path + "/logs/plbmng.log", "a") as log:
-            log.write(f"[{datetime.now()}] INFO: {msg}\n")
+        logger.info("Plbmng engine initialized. Version: {}", __version__)
 
     def init_interface(self) -> None:
         """
@@ -76,8 +83,14 @@ class Engine:
             exit(1)
 
         signal.signal(signal.SIGINT, signal_handler)
-        if is_first_run():
+
+        try:  # check whether it is first run
+            settings.first_run
+            first_run()
             self.first_run_message()
+        except AttributeError:
+            pass
+
         while True:
             # Main menu
             code, tag = self.d.menu(
@@ -128,7 +141,7 @@ class Engine:
             if tag == "1":
                 self.copy_file()
             elif tag == "2":
-                pass
+                self.run_remote_command()
             elif tag == "3":
                 self.schedule_remote_cmd()
 
@@ -155,23 +168,6 @@ class Engine:
                 self.stats_gui(self.db.get_stats())
             elif tag == "3":
                 self.about_gui(self.VERSION)
-
-    def get_conf_path(self) -> str:
-        """
-        Return path to the plbmng config file.
-
-        :rtype: str
-        """
-        return self._conf_path
-
-    def set_credentials_gui(self) -> None:
-        """
-        Credentials Menu.
-        """
-        code, text = self.d.editbox(self.path + self.get_conf_path(), height=0, width=0)
-        if code == self.d.OK:
-            with open(self.path + self.get_conf_path(), "w") as configFile:
-                configFile.write(text)
 
     def filtering_options_gui(self) -> int:
         """
@@ -243,7 +239,7 @@ class Engine:
                 Version """
             + version
             + """
-                This application is under MIT license.
+                This application is licensed under MIT license.
                 """,
             width=0,
             height=0,
@@ -321,7 +317,7 @@ class Engine:
                         continue
                 elif tag == "2":
                     if self.d.yesno("This can take few minutes. Do you want to continue?") == self.d.OK:
-                        if not verify_ssh_credentials_exist(self.path):
+                        if not verify_ssh_credentials_exist():
                             self.d.msgbox(
                                 "Error! Your ssh credentials are not set. "
                                 "Please use 'Set credentials' option in main menu to set them."
@@ -346,11 +342,40 @@ class Engine:
             "%d, %m, %Y, %H, %M, %S",
         )
 
+    def run_remote_command(self):
+        text = "Type in the remote command"
+        init = ""
+        code, remote_cmd = self.d.inputbox(text=text, init=init, height=0, width=0)
+        if code == self.d.OK:
+            servers = self.access_servers_gui(checklist=True)
+        else:
+            return
+        if not servers:
+            self.d.msgbox("You did not select any servers!")
+            return
+
+        ret = run_remote_command(self.d, remote_cmd, servers)
+
+        if ret:
+            self.d.msgbox("Command was run successfully!")
+            return
+        self.d.msgbox("There was an error running the command.")
+        # TODO: Print more meaningful message to the user, containing the error.
+        return
+
     def schedule_remote_cmd(self):
         text = "Type in the remote command"
         init = ""
-        self.pick_date()
+        date = self.pick_date()
         code, remote_cmd = self.d.inputbox(text=text, init=init, height=0, width=0)
+        if code == self.d.OK:
+            servers = self.access_servers_gui(checklist=True)
+        else:
+            return
+        if not servers:
+            self.d.msgbox("You did not select any servers!")
+            return
+        schedule_remote_command(remote_cmd, date, servers)
         # TODO execute cmd
 
     def copy_file(self):
@@ -358,7 +383,7 @@ class Engine:
         Copy files to servers menu.
         """
         text = "Type in destination path on the target/targets."
-        init = "/home/" + get_ssh_user()
+        init = "/home/" + settings.planetlab.slice
         code, source_path = self.d.fselect(filepath="/home/", height=40, width=60)
         if code == self.d.OK:
             servers = self.access_servers_gui(checklist=True)
@@ -369,9 +394,7 @@ class Engine:
             return
         code, destination_path = self.d.inputbox(text=text, init=init, height=0, width=0)
         if code == self.d.OK:
-            ret = parallel_copy(
-                dialog=self.d, source_path=source_path, hosts=servers, destination_path=destination_path
-            )
+            ret = copy_files(dialog=self.d, source_path=source_path, hosts=servers, destination_path=destination_path)
         else:
             return
         if ret:
@@ -417,6 +440,7 @@ class Engine:
                 # Access last server
                 elif tag == "2":
                     self.last_server_menu()
+                    # TODO: last_server_menu() should return the server
                 elif tag == "3":
                     ret = self.search_by_regex_menu(nodes, OPTION_DNS, checklist)
                     if checklist:
@@ -446,7 +470,7 @@ class Engine:
         :param info_about_node_dic: Dictionary which contains all the info about node.
         :type info_about_node_dic: dict
         """
-        if not verify_ssh_credentials_exist(self.path):
+        if not verify_ssh_credentials_exist():
             prepared_choices = [
                 ("1", "Connect via SSH (Credentials not set!)"),
                 ("2", "Connect via MC (Credentials not set!)"),
@@ -490,6 +514,7 @@ class Engine:
         self.d.msgbox(
             "This is first run of the application. "
             "Please go to 'Set Credentials' menu and set your credentials now.",
+            # TODO: alter the message. There is not Set credentials anymore.
             height=0,
             width=0,
         )
@@ -577,7 +602,7 @@ class Engine:
                 server_choices(returned_choice, chosen_node, info_about_node_dic)
             except ConnectionError as err:
                 self.d.msgbox("Error while connecting. Please verify your credentials.")
-                self._log_message(err)
+                logger.error(err)
         else:
             return
 
@@ -615,7 +640,7 @@ class Engine:
             server_choices(returned_choice, chosen_node, info_about_node_dic)
         except ConnectionError as err:
             self.d.msgbox("Error while connecting. Please verify your credentials.")
-            self._log_message(err)
+            logger.error(err)
 
     def search_by_regex_menu(self, nodes: list, option: int, checklist: bool):
         """
@@ -652,7 +677,7 @@ class Engine:
                 )
             except ConnectionError as err:
                 self.d.msgbox("Error while connecting. Please verify your credentials.")
-                self._log_message(err)
+                logger.error(err)
         else:
             return
 

@@ -1,29 +1,26 @@
-import os
-import platform
-
 from setuptools import find_packages
 from setuptools import setup
 
-install_requires = ["vincent", "folium", "geocoder", "paramiko", "pythondialog"]
+install_requires = ["vincent", "dynaconf", "folium", "geocoder", "paramiko", "pythondialog", "loguru"]
 
 
-def install_dialog_engine():
-    """
-    Try to install dialog if user is running setup for the first time. Supported OS are Fedora-like distributions.
-    """
-    with open("plbmng/database/first.boolean", "r") as first:
-        run = first.read().strip("\n")
-    distribution = platform.platform()
-    distro_check = False
-    if "fc" in distribution or "el" in distribution:
-        distro_check = True
-    if run == "True" and distro_check:
-        return_code = os.system("yum install -y dialog")
-        return return_code
-    return 0
+# def install_dialog_engine():
+#     """
+#     Try to install dialog if user is running setup for the first time. Supported OS are Fedora-like distributions.
+#     """
+#     with open("plbmng/database/first.boolean", "r") as first:
+#         run = first.read().strip("\n")
+#     distribution = platform.platform()
+#     distro_check = False
+#     if "fc" in distribution or "el" in distribution:
+#         distro_check = True
+#     if run == "True" and distro_check:
+#         return_code = os.system("yum install -y dialog")
+#         return return_code
+#     return 0
 
 
-ret = install_dialog_engine()
+# ret = install_dialog_engine()
 setup(
     name="plbmng",
     description="Tool for monitoring PlanetLab network",
@@ -48,5 +45,5 @@ setup(
     entry_points={"console_scripts": ["plbmng=plbmng.__main__:main"]},
 )
 
-if ret != 0:
-    print("INFO: Please make sure you have installed dialog-like engine!")
+# if ret != 0:
+#     print("INFO: Please make sure you have installed dialog-like engine!")
