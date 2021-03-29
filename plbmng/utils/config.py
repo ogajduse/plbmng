@@ -52,7 +52,7 @@ def get_install_dir() -> str:
     :return: absolute path to the source directory of plbmng as str.
     :rtype: str
     """
-    path = os.path.dirname(os.path.realpath(__file__)).rstrip("/lib")
+    path = os.path.dirname(os.path.realpath(__file__)).rstrip("/utils")
     os.chdir(path)
     return path
 
@@ -99,7 +99,7 @@ def get_map_path(map_name):
     return f"{__plbmng_geolocation_dir}/{getattr(settings.geolocation, map_name)}"
 
 
-def ensure_directory_structure():
+def ensure_directory_structure(settings):
     if not Path(__plbmng_database_dir).exists():
         logger.info(
             f'Database directory not found here: "{Path(__plbmng_database_dir).absolute()}". '
@@ -107,10 +107,15 @@ def ensure_directory_structure():
         )
         Path(__plbmng_database_dir).mkdir(exist_ok=True)
 
+    default_node_path = f"{__plbmng_database_dir}/{settings.database.default_node}"
+    if not Path(default_node_path).exists():
+        with open(default_node_path, "w") as default_node:
+            default_node.write(Path(f"{get_install_dir()}/database/default.node").read_text())
+
     user_servers_path = f"{__plbmng_database_dir}/{settings.database.user_nodes}"
     if not Path(user_servers_path).exists():
         with open(user_servers_path, "w") as user_servers:
-            user_servers.write(user_servers_file)
+            user_servers.write(Path(f"{get_install_dir()}/database/user_servers.node").read_text())
 
     last_server_path = f"{__plbmng_database_dir}/{settings.database.last_server}"
     if not Path(last_server_path).exists():
@@ -124,9 +129,9 @@ def ensure_directory_structure():
         Path(__plbmng_geolocation_dir).mkdir(exist_ok=True)
 
 
-def ensure_initial_structure():
+def ensure_initial_structure(settings):
     ensure_basic_structure()
-    ensure_directory_structure()
+    ensure_directory_structure(settings)
 
 
 def first_run():
@@ -160,4 +165,4 @@ settings = Dynaconf(
 
 logger.info("Settings successfully loaded")
 
-ensure_initial_structure()
+ensure_initial_structure(settings)

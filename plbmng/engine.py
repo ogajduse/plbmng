@@ -280,7 +280,7 @@ class Engine:
             code, tag = self.d.menu(
                 "Choose one of the following options:",
                 # ("1", "Set crontab for status update"),
-                choices=[("1", "Update server list now"), ("2", "Update server status now")],
+                choices=[("1", "Update server list"), ("2", "Update server status")],
                 title="Monitoring menu",
                 height=0,
                 width=0,
@@ -425,7 +425,7 @@ class Engine:
                 choices=[
                     ("1", "Filtering options"),
                     ("2", "Access last server"),
-                    ("3", "Serach by DNS"),
+                    ("3", "Search by DNS"),
                     ("4", "Search by IP"),
                     ("5", "Search by location"),
                     ("6", "Search by available software/hardware"),

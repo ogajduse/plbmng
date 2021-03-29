@@ -27,7 +27,7 @@ setup(
     version="0.4.2.post1",
     license="MIT",
     packages=find_packages(),
-    package_data={},
+    package_data={"plbmng": ["database/default.node"]},
     include_package_data=True,
     install_requires=install_requires,
     dependency_links=["https://github.com/pandas-dev/pandas/archive/master.zip?ref=master#egg=pandas"],
@@ -41,7 +41,6 @@ setup(
         "Documentation": "https://utko-planetlab.gitlab.io/plbmng/",
     },
     long_description=open("README.rst").read(),
-    # scripts=["bin/plbmng"],
     entry_points={"console_scripts": ["plbmng=plbmng.__main__:main"]},
 )
 

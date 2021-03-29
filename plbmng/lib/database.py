@@ -6,8 +6,6 @@ from plbmng.lib.library import get_custom_servers
 from plbmng.utils.config import get_db_path
 from plbmng.utils.logger import logger
 
-# from plbmng.lib.conf import get_path
-
 
 class PlbmngDb:
     """
@@ -15,7 +13,7 @@ class PlbmngDb:
     """
 
     def __init__(self):
-        self._db_path = get_db_path("plbmng_database")  # "/database/internal.db"
+        self._db_path = get_db_path("plbmng_database")
         self.db = sqlite3.connect(self._db_path)
         self.cursor = self.db.cursor()
 
