@@ -1,4 +1,5 @@
 import csv
+import hashlib
 import re
 import sqlite3
 
@@ -60,6 +61,22 @@ class PlbmngDb:
                    VALUES (1,'ssh','F'),
                        (2,'ping','F')"""
             )
+
+            nodes = __class__.read_default_node()
+            for node in nodes:
+                ip_or_hostname = node["dns"] if node["dns"] else node["ip"]
+                hash_object = hashlib.md5(ip_or_hostname.encode())
+                ssh_result = "F"
+                ping_result = "F"
+
+                cursor.execute(
+                    "INSERT into availability(shash, shostname, bssh, bping) VALUES("
+                    f" '{hash_object.hexdigest()}',"
+                    f" '{ip_or_hostname}',"
+                    f" '{ssh_result}',"
+                    f" '{ping_result}'"
+                    ")"
+                )
             db.commit()
             db.close()
             return
@@ -218,33 +235,36 @@ class PlbmngDb:
             else:
                 server_list[item[0]] = ""
         # open node file and append to the nodes if the element exists in the server_list
-        # node_file = path + "/database/default.node"
-        try:
-            node_file = get_db_path("default_node")
-        except FileNotFoundError:
-            return []
+        lines = self.read_default_node()
         nodes = []
-        with open(node_file) as tsv:
-            lines = csv.reader(tsv, delimiter="\t")
-            for line in lines:
-                if line[0] == "# ID":
-                    continue
-                try:
-                    if check_configuration:
-                        if choose_software_hardware:
-                            if line[2] in server_list.keys():
-                                tmp = line[:]
-                                for i in server_list[line[2]]:
-                                    tmp.append(i)
-                                nodes.append(tmp)
-                        else:
-                            if line[2] in server_list.keys():
-                                nodes.append(line)
+        for line in lines:
+            try:
+                if check_configuration:
+                    if choose_software_hardware:
+                        if line["dns"] in server_list.keys():
+                            tmp = line[:]
+                            for i in server_list[line["dns"]]:
+                                tmp.append(i)
+                            nodes.append(tmp)
                     else:
-                        nodes.append(line)
-                except ValueError:
-                    pass
-            last_id = int(line[-1][0])
+                        if line["dns"] in server_list.keys():
+                            nodes.append(line)
+                else:
+                    nodes.append(line)
+            except ValueError:
+                pass
+        last_id = int(line["# id"])
         if not choose_software_hardware:
             nodes.extend(get_custom_servers(last_id))
+        return nodes
+
+    @staticmethod
+    def read_default_node():
+        node_file = get_db_path("default_node")
+        nodes = []
+        with open(node_file) as tsv:
+            csv_reader = csv.DictReader(tsv, delimiter="\t")
+            for row in csv_reader:
+                row = {k.lower(): v for k, v in row.items()}
+                nodes.append(row)
         return nodes

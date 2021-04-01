@@ -38,8 +38,6 @@ from plbmng.utils.logger import init_logger
 from plbmng.utils.logger import logger
 
 # from dynaconf import settings
-# from plbmng.lib.conf import get_path
-# from plbmng.lib.conf import get_ssh_user
 
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 
@@ -58,6 +56,7 @@ class Engine:
     def __init__(self):
         from plbmng import __version__
 
+        init_logger()
         self.d = Dialog(dialog="dialog")
         try:  # check whether it is first run
             settings.first_run
@@ -68,7 +67,6 @@ class Engine:
         locale.setlocale(locale.LC_ALL, "")
         self.d.set_background_title("Planetlab Server Manager " + __version__)
         self.path = get_plbmng_user_dir()
-        init_logger()
 
         logger.info("Plbmng engine initialized. Version: {}", __version__)
 

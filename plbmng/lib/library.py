@@ -696,7 +696,7 @@ def update_availability_database(node: list) -> None:
     db = sqlite3.connect(get_db_path("plbmng_database"))
     cursor = db.cursor()
     # action block
-    ip_or_hostname = node[2] if node[2] else node[1]
+    ip_or_hostname = node["dns"] if node["dns"] else node["ip"]
     hash_object = hashlib.md5(ip_or_hostname.encode())
     ssh_result = "T" if test_ssh(ip_or_hostname) is True else "F"
     ping_result = "T" if test_ping(ip_or_hostname, True) is True else "F"
