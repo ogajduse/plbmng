@@ -242,10 +242,11 @@ class PlbmngDb:
                 if check_configuration:
                     if choose_software_hardware:
                         if line["dns"] in server_list.keys():
-                            tmp = line[:]
-                            for i in server_list[line["dns"]]:
-                                tmp.append(i)
-                            nodes.append(tmp)
+                            line["gcc"] = server_list[line["dns"]][0]
+                            line["python"] = server_list[line["dns"]][1]
+                            line["kernel"] = server_list[line["dns"]][2]
+                            line["memory"] = server_list[line["dns"]][3]
+                            nodes.append(line)
                     else:
                         if line["dns"] in server_list.keys():
                             nodes.append(line)

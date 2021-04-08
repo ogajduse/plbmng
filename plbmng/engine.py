@@ -32,6 +32,7 @@ from plbmng.lib.library import update_availability_database_parent
 from plbmng.lib.library import verify_api_credentials_exist
 from plbmng.lib.library import verify_ssh_credentials_exist
 from plbmng.utils.config import first_run
+from plbmng.utils.config import get_db_path
 from plbmng.utils.config import get_plbmng_user_dir
 from plbmng.utils.config import settings
 from plbmng.utils.logger import init_logger
@@ -97,9 +98,8 @@ class Engine:
                     ("1", "Access servers"),
                     ("2", "Monitor servers"),
                     ("3", "Plot servers on map"),
-                    ("4", "Set credentials"),
-                    ("5", "Extras"),
-                    ("6", "New Features"),
+                    ("4", "Extras"),
+                    ("5", "New Features"),
                 ],
                 title="MAIN MENU",
             )
@@ -114,12 +114,9 @@ class Engine:
                 # Plot servers on map
                 elif tag == "3":
                     self.plot_servers_on_map_gui()
-                # Set credentials
                 elif tag == "4":
-                    self.set_credentials_gui()
-                elif tag == "5":
                     self.extras_menu()
-                elif tag == "6":
+                elif tag == "5":
                     self.new_features_menu()
             else:
                 clear()
@@ -511,8 +508,7 @@ class Engine:
         """
         self.d.msgbox(
             "This is first run of the application. "
-            "Please go to 'Set Credentials' menu and set your credentials now.",
-            # TODO: alter the message. There is not Set credentials anymore.
+            "Please navigate to ~/.plbmng directory and set the credentials in the settings file.",
             height=0,
             width=0,
         )
@@ -527,7 +523,7 @@ class Engine:
         """
         Add external server into the plbmng database(NOT TO THE PLANETLAB NETWORK!).
         """
-        code, text = self.d.editbox(self.path + self.user_nodes, height=0, width=0)
+        code, text = self.d.editbox(get_db_path("user_nodes"), height=0, width=0)
         if code == self.d.OK:
             with open(self.path + self.user_nodes, "w") as nodeFile:
                 nodeFile.write(text)

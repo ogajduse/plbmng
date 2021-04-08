@@ -51,27 +51,23 @@ def plot_server_on_map(nodes=None, file_path=None):
 
     vis.marks.append(mark)
     vis.axis_titles(x="days", y="latency [ms]")
+    # TODO: save vega file to ~/.plbmng dir
     vis.to_json("vega.json")
 
     map_full = folium.Map(location=[45.372, -121.6972], zoom_start=2)
 
     for node in nodes:
-        if node[-2] == "unknown" or node[-1] == "unknown":
+        if node["latitude"] == "unknown" or node["longitude"] == "unknown":
             continue
-        x = float(node[-2])
-        y = float(node[-1])
+        x = float(node["latitude"])
+        y = float(node["longitude"])
         text = """
-            NODE: %s, IP: %s
-            URL: %s
-            FULL NAME: %s
-            LATITUDE: %s, LONGITUDE: %s
-            """ % (
-            node[2],
-            node[1],
-            node[7],
-            node[8],
-            node[9],
-            node[10],
+            NODE: {}, IP: {}
+            URL: {}
+            FULL NAME: {}
+            LATITUDE: {}, LONGITUDE: {}
+            """.format(
+            node["dns"], node["ip"], node["url"], node["full name"], node["latitude"], node["longitude"]
         )
         popup = folium.Popup(text.strip().replace("\n", "<br>"), max_width=1000)
         folium.Marker([x, y], popup=popup).add_to(map_full)

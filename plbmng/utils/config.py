@@ -117,10 +117,6 @@ def ensure_directory_structure(settings):
         with open(user_servers_path, "w") as user_servers:
             user_servers.write(Path(f"{get_install_dir()}/database/user_servers.node").read_text())
 
-    last_server_path = f"{__plbmng_database_dir}/{settings.database.last_server}"
-    if not Path(last_server_path).exists():
-        open(last_server_path, "a").close()
-
     if not Path(__plbmng_geolocation_dir).exists():
         logger.info(
             f'Database directory not found here: "{Path(__plbmng_geolocation_dir).absolute()}". '

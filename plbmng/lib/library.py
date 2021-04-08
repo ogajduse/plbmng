@@ -32,20 +32,20 @@ lock = None
 
 # Constant definition
 OPTION_LOCATION = 0
-OPTION_IP = 1
-OPTION_DNS = 2
-OPTION_CONTINENT = 3
-OPTION_COUNTRY = 4
-OPTION_REGION = 5
-OPTION_CITY = 6
-OPTION_URL = 7
-OPTION_NAME = 8
-OPTION_LAT = 9
-OPTION_LON = 10
-OPTION_GCC = 11
-OPTION_PYTHON = 12
-OPTION_KERNEL = 13
-OPTION_MEM = 14
+OPTION_IP = "ip"
+OPTION_DNS = "dns"
+OPTION_CONTINENT = "continent"
+OPTION_COUNTRY = "country"
+OPTION_REGION = "region"
+OPTION_CITY = "city"
+OPTION_URL = "url"
+OPTION_NAME = "full name"
+OPTION_LAT = "latitude"
+OPTION_LON = "longitude"
+OPTION_GCC = "gcc"
+OPTION_PYTHON = "python"
+OPTION_KERNEL = "kernel"
+OPTION_MEM = "memory"
 
 USER_NODES = "/database/user_servers.node"
 LAST_SERVER = "/database/last_server.node"
@@ -122,7 +122,7 @@ def schedule_remote_command(cmd, date, hosts):
     user = settings.planetlab.slice
     executor_dst_path = "~/.plbmng/executor.py"
     # TODO: verify that paths are instances of Path()
-    executor_path = executor.__path__
+    executor_path = executor.__file__
     job_uuid = str(uuid.uuid4())
     # TODO: write it to the local database
     executor_cmd = f"python3 {executor_dst_path} --run-at {date} --run-cmd '{cmd}' --job-id {job_uuid}"
@@ -231,9 +231,9 @@ def search_by_sware_hware(nodes: list, option: int) -> dict:
     filter_nodes = {}
     for item in nodes:
         if item[option] not in filter_nodes.keys():
-            filter_nodes[item[option]] = [item[OPTION_DNS]]
+            filter_nodes[item[option]] = [item["dns"]]
         else:
-            filter_nodes[item[option]].append(item[OPTION_DNS])
+            filter_nodes[item[option]].append(item["dns"])
     return filter_nodes
 
 
@@ -447,12 +447,12 @@ def get_info_from_node(node: list) -> tuple:
     :return: Return region, city, url, full name, latitude and longitude from the node as tuple.
     :rtype: tuple
     """
-    region = node[5]
-    city = node[6]
-    url = node[7]
-    fullname = node[8]
-    lat = node[9]
-    lon = node[10]
+    region = node["region"]
+    city = node["city"]
+    url = node["url"]
+    fullname = node["full name"]
+    lat = node["latitude"]
+    lon = node["longitude"]
     return region, city, url, fullname, lat, lon
 
 
@@ -580,7 +580,7 @@ def update_last_server_access(info_about_node_dic: dict, chosen_node: list) -> N
     :param path: Path to the source directory of plbmng.
     :type path: str
     """
-    last_server_file = get_db_path("last_server")
+    last_server_file = get_db_path("last_server", failsafe=True)
     with open(last_server_file, "w") as last_server_file:
         last_server_file.write(repr((info_about_node_dic, chosen_node)))
 
