@@ -54,6 +54,22 @@ class PlbmngDb:
                                 smem TEXT
                               )"""
             )
+            cursor.execute(
+                """CREATE TABLE jobs(
+                            id TEXT not null
+                                constraint jobs_pk
+                                    primary key,
+                            node INTEGER
+                                constraint jobs_availability_nkey_fk
+                                    references availability,
+                            cmd_argv TEXT not null,
+                            scheduled_at TEXT not null,
+                            state INTEGER not null,
+                            result INTEGER,
+                            started_at TEXT,
+                            ended_at TEXT
+                          )"""
+            )
 
             # Data
             cursor.execute(
@@ -269,3 +285,29 @@ class PlbmngDb:
                 row = {k.lower(): v for k, v in row.items()}
                 nodes.append(row)
         return nodes
+
+    def add_job(self, job_id, node, cmd_argv, scheduled_at, state):
+        sql = """INSERT INTO jobs (id, node, cmd_argv, scheduled_at, state)
+                             values ("{}", (select nkey
+                             from availability
+                             where shostname = "{}"),  "{}", "{}", {})""".format(
+            job_id, node, cmd_argv, scheduled_at, state
+        )
+        self.cursor.execute(sql)
+        self.db.commit()
+
+    def get_non_stopped_jobs(self):
+        selected_columns = ["id", "shostname", "cmd_argv", "scheduled_at", "state", "result", "started_at", "ended_at"]
+        sql = """SELECT {}
+                 FROM jobs JOIN availability ON jobs.node = availability.nkey
+                 WHERE NOT state=3""".format(
+            ", ".join(selected_columns)
+        )
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        selected_columns = tuple(selected_columns)
+        ns_jobs = []
+        for row in data:
+            if len(selected_columns) == len(row):
+                ns_jobs.append({selected_columns[i]: row[i] for i, _ in enumerate(row)})
+        return ns_jobs

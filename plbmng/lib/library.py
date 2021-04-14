@@ -14,6 +14,7 @@ from platform import system
 import folium
 from dialog import Dialog
 
+import plbmng.lib.database
 import plbmng.lib.planetlab_list_creator
 from plbmng import executor
 from plbmng.lib import full_map
@@ -117,22 +118,25 @@ def run_command(cmd: str) -> (int, str):
     return return_code, stdout
 
 
-def schedule_remote_command(cmd, date, hosts):
+def schedule_remote_command(cmd, date, hosts, db):
     ssh_key = settings.remote_execution.ssh_key
     user = settings.planetlab.slice
-    executor_dst_path = "~/.plbmng/executor.py"
+    # executor_dst_path = "~/.plbmng/executor.py"
+    executor_dst_path = "/tmp/executor.py"
     # TODO: verify that paths are instances of Path()
     executor_path = executor.__file__
     job_uuid = str(uuid.uuid4())
-    # TODO: write it to the local database
-    executor_cmd = f"python3 {executor_dst_path} --run-at {date} --run-cmd '{cmd}' --job-id {job_uuid}"
+    executor_cmd = f"python3 {executor_dst_path} --run-at {int(date.timestamp())} --run-cmd '{cmd}' --job-id {job_uuid}"
     for host in hosts:
         sshlib.upload_file(executor_path, executor_dst_path, key_filename=ssh_key, hostname=host, username=user)
         job_uuid = str(uuid.uuid4())
-        # TODO: write it to the local database
-        executor_cmd = f"python3 {executor_dst_path} --run-at {date} --run-cmd '{cmd}' --job-id {job_uuid}"
+        db.add_job(job_uuid, host, cmd, date.timestamp(), 1)
         sshlib.command(executor_cmd, hostname=host, username=user, key_filename=ssh_key)
     return True
+
+
+def get_non_stopped_jobs(db):
+    return db.get_non_stopped_jobs()
 
 
 def get_server_params(ip_or_hostname: str, ssh=False) -> list:

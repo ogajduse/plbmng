@@ -8,11 +8,15 @@ from datetime import datetime
 
 from dialog import Dialog
 
+from plbmng.executor import PlbmngJobResult
+from plbmng.executor import PlbmngJobState
+from plbmng.executor import time_from_timestamp
 from plbmng.lib.database import PlbmngDb
 from plbmng.lib.library import clear
 from plbmng.lib.library import copy_files
 from plbmng.lib.library import get_all_nodes
 from plbmng.lib.library import get_last_server_access
+from plbmng.lib.library import get_non_stopped_jobs
 from plbmng.lib.library import get_server_info
 from plbmng.lib.library import NeedToFillPasswdFirstInfo
 from plbmng.lib.library import OPTION_DNS
@@ -129,6 +133,7 @@ class Engine:
                 ("1", "Copy files to server(s)"),
                 ("2", "Run remote command"),
                 ("3", "Schedule remote job"),
+                ("4", "Display jobs state"),
             ],
             title="New features menu",
         )
@@ -139,6 +144,10 @@ class Engine:
                 self.run_remote_command()
             elif tag == "3":
                 self.schedule_remote_cmd()
+            elif tag == "4":
+                self.display_non_finished_jobs()
+            elif tag == "5":
+                self.refresh_jobs_status()
 
     def extras_menu(self):
         """
@@ -370,8 +379,35 @@ class Engine:
         if not servers:
             self.d.msgbox("You did not select any servers!")
             return
-        schedule_remote_command(remote_cmd, date, servers)
-        # TODO execute cmd
+        schedule_remote_command(remote_cmd, date, servers, self.db)
+
+    def display_job_state(self, job):
+        text = f"""ID:            {job['id']}"
+Node hostname: {job['shostname']}
+Command:       {job['cmd_argv']}
+Scheduled at:  {time_from_timestamp(int(float(job['scheduled_at'])))}
+State:         {PlbmngJobState(job['state']).name}
+Result:        {'Not result yet' if not job['result'] else PlbmngJobResult(job['result']).name}
+Started at     {'Not yet started' if not job['started_at'] else job['started_at']}
+Ended at       {'Not yet ended' if not job['ended_at'] else job['ended_at']}"""
+
+        self.d.scrollbox(text)
+
+    def display_non_finished_jobs(self):
+        ns_jobs = get_non_stopped_jobs(self.db)
+        pass
+        text = "Non-finished jobs:"
+        choices = []
+        for job in ns_jobs:
+            choices.append((job["id"], job["cmd_argv"]))
+        code, tag = self.d.menu(text, choices=choices)
+
+        if code == self.d.OK:
+            selected_job = list(filter(lambda jobs_found: jobs_found["id"] == tag, ns_jobs))[0]
+            self.display_job_state(selected_job)
+
+    def refresh_jobs_status():
+        pass
 
     def copy_file(self):
         """

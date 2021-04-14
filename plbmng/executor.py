@@ -139,9 +139,10 @@ def time_from_iso(dt):
 
 
 def time_to_iso(dt):
-    return dt.isoformat(
-        timespec="milliseconds"
-    )  # removed timespec="milliseconds" due to the python 3.5 does not support it
+    result = dt.isoformat()  # removed timespec="milliseconds" due to the python 3.5 does not support it
+    if result.find(".") == -1:
+        result += ".000"
+    return result
 
 
 def time_from_timestamp(timestamp_in):
@@ -298,9 +299,6 @@ class PlbmngJobsFile:
         job.started_at = time_to_iso(started_at)
 
     def set_ended_at(self, job_id, ended_at):
-        import pdb
-
-        pdb.set_trace()
         if not isinstance(ended_at, datetime):
             raise Exception("Type {} expected, got {} instead.".format(datetime, type(ended_at)))
         job = self.get_job(job_id)
