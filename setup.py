@@ -1,7 +1,9 @@
 from setuptools import find_packages
 from setuptools import setup
 
-install_requires = ["vincent", "dynaconf", "folium", "geocoder", "paramiko", "pythondialog", "loguru"]
+install_requires = (
+    ["vincent", "dynaconf", "folium", "geocoder", "paramiko", "pythondialog", "loguru", "gevent", "parallel-ssh"],
+)
 
 
 # def install_dialog_engine():

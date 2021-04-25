@@ -190,12 +190,21 @@ class PlbmngJob:
             enm = getattr(self, attr)
             if not isinstance(enm, PlbmngEnum):
                 e_class = eval("PlbmngJob" + attr.capitalize())
-                setattr(self, attr, e_class[enm])
+                try:
+                    setattr(self, attr, e_class[enm])
+                except KeyError:
+                    setattr(self, attr, e_class(enm))
         if isinstance(self.scheduled_at, datetime):
             self.scheduled_at = time_to_iso(self.scheduled_at)
 
     def __repr__(self):
         return self.to_json()
+
+    def __hash__(self):
+        return hash(self.job_id)
+
+    def __eq__(self, other):
+        return self.__class__ == other.__class__ and self.job_id == other.job_id
 
     def __getitem__(cls, o):
         return getattr(cls, o)
@@ -275,6 +284,16 @@ class PlbmngJobsFile:
             else:
                 raise Exception("No job found with ID: {}".format(job_id))
         return jobs_found[0]
+
+    def get_all_of_attribute(self, attr, val, failsafe=False):
+        job_iterator = filter(lambda jobs_found: jobs_found[attr] == val, self.jobs)
+        jobs_found = list(job_iterator)
+        if not jobs_found:
+            if failsafe:
+                return None
+            else:
+                raise Exception("Found no job with {a}: {v}".format(a=attr, v=val))
+        return jobs_found
 
     def del_job(self, job_id):
         job = self.get_job(job_id)

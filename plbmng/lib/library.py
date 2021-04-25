@@ -23,6 +23,7 @@ from plbmng.lib import ssh as sshlib
 from plbmng.utils.config import get_db_path
 from plbmng.utils.config import get_install_dir
 from plbmng.utils.config import get_map_path
+from plbmng.utils.config import get_remote_jobs_path
 from plbmng.utils.config import settings
 
 
@@ -125,18 +126,30 @@ def schedule_remote_command(cmd, date, hosts, db):
     executor_dst_path = "/tmp/executor.py"
     # TODO: verify that paths are instances of Path()
     executor_path = executor.__file__
-    job_uuid = str(uuid.uuid4())
-    executor_cmd = f"python3 {executor_dst_path} --run-at {int(date.timestamp())} --run-cmd '{cmd}' --job-id {job_uuid}"
     for host in hosts:
         sshlib.upload_file(executor_path, executor_dst_path, key_filename=ssh_key, hostname=host, username=user)
         job_uuid = str(uuid.uuid4())
-        db.add_job(job_uuid, host, cmd, date.timestamp(), 1)
+        executor_cmd = (
+            f"python3 {executor_dst_path} --run-at {int(date.timestamp())} --run-cmd '{cmd}' --job-id {job_uuid}"
+        )
+        db.add_job(
+            job_uuid,
+            host,
+            cmd,
+            date.timestamp(),
+            executor.PlbmngJobState["scheduled"].value,
+            executor.PlbmngJobResult["pending"].value,
+        )
         sshlib.command(executor_cmd, hostname=host, username=user, key_filename=ssh_key)
     return True
 
 
 def get_non_stopped_jobs(db):
     return db.get_non_stopped_jobs()
+
+
+def get_stopped_jobs(db):
+    return db.get_stopped_jobs()
 
 
 def get_server_params(ip_or_hostname: str, ssh=False) -> list:
@@ -877,3 +890,8 @@ def run_remote_command(dialog: Dialog, command: str, hosts: list) -> bool:
         sshlib.command(command, hostname=host, username=user, key_filename=ssh_key)
     dialog.gauge_update(100, "Completed")
     return True
+
+
+def get_remote_jobs(host: str) -> list:
+    with executor.PlbmngJobsFile(f"{get_remote_jobs_path()}/jobs.json_{host}") as jobs:
+        return jobs.jobs

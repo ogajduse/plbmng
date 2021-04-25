@@ -16,6 +16,7 @@ __env_switcher: str = "ENV_FOR_PLBMNG"
 __plbmng_root_dir: str = os.getenv("PLBMNG_CONFIG_ROOT") or "~/.plbmng"
 __plbmng_database_dir: str = os.path.expanduser(f"{__plbmng_root_dir}/database")
 __plbmng_geolocation_dir: str = os.path.expanduser(f"{__plbmng_root_dir}/geolocation")
+__plbmng_remote_jobs_dir: str = os.path.expanduser(f"{__plbmng_root_dir}/remote-jobs")
 __settings_path: str = os.path.expanduser(f"{__plbmng_root_dir}/settings.yaml")
 __secrets_path: str = os.path.expanduser(f"{__plbmng_root_dir}/.secrets.yaml")
 __local_settings_path: str = os.path.expanduser(f"{local}/settings.yaml")
@@ -27,18 +28,6 @@ dynaconf_setting_files = [
     __settings_path,
     __secrets_path,
 ]
-
-user_servers_file = """# When you adding a new server, please do use format below!
-# IP	DNS	CONTINENT	COUNTRY	REGION	CITY	URL	FULL NAME	LATITUDE	LONGITUDE
-# The one and only mandatory item is IP
-# If you do not specify all items,
-# program automatically add "uknown" to every column from the last specified item
-# Examples:
-# Correct:
-# 192.168.122.97
-# 192.168.122.97 test1.vutbr.cz unknown CZ
-# Check default.node for more examples
-"""
 
 
 def get_plbmng_user_dir():
@@ -99,30 +88,39 @@ def get_map_path(map_name):
     return f"{__plbmng_geolocation_dir}/{getattr(settings.geolocation, map_name)}"
 
 
+def get_remote_jobs_path():
+    return f"{__plbmng_remote_jobs_dir}"
+
+
+def _create_dir(dir_name: str, dir_path: str):
+    if not Path(dir_path).exists():
+        logger.info(
+            f'{dir_name} directory not found here: "{Path(dir_path).absolute()}". I\'ll create it here: {dir_path}',
+        )
+        Path(dir_path).mkdir(exist_ok=True)
+
+
+def _copy_distribution_file(src: str, dst: str):
+    if not Path(dst).exists():
+        with open(dst, "w") as default_node:
+            default_node.write(Path(src).read_text())
+
+
 def ensure_directory_structure(settings):
-    if not Path(__plbmng_database_dir).exists():
-        logger.info(
-            f'Database directory not found here: "{Path(__plbmng_database_dir).absolute()}". '
-            f"I'll create it here: {__plbmng_database_dir}",
-        )
-        Path(__plbmng_database_dir).mkdir(exist_ok=True)
+    dirs = {
+        "Database": __plbmng_database_dir,
+        "Geolocation": __plbmng_geolocation_dir,
+        "Rebote jobs": __plbmng_remote_jobs_dir,
+    }
+    for name, path in dirs.items():
+        _create_dir(name, path)
 
-    default_node_path = f"{__plbmng_database_dir}/{settings.database.default_node}"
-    if not Path(default_node_path).exists():
-        with open(default_node_path, "w") as default_node:
-            default_node.write(Path(f"{get_install_dir()}/database/default.node").read_text())
-
-    user_servers_path = f"{__plbmng_database_dir}/{settings.database.user_nodes}"
-    if not Path(user_servers_path).exists():
-        with open(user_servers_path, "w") as user_servers:
-            user_servers.write(Path(f"{get_install_dir()}/database/user_servers.node").read_text())
-
-    if not Path(__plbmng_geolocation_dir).exists():
-        logger.info(
-            f'Database directory not found here: "{Path(__plbmng_geolocation_dir).absolute()}". '
-            f"I'll create it here: {__plbmng_geolocation_dir}",
-        )
-        Path(__plbmng_geolocation_dir).mkdir(exist_ok=True)
+    distro_files = {
+        f"{get_install_dir()}/database/default.node": f"{__plbmng_database_dir}/{settings.database.default_node}",
+        f"{get_install_dir()}/database/user_servers.node": f"{__plbmng_database_dir}/{settings.database.user_nodes}",
+    }
+    for src, dst in distro_files.items():
+        _copy_distribution_file(src, dst)
 
 
 def ensure_initial_structure(settings):

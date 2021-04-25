@@ -3,6 +3,7 @@ import hashlib
 import re
 import sqlite3
 
+from plbmng import executor
 from plbmng.lib.library import get_custom_servers
 from plbmng.utils.config import get_db_path
 from plbmng.utils.logger import logger
@@ -154,7 +155,7 @@ class PlbmngDb:
         stat_dic["memory"] = self.cursor.fetchall()[0][0]
         return stat_dic
 
-    def get_filters_for_access_servers(self):
+    def get_filters_for_access_servers(self, binary_out=False):
         """
         Return message which filtering options(ssh, ping) are active.
 
@@ -173,6 +174,8 @@ class PlbmngDb:
                     ping_filter = True
                 else:
                     ping_filter = False
+        if binary_out:
+            return {"ssh": ssh_filter, "ping": ping_filter}
         if ssh_filter and ping_filter:
             filter_options = "Only SSH and ICMP available"
         elif ssh_filter and not ping_filter:
@@ -286,13 +289,23 @@ class PlbmngDb:
                 nodes.append(row)
         return nodes
 
-    def add_job(self, job_id, node, cmd_argv, scheduled_at, state):
-        sql = """INSERT INTO jobs (id, node, cmd_argv, scheduled_at, state)
+    def add_job(self, job_id, node, cmd_argv, scheduled_at, state, result):
+        sql = """INSERT INTO jobs (id, node, cmd_argv, scheduled_at, state, result)
                              values ("{}", (select nkey
                              from availability
-                             where shostname = "{}"),  "{}", "{}", {})""".format(
-            job_id, node, cmd_argv, scheduled_at, state
+                             where shostname = "{}"),  "{}", "{}", {}, {})""".format(
+            job_id, node, cmd_argv, scheduled_at, state, result
         )
+        self.cursor.execute(sql)
+        self.db.commit()
+
+    def update_job(self, job_id, state, result, started_at, ended_at):
+        sql = """UPDATE jobs
+                 SET state = {jstate}, result = {jresult}, started_at = "{jstarted_at}", ended_at = "{jended_at}"
+                 WHERE id = "{jid}";""".format(
+            jid=job_id, jstarted_at=started_at, jended_at=ended_at, jstate=state, jresult=result
+        )
+        # TODO: handle case when any of the time fields might be == null/None
         self.cursor.execute(sql)
         self.db.commit()
 
@@ -300,14 +313,43 @@ class PlbmngDb:
         selected_columns = ["id", "shostname", "cmd_argv", "scheduled_at", "state", "result", "started_at", "ended_at"]
         sql = """SELECT {}
                  FROM jobs JOIN availability ON jobs.node = availability.nkey
-                 WHERE NOT state=3""".format(
-            ", ".join(selected_columns)
+                 WHERE NOT state={}""".format(
+            ", ".join(selected_columns), executor.PlbmngJobState["stopped"].value
         )
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
         selected_columns = tuple(selected_columns)
         ns_jobs = []
+        # rename shostname -> hostname, id -> job_id
+        selected_columns = [x.replace("shostname", "hostname") for x in selected_columns]
+        selected_columns = [x.replace("id", "job_id") for x in selected_columns]
         for row in data:
             if len(selected_columns) == len(row):
-                ns_jobs.append({selected_columns[i]: row[i] for i, _ in enumerate(row)})
+                args = {selected_columns[i]: row[i] for i, _ in enumerate(row)}
+                job = executor.PlbmngJob(**args)
+                ns_jobs.append(job)
+                # ns_jobs.append({selected_columns[i]: row[i] for i, _ in enumerate(row)})
         return ns_jobs
+
+    # TODO: deduplicate code
+    def get_stopped_jobs(self):
+        selected_columns = ["id", "shostname", "cmd_argv", "scheduled_at", "state", "result", "started_at", "ended_at"]
+        sql = """SELECT {}
+                 FROM jobs JOIN availability ON jobs.node = availability.nkey
+                 WHERE state={}""".format(
+            ", ".join(selected_columns), executor.PlbmngJobState["stopped"].value
+        )
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        selected_columns = tuple(selected_columns)
+        s_jobs = []
+        # rename shostname -> hostname, id -> job_id
+        selected_columns = [x.replace("shostname", "hostname") for x in selected_columns]
+        selected_columns = [x.replace("id", "job_id") for x in selected_columns]
+        for row in data:
+            if len(selected_columns) == len(row):
+                args = {selected_columns[i]: row[i] for i, _ in enumerate(row)}
+                job = executor.PlbmngJob(**args)
+                s_jobs.append(job)
+                # ns_jobs.append({selected_columns[i]: row[i] for i, _ in enumerate(row)})
+        return s_jobs

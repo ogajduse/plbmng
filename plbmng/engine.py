@@ -5,11 +5,15 @@ import os
 import signal
 import sys
 from datetime import datetime
+from itertools import groupby
 
 from dialog import Dialog
+from gevent import joinall
+from pssh.clients.native.parallel import ParallelSSHClient
 
+from plbmng.executor import PlbmngJob
 from plbmng.executor import PlbmngJobResult
-from plbmng.executor import PlbmngJobState
+from plbmng.executor import time_from_iso
 from plbmng.executor import time_from_timestamp
 from plbmng.lib.database import PlbmngDb
 from plbmng.lib.library import clear
@@ -17,7 +21,9 @@ from plbmng.lib.library import copy_files
 from plbmng.lib.library import get_all_nodes
 from plbmng.lib.library import get_last_server_access
 from plbmng.lib.library import get_non_stopped_jobs
+from plbmng.lib.library import get_remote_jobs
 from plbmng.lib.library import get_server_info
+from plbmng.lib.library import get_stopped_jobs
 from plbmng.lib.library import NeedToFillPasswdFirstInfo
 from plbmng.lib.library import OPTION_DNS
 from plbmng.lib.library import OPTION_GCC
@@ -38,6 +44,7 @@ from plbmng.lib.library import verify_ssh_credentials_exist
 from plbmng.utils.config import first_run
 from plbmng.utils.config import get_db_path
 from plbmng.utils.config import get_plbmng_user_dir
+from plbmng.utils.config import get_remote_jobs_path
 from plbmng.utils.config import settings
 from plbmng.utils.logger import init_logger
 from plbmng.utils.logger import logger
@@ -62,7 +69,7 @@ class Engine:
         from plbmng import __version__
 
         init_logger()
-        self.d = Dialog(dialog="dialog")
+        self.d = Dialog(dialog="dialog", autowidgetsize=True)
         try:  # check whether it is first run
             settings.first_run
             PlbmngDb.init_db_schema()
@@ -127,27 +134,31 @@ class Engine:
                 exit(0)
 
     def new_features_menu(self):
-        code, tag = self.d.menu(
-            "Choose one of the following options:",
-            choices=[
-                ("1", "Copy files to server(s)"),
-                ("2", "Run remote command"),
-                ("3", "Schedule remote job"),
-                ("4", "Display jobs state"),
-            ],
-            title="New features menu",
-        )
-        if code == self.d.OK:
-            if tag == "1":
-                self.copy_file()
-            elif tag == "2":
-                self.run_remote_command()
-            elif tag == "3":
-                self.schedule_remote_cmd()
-            elif tag == "4":
-                self.display_non_finished_jobs()
-            elif tag == "5":
-                self.refresh_jobs_status()
+        while True:
+            code, tag = self.d.menu(
+                "Choose one of the following options:",
+                choices=[
+                    ("1", "Copy files to server(s)"),
+                    ("2", "Run remote command"),
+                    ("3", "Schedule remote job"),
+                    ("4", "Display jobs state"),
+                    ("5", "Refresh jobs state"),
+                ],
+                title="New features menu",
+            )
+            if code == self.d.OK:
+                if tag == "1":
+                    self.copy_file()
+                elif tag == "2":
+                    self.run_remote_command()
+                elif tag == "3":
+                    self.schedule_remote_cmd()
+                elif tag == "4":
+                    self.display_jobs_state()
+                elif tag == "5":
+                    self.refresh_jobs_status()
+            else:
+                return
 
     def extras_menu(self):
         """
@@ -157,9 +168,8 @@ class Engine:
             "Choose one of the following options:",
             choices=[
                 ("1", "Add server to database"),
-                ("2", "Copy files to server/servers"),
-                ("3", "Statistics"),
-                ("4", "About"),
+                ("2", "Statistics"),
+                ("3", "About"),
             ],
             title="EXTRAS",
         )
@@ -167,8 +177,6 @@ class Engine:
             if tag == "1":
                 self.add_external_server_menu()
             elif tag == "2":
-                self.copy_file()
-            elif tag == "3":
                 self.stats_gui(self.db.get_stats())
             elif tag == "3":
                 self.about_gui(self.VERSION)
@@ -180,15 +188,19 @@ class Engine:
         :return: Code based on PING AND SSH values.
         :rtype: int
         """
+        active_filters = self.db.get_filters_for_access_servers(binary_out=True)
         code, t = self.d.checklist(
             "Press SPACE key to choose filtering options",
             height=0,
             width=0,
             list_height=0,
-            choices=[("1", "Enable SSH accessible machines", False), ("2", "Enable PING accessible machines", False)],
+            choices=[
+                ("1", "Search for SSH accessible machines", active_filters["ssh"]),
+                ("2", "Search for PING accessible machines", active_filters["ping"]),
+            ],
         )
 
-        if self.d.OK:
+        if code == self.d.OK:
             self.db.set_filtering_options(t)
             if len(t) == 2:
                 return 3
@@ -196,6 +208,7 @@ class Engine:
                 return 1
             elif "2" in t:
                 return 2
+        # No filters applied
         return None
 
     def stats_gui(self, stats_dic: dict) -> None:
@@ -239,6 +252,7 @@ class Engine:
                     Tomas Andrasov
                     Filip Suba
                     Martin Kacmarcik
+                    Ondrej Gajdusek
 
                 Version """
             + version
@@ -380,34 +394,104 @@ class Engine:
             self.d.msgbox("You did not select any servers!")
             return
         schedule_remote_command(remote_cmd, date, servers, self.db)
+        self.d.msgbox("Command scheduled successfully.")
 
-    def display_job_state(self, job):
-        text = f"""ID:            {job['id']}"
-Node hostname: {job['shostname']}
-Command:       {job['cmd_argv']}
-Scheduled at:  {time_from_timestamp(int(float(job['scheduled_at'])))}
-State:         {PlbmngJobState(job['state']).name}
-Result:        {'Not result yet' if not job['result'] else PlbmngJobResult(job['result']).name}
-Started at     {'Not yet started' if not job['started_at'] else job['started_at']}
-Ended at       {'Not yet ended' if not job['ended_at'] else job['ended_at']}"""
+    def display_job_state(self, jobs, job_id: str):
+        job = list(filter(lambda jobs_found: jobs_found.job_id == job_id, jobs))[0]
+        text = f"""Scheduled at:  {time_from_timestamp(int(float(job.scheduled_at)))}
+Node hostname: {job.hostname}
+Command:       {job.cmd_argv}
+State:         {job.state.name}
+Result:        {'No result yet' if not job.result else PlbmngJobResult(job.result).name}
+Started at     {'Not yet started' if not job.started_at else time_from_timestamp(float(job.started_at))}
+Ended at       {'Not yet ended' if not job.ended_at else time_from_timestamp(float(job.ended_at))}
+ID:            {job.job_id}"""
 
         self.d.scrollbox(text)
 
+    def display_jobs_state(self):
+        while True:
+            code, tag = self.d.menu(
+                "Choose one of the following options:",
+                choices=[
+                    ("1", "Display non-finished jobs state"),
+                    ("2", "Display finished jobs state"),
+                ],
+                title="Display jobs state menu",
+            )
+            if code == self.d.OK:
+                if tag == "1":
+                    self.display_non_finished_jobs()
+                elif tag == "2":
+                    self.display_finished_jobs()
+            else:
+                return
+
     def display_non_finished_jobs(self):
-        ns_jobs = get_non_stopped_jobs(self.db)
-        pass
+        ns_jobs: list(PlbmngJob) = get_non_stopped_jobs(self.db)
         text = "Non-finished jobs:"
         choices = []
-        for job in ns_jobs:
-            choices.append((job["id"], job["cmd_argv"]))
-        code, tag = self.d.menu(text, choices=choices)
+        if len(ns_jobs) > 0:
+            for job in ns_jobs:
+                choices.append((job.job_id, job.cmd_argv))
+            while True:
+                code, tag = self.d.menu(text, choices=choices)
+                if code == self.d.OK:
+                    self.display_job_state(ns_jobs, tag)
+                else:
+                    return
+        else:
+            self.d.msgbox("No running or scheduled jobs to display.")
 
-        if code == self.d.OK:
-            selected_job = list(filter(lambda jobs_found: jobs_found["id"] == tag, ns_jobs))[0]
-            self.display_job_state(selected_job)
+    def display_finished_jobs(self):
+        f_jobs: list(PlbmngJob) = get_stopped_jobs(self.db)
+        text = "Finished jobs:"
+        choices = []
+        if len(f_jobs) > 0:
+            for job in f_jobs:
+                choices.append((job.job_id, job.cmd_argv))
+            while True:
+                code, tag = self.d.menu(text, choices=choices)
+                if code == self.d.OK:
+                    self.display_job_state(f_jobs, tag)
+                else:
+                    return
+        else:
+            self.d.msgbox("No finished jobs to display.")
 
-    def refresh_jobs_status():
-        pass
+    def refresh_jobs_status(self):
+        def key_func(k):
+            return k.hostname
+
+        ns_jobs = get_non_stopped_jobs(self.db)
+        if len(ns_jobs) < 1:
+            self.d.msgbox("There are no non-stopped jobs to update.")
+            return
+        hosts = list(dict(groupby(ns_jobs, key_func)).keys())
+        ssh_key = settings.remote_execution.ssh_key
+        user = settings.planetlab.slice
+        client = ParallelSSHClient(hosts, user=user, pkey=ssh_key)
+        cmds = client.copy_remote_file(f"/home/{user}/.plbmng/jobs.json", f"{get_remote_jobs_path()}/jobs.json")
+        joinall(cmds, raise_error=True)
+
+        fetched_jobs = []
+        for host in hosts:
+            # get jobs for the current host
+            fetched_jobs.extend(get_remote_jobs(host))
+        jobs_intersection = set(fetched_jobs).intersection(set(ns_jobs))
+        # jobs_to_ignore = set(fetched_jobs).difference(set(ns_jobs))
+        # jobs_to_delete_from_local_db = set(ns_jobs).difference(set(fetched_jobs))
+        # update database
+        for job in jobs_intersection:
+            job = next((fjob for fjob in fetched_jobs if fjob == job), None)
+            self.db.update_job(
+                job.job_id,
+                job.state.value,
+                job.result.value,
+                time_from_iso(job.started_at).timestamp(),
+                time_from_iso(job.ended_at).timestamp(),
+            )
+        self.d.msgbox("Jobs updated successfully.")
 
     def copy_file(self):
         """
@@ -459,7 +543,7 @@ Ended at       {'Not yet ended' if not job['ended_at'] else job['ended_at']}"""
                     ("3", "Search by DNS"),
                     ("4", "Search by IP"),
                     ("5", "Search by location"),
-                    ("6", "Search by available software/hardware"),
+                    ("6", "Search by SW/HW"),
                 ],
                 title="ACCESS SERVERS",
             )
