@@ -9,9 +9,11 @@ import webbrowser
 from multiprocessing import Lock
 from multiprocessing import Pool
 from multiprocessing import Value
+from pathlib import Path
 from platform import system
 
 import folium
+import pysftp
 from dialog import Dialog
 
 import plbmng.lib.database
@@ -140,7 +142,7 @@ def schedule_remote_command(cmd, date, hosts, db):
             executor.PlbmngJobState["scheduled"].value,
             executor.PlbmngJobResult["pending"].value,
         )
-        sshlib.command(executor_cmd, hostname=host, username=user, key_filename=ssh_key)
+        sshlib.command(executor_cmd, hostname=host, username=user, key_filename=ssh_key, background=True)
     return True
 
 
@@ -150,6 +152,10 @@ def get_non_stopped_jobs(db):
 
 def get_stopped_jobs(db):
     return db.get_stopped_jobs()
+
+
+def get_all_jobs(db):
+    return db.get_all_jobs()
 
 
 def get_server_params(ip_or_hostname: str, ssh=False) -> list:
@@ -561,7 +567,6 @@ def verify_api_credentials_exist(path: str) -> bool:
     :return: Return False if USERNAME or PASSWORD is not set. If both are set, return True.
     :rtype: bool
     """
-    # TODO: use dynaconf validators here?
     try:
         assert settings.planetlab.username and settings.planetlab.username != ""
         assert settings.planetlab.password and settings.planetlab.password != ""
@@ -827,6 +832,10 @@ def secure_copy(host: str):
     return False
 
 
+def jobs_downloaded_artefacts(jobs):
+    return [job for job in jobs if Path(f"{get_remote_jobs_path()}/{job.hostname}/{job.job_id}").exists()]
+
+
 def parallel_copy(dialog, source_path: str, hosts: list, destination_path: str) -> bool:
     """
 
@@ -895,3 +904,12 @@ def run_remote_command(dialog: Dialog, command: str, hosts: list) -> bool:
 def get_remote_jobs(host: str) -> list:
     with executor.PlbmngJobsFile(f"{get_remote_jobs_path()}/jobs.json_{host}") as jobs:
         return jobs.jobs
+
+
+def get_host_jobs_artefacts(host: str):
+    username = settings.planetlab.slice
+    hostname = "pl2.uni-rostock.de"
+    ssh_key = settings.remote_execution.ssh_key
+    with pysftp.Connection(hostname, username=username, private_key=ssh_key) as sftp:
+        with sftp.cd(f"/home/{username}/.plbmng/jobs"):
+            sftp.get_r(".", f"{get_remote_jobs_path()}/{host}/")

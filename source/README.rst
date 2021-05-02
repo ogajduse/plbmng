@@ -76,7 +76,7 @@ Once you have added your credentials, use ``Update server list now`` option in t
 ``Plot servers on map``:
              - ``Plot all servers`` - will create and open HTML file with plotted servers on map.
              - ``Plot servers responding to ping``
-             - ``Plot ssh available servers``
+             - ``Plot SSH available servers``
 
 .. image:: images/plot.png
     :alt: plbmng plot servers on map menu

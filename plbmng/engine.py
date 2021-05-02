@@ -6,24 +6,30 @@ import signal
 import sys
 from datetime import datetime
 from itertools import groupby
+from pathlib import Path
 
+import pysftp
 from dialog import Dialog
 from gevent import joinall
+from paramiko.ssh_exception import SSHException
 from pssh.clients.native.parallel import ParallelSSHClient
 
 from plbmng.executor import PlbmngJob
 from plbmng.executor import PlbmngJobResult
+from plbmng.executor import PlbmngJobState
 from plbmng.executor import time_from_iso
 from plbmng.executor import time_from_timestamp
 from plbmng.lib.database import PlbmngDb
 from plbmng.lib.library import clear
 from plbmng.lib.library import copy_files
+from plbmng.lib.library import get_all_jobs
 from plbmng.lib.library import get_all_nodes
 from plbmng.lib.library import get_last_server_access
 from plbmng.lib.library import get_non_stopped_jobs
 from plbmng.lib.library import get_remote_jobs
 from plbmng.lib.library import get_server_info
 from plbmng.lib.library import get_stopped_jobs
+from plbmng.lib.library import jobs_downloaded_artefacts
 from plbmng.lib.library import NeedToFillPasswdFirstInfo
 from plbmng.lib.library import OPTION_DNS
 from plbmng.lib.library import OPTION_GCC
@@ -68,6 +74,8 @@ class Engine:
     def __init__(self):
         from plbmng import __version__
 
+        self.version = __version__
+
         init_logger()
         self.d = Dialog(dialog="dialog", autowidgetsize=True)
         try:  # check whether it is first run
@@ -109,8 +117,8 @@ class Engine:
                     ("1", "Access servers"),
                     ("2", "Monitor servers"),
                     ("3", "Plot servers on map"),
-                    ("4", "Extras"),
-                    ("5", "New Features"),
+                    ("4", "Run jobs on servers"),
+                    ("5", "Extras"),
                 ],
                 title="MAIN MENU",
             )
@@ -126,25 +134,27 @@ class Engine:
                 elif tag == "3":
                     self.plot_servers_on_map_gui()
                 elif tag == "4":
-                    self.extras_menu()
+                    self.run_jobs_on_servers_menu()
                 elif tag == "5":
-                    self.new_features_menu()
+                    self.extras_menu()
             else:
                 clear()
                 exit(0)
 
-    def new_features_menu(self):
+    def run_jobs_on_servers_menu(self):
         while True:
             code, tag = self.d.menu(
                 "Choose one of the following options:",
                 choices=[
                     ("1", "Copy files to server(s)"),
-                    ("2", "Run remote command"),
+                    ("2", "Run one-off remote command"),
                     ("3", "Schedule remote job"),
                     ("4", "Display jobs state"),
                     ("5", "Refresh jobs state"),
+                    ("6", "Job artefacts"),
+                    ("7", "Clean up jobs"),
                 ],
-                title="New features menu",
+                title="Remote execution menu",
             )
             if code == self.d.OK:
                 if tag == "1":
@@ -154,9 +164,13 @@ class Engine:
                 elif tag == "3":
                     self.schedule_remote_cmd()
                 elif tag == "4":
-                    self.display_jobs_state()
+                    self.display_jobs_state_menu()
                 elif tag == "5":
                     self.refresh_jobs_status()
+                elif tag == "6":
+                    self.job_artefacts_menu()
+                elif tag == "7":
+                    self.job_cleanup_menu()
             else:
                 return
 
@@ -179,7 +193,7 @@ class Engine:
             elif tag == "2":
                 self.stats_gui(self.db.get_stats())
             elif tag == "3":
-                self.about_gui(self.VERSION)
+                self.about_gui(self.version)
 
     def filtering_options_gui(self) -> int:
         """
@@ -224,7 +238,7 @@ class Engine:
         Servers in database: """
             + str(stats_dic["all"])
             + """
-        Ssh available: """
+        SSH available: """
             + str(stats_dic["ssh"])
             + """
         Ping available: """
@@ -233,7 +247,7 @@ class Engine:
         """,
             width=0,
             height=0,
-            title="Current statistics from last update of servers status:",
+            title="Current statistics since the last servers status update:",
         )
 
     def about_gui(self, version):
@@ -273,7 +287,7 @@ class Engine:
                 "Choose one of the following options:",
                 choices=[
                     ("1", "Plot servers responding to ping"),
-                    ("2", "Plot ssh available servers"),
+                    ("2", "Plot SSH available servers"),
                     ("3", "Plot all servers"),
                 ],
                 title="Map menu",
@@ -396,9 +410,8 @@ class Engine:
         schedule_remote_command(remote_cmd, date, servers, self.db)
         self.d.msgbox("Command scheduled successfully.")
 
-    def display_job_state(self, jobs, job_id: str):
-        job = list(filter(lambda jobs_found: jobs_found.job_id == job_id, jobs))[0]
-        text = f"""Scheduled at:  {time_from_timestamp(int(float(job.scheduled_at)))}
+    def job_info_s(self, job):
+        return f"""Scheduled at:  {time_from_timestamp(int(float(job.scheduled_at)))}
 Node hostname: {job.hostname}
 Command:       {job.cmd_argv}
 State:         {job.state.name}
@@ -407,9 +420,12 @@ Started at     {'Not yet started' if not job.started_at else time_from_timestamp
 Ended at       {'Not yet ended' if not job.ended_at else time_from_timestamp(float(job.ended_at))}
 ID:            {job.job_id}"""
 
+    def display_job_state(self, jobs, job_id: str):
+        job = list(filter(lambda jobs_found: jobs_found.job_id == job_id, jobs))[0]
+        text = self.job_info_s(job)
         self.d.scrollbox(text)
 
-    def display_jobs_state(self):
+    def display_jobs_state_menu(self):
         while True:
             code, tag = self.d.menu(
                 "Choose one of the following options:",
@@ -428,36 +444,41 @@ ID:            {job.job_id}"""
                 return
 
     def display_non_finished_jobs(self):
-        ns_jobs: list(PlbmngJob) = get_non_stopped_jobs(self.db)
-        text = "Non-finished jobs:"
-        choices = []
-        if len(ns_jobs) > 0:
-            for job in ns_jobs:
-                choices.append((job.job_id, job.cmd_argv))
-            while True:
-                code, tag = self.d.menu(text, choices=choices)
-                if code == self.d.OK:
-                    self.display_job_state(ns_jobs, tag)
-                else:
-                    return
-        else:
-            self.d.msgbox("No running or scheduled jobs to display.")
+        jobs: list(PlbmngJob) = get_non_stopped_jobs(self.db)
+        self.host_jobs_menu(jobs, "non-finished")
 
     def display_finished_jobs(self):
-        f_jobs: list(PlbmngJob) = get_stopped_jobs(self.db)
-        text = "Finished jobs:"
-        choices = []
-        if len(f_jobs) > 0:
-            for job in f_jobs:
-                choices.append((job.job_id, job.cmd_argv))
+        jobs: list(PlbmngJob) = get_stopped_jobs(self.db)
+        self.host_jobs_menu(jobs, "finished")
+
+    def host_jobs_menu(self, jobs, state):
+        def key_func(k):
+            return k.hostname
+
+        host_choices = []
+        hosts = list(dict(groupby(jobs, key_func)).keys())
+        if len(hosts) > 0:
+            for i, host in enumerate(hosts, start=1):
+                host_choices.append((str(i), host))
             while True:
-                code, tag = self.d.menu(text, choices=choices)
+                text = f"Hosts with {state} jobs:"
+                code, tag = self.d.menu(text, choices=host_choices)
                 if code == self.d.OK:
-                    self.display_job_state(f_jobs, tag)
+                    selected_host = hosts[int(tag) - 1]
+                    choices = []
+                    for job in filter(lambda x: x.hostname == selected_host, jobs):
+                        choices.append((job.job_id, job.cmd_argv))
+                    while True:
+                        text = f"{state.capitalize()} jobs on {selected_host}"
+                        code, tag = self.d.menu(text, choices=choices)
+                        if code == self.d.OK:
+                            self.display_job_state(jobs, tag)
+                        else:
+                            break
                 else:
                     return
         else:
-            self.d.msgbox("No finished jobs to display.")
+            self.d.msgbox(f"No {state} jobs to display.")
 
     def refresh_jobs_status(self):
         def key_func(k):
@@ -492,6 +513,173 @@ ID:            {job.job_id}"""
                 time_from_iso(job.ended_at).timestamp(),
             )
         self.d.msgbox("Jobs updated successfully.")
+
+    def job_artefacts_menu(self):
+        while True:
+            code, tag = self.d.menu(
+                "Choose one of the following options:",
+                choices=[
+                    ("1", "Show job artefacts"),
+                    ("2", "Download job artefacts"),
+                ],
+                title="Job artefacts menu",
+            )
+            if code == self.d.OK:
+                if tag == "1":
+                    self.show_job_artefacts_menu()
+                elif tag == "2":
+                    self.download_job_artefacts()
+            else:
+                return
+
+    def download_job_artefacts(self):
+        def key_func(k):
+            return k.hostname
+
+        jobs = get_stopped_jobs(self.db)
+        # make difference between jobs that already have artefacts downloaded
+        jobs_interested = set(jobs).difference(set(jobs_downloaded_artefacts(jobs)))
+        if not jobs_interested:
+            self.d.msgbox("No job artefacts to update.")
+        hosts = list(dict(groupby(jobs_interested, key_func)).keys())
+
+        ssh_key = settings.remote_execution.ssh_key
+        user = settings.planetlab.slice
+        unsuccessfull_hosts = []
+        successfull_hosts = []
+        for host in hosts:
+            local_dir = f"{get_remote_jobs_path()}/{host}"
+            Path(local_dir).mkdir(exist_ok=True)
+            try:
+                with pysftp.Connection(host, username=user, private_key=ssh_key) as sftp:
+                    with sftp.cd(f"/home/{user}/.plbmng/jobs"):
+                        sftp.get_r(".", local_dir)
+                        successfull_hosts.append(host)
+            except SSHException:
+                unsuccessfull_hosts.append(host)
+
+        if len(unsuccessfull_hosts) > 0:
+            text = (
+                "The job artefacts from the following hosts were not downloaded:\n"
+                + "\n".join(unsuccessfull_hosts)
+                + "\n\nMake sure that these hosts were added to the known_host file."
+            )
+            self.d.msgbox(text)
+
+        if len(successfull_hosts) > 0:
+            text = f"Job artefacts from {len(successfull_hosts)} host{'s' if len(successfull_hosts) > 1 else '' } \
+                downloaded successfully."
+        else:
+            text = "No job artefacts were downloaded."
+        self.d.msgbox(text)
+
+    def show_job_artefacts_menu(self):
+        def key_func(k):
+            return k.hostname
+
+        jobs = get_stopped_jobs(self.db)
+        jobs_art_down = jobs_downloaded_artefacts(jobs)
+
+        hosts = list(dict(groupby(jobs_art_down, key_func)).keys())
+        host_choices = []
+        if len(hosts) > 0:
+            for i, host in enumerate(hosts, start=1):
+                host_choices.append((str(i), host))
+            while True:
+                text = f"Hosts with downloaded artefacts:"
+                code, tag = self.d.menu(text, choices=host_choices)
+                if code == self.d.OK:
+                    selected_host = hosts[int(tag) - 1]
+                    choices = []
+                    for job in filter(lambda x: x.hostname == selected_host, jobs_art_down):
+                        choices.append((job.job_id, job.cmd_argv))
+                    while True:
+                        text = f"Job artefacts jobs from {selected_host}"
+                        code, tag = self.d.menu(text, choices=choices)
+                        if code == self.d.OK:
+                            self.server_job_artefacts_menu(jobs, tag)
+                        else:
+                            break
+                else:
+                    return
+        else:
+            self.d.msgbox(f"There are no job artefacts downloaded. Nothing to show.")
+
+    def server_job_artefacts_menu(self, jobs, job_id):
+        job = list(filter(lambda jobs_found: jobs_found.job_id == job_id, jobs))[0]
+        path = f"{get_remote_jobs_path()}/{job.hostname}/{job.job_id}/artefacts/"
+        p = Path(path).glob("**/*")
+        files = [x for x in p if x.is_file()]
+        artefact_choices = []
+        if files:
+            for i, file in enumerate(files, start=1):
+                artefact_choices.append((str(i), file.name))
+            while True:
+                text = f"Artefacts for job {job_id}:"
+                code, tag = self.d.menu(text, choices=artefact_choices)
+                if code == self.d.OK:
+                    selected_file = files[int(tag) - 1]
+                    self.d.textbox(selected_file.as_posix())
+                else:
+                    break
+
+    def job_cleanup_menu(self):
+        state_filter = {k: False for k in PlbmngJobState.list()}
+        server_filter = []
+        while True:
+            code, tag = self.d.menu(
+                "Choose one of the following options of filtering jobs:",
+                choices=[("1", "State"), ("2", "Servers"), ("3", "Preview jobs to cleanup")],
+                title="Jobs cleanup menu",
+            )
+            if code == self.d.OK:
+                if tag == "1":
+                    state_filter = self.job_state_choice_menu(state_filter)
+                elif tag == "2":
+                    server_filter = self.hosts_cleanup_filter_menu(server_filter)
+                elif tag == "3":
+                    self.preview_job_cleanup(state_filter, server_filter)
+            else:
+                return
+
+    def job_state_choice_menu(self, state_filter):
+        choices = []
+        for state, v in state_filter.items():
+            choices.append((str(state), PlbmngJobState(state).name.capitalize(), v))
+        code, tag = self.d.checklist(
+            "Press SPACE key to choose filtering options",
+            choices=choices,
+        )
+        return {s: (True if str(s) in tag else False) for s in state_filter}
+
+    def hosts_cleanup_filter_menu(self, server_filter):
+        def key_func(k):
+            return k.hostname
+
+        jobs: list(PlbmngJob) = get_all_jobs(self.db)
+        hosts = list(dict(groupby(jobs, key_func)).keys())
+        if len(hosts) > 0:
+            host_choices = [(str(i), host, host in server_filter) for i, host in enumerate(hosts, start=1)]
+            while True:
+                text = f"Choose hosts to filter:"
+                code, tag = self.d.checklist(text, choices=host_choices)
+                return [host for host in hosts if host in [hosts[int(t) - 1] for t in tag]]
+
+    def preview_job_cleanup(self, state_filter, server_filter):
+        state_filter = [PlbmngJobState(s) for s in state_filter if state_filter[s]]
+        jobs: list(PlbmngJob) = get_all_jobs(self.db)
+        filtered_jobs = filter(lambda job: (job.state in state_filter and job.hostname in server_filter), jobs)
+        filtered_jobs = sorted(filtered_jobs, key=lambda job: job.hostname)
+        hosts = groupby(filtered_jobs, lambda job: job.hostname)
+        text = ""
+        for host, h_jobs in hosts:
+            text += host + "\n"
+            for job in h_jobs:
+                jobtext = self.job_info_s(job)
+                text += "\t\t" + "\t\t".join(jobtext.splitlines(True)) + "\n\n"
+            text += "\n\n"
+
+        self.d.scrollbox(text)
 
     def copy_file(self):
         """
@@ -538,8 +726,8 @@ ID:            {job.job_id}"""
             code, tag = self.d.menu(
                 "Choose one of the following options:" + menu_text,
                 choices=[
-                    ("1", "Filtering options"),
-                    ("2", "Access last server"),
+                    ("1", "Access last server"),
+                    ("2", "Filtering options"),
                     ("3", "Search by DNS"),
                     ("4", "Search by IP"),
                     ("5", "Search by location"),
@@ -550,12 +738,14 @@ ID:            {job.job_id}"""
             if code == self.d.OK:
                 # Filtering options
                 nodes = self.db.get_nodes(path=self.path, choose_availability_option=self._filtering_options)
-                if tag == "1":
-                    self._filtering_options = self.filtering_options_gui()
                 # Access last server
+                if tag == "1":
+                    if checklist:
+                        return self.last_server_menu(True)
+                    else:
+                        self.last_server_menu(checklist)
                 elif tag == "2":
-                    self.last_server_menu()
-                    # TODO: last_server_menu() should return the server
+                    self._filtering_options = self.filtering_options_gui()
                 elif tag == "3":
                     ret = self.search_by_regex_menu(nodes, OPTION_DNS, checklist)
                     if checklist:
@@ -648,7 +838,7 @@ ID:            {job.job_id}"""
             with open(self.path + self.user_nodes, "w") as nodeFile:
                 nodeFile.write(text)
 
-    def last_server_menu(self) -> None:
+    def last_server_menu(self, no_menu) -> None:
         """
         Return last accessed server menu.
         """
@@ -658,6 +848,9 @@ ID:            {job.job_id}"""
             info_about_node_dic, chosen_node = get_last_server_access(self.path)
         except FileNotFoundError:
             self.d.msgbox("You did not access any server yet.")
+            return
+        if no_menu:
+            return [chosen_node["dns"]]
         if info_about_node_dic is None or chosen_node is None:
             return
         returned_choice = self.print_server_info(info_about_node_dic)

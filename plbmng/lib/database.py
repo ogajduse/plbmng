@@ -124,7 +124,7 @@ class PlbmngDb:
         # get numbers of all servers in database
         self.cursor.execute("select count(*) from availability;")
         stat_dic["all"] = self.cursor.fetchall()[0][0]
-        # ssh available
+        # SSH available
         self.cursor.execute("select count(*) from availability where bssh='T';")
         stat_dic["ssh"] = self.cursor.fetchall()[0][0]
         # ping available
@@ -143,7 +143,7 @@ class PlbmngDb:
         stat_dic = dict()
         self.cursor.execute("select count(*) from programs;")
         stat_dic["all"] = self.cursor.fetchall()[0][0]
-        # ssh available
+        # SSH available
         self.cursor.execute("select count(*) from programs where sgcc <> 'unknown';")
         stat_dic["gcc"] = self.cursor.fetchall()[0][0]
         # ping available
@@ -338,6 +338,27 @@ class PlbmngDb:
                  FROM jobs JOIN availability ON jobs.node = availability.nkey
                  WHERE state={}""".format(
             ", ".join(selected_columns), executor.PlbmngJobState["stopped"].value
+        )
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        selected_columns = tuple(selected_columns)
+        s_jobs = []
+        # rename shostname -> hostname, id -> job_id
+        selected_columns = [x.replace("shostname", "hostname") for x in selected_columns]
+        selected_columns = [x.replace("id", "job_id") for x in selected_columns]
+        for row in data:
+            if len(selected_columns) == len(row):
+                args = {selected_columns[i]: row[i] for i, _ in enumerate(row)}
+                job = executor.PlbmngJob(**args)
+                s_jobs.append(job)
+                # ns_jobs.append({selected_columns[i]: row[i] for i, _ in enumerate(row)})
+        return s_jobs
+
+    def get_all_jobs(self):
+        selected_columns = ["id", "shostname", "cmd_argv", "scheduled_at", "state", "result", "started_at", "ended_at"]
+        sql = """SELECT {}
+                 FROM jobs JOIN availability ON jobs.node = availability.nkey""".format(
+            ", ".join(selected_columns)
         )
         self.cursor.execute(sql)
         data = self.cursor.fetchall()

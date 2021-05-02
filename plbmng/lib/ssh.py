@@ -378,7 +378,7 @@ def command(
             password=password,
             key_filename=key_filename,
             timeout=timeout,
-            port=22,
+            port=port,
         ) as channel:
             channel.exec_command(cmd)
     else:

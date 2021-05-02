@@ -150,7 +150,9 @@ def time_from_timestamp(timestamp_in):
 
 
 class PlbmngEnum(enum.Enum):
-    pass
+    @classmethod
+    def list(cls):
+        return list(map(lambda c: c.value, cls))
 
 
 class PlbmngJobResult(PlbmngEnum):
@@ -210,14 +212,14 @@ class PlbmngJob:
         return getattr(cls, o)
 
     def to_json(self):
-        return json.dumps(self, default=lambda o: o.__dict__)
+        return json.dumps(self, cls=PlbmngJobEncoder)
 
 
 class PlbmngJobEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, PlbmngJob):
             return o.__dict__
-        elif isinstance(o, PlbmngJobResult) or isinstance(o, PlbmngJobState):
+        elif isinstance(o, PlbmngEnum):
             return o.name
         else:
             raise Exception("Object is not of the expected instance")
