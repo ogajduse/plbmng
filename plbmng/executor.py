@@ -275,8 +275,12 @@ class PlbmngJobsFile:
         job = PlbmngJob(job_id=job_id, cmd_argv=cmd_argv, *args, **kwargs)
         self.jobs.append(job)
 
-    def get_job(self, job_id, failsafe=False):
-        job_iterator = filter(lambda jobs_found: jobs_found["job_id"] == job_id, self.jobs)
+    def get_job(self, job, failsafe=False):
+        if isinstance(job, PlbmngJob):
+            job_iterator = filter(lambda job_found: job_found == job, self.jobs)
+        else:
+            # job is the job_id
+            job_iterator = filter(lambda jobs_found: jobs_found["job_id"] == job, self.jobs)
         jobs_found = list(job_iterator)
         if len(jobs_found) > 1:
             raise Exception("More than one item found. Check the DB consistency.")
@@ -284,7 +288,7 @@ class PlbmngJobsFile:
             if failsafe:
                 return None
             else:
-                raise Exception("No job found with ID: {}".format(job_id))
+                raise Exception("No job found with ID: {}".format(job))
         return jobs_found[0]
 
     def get_all_of_attribute(self, attr, val, failsafe=False):

@@ -1,6 +1,8 @@
 from setuptools import find_packages
 from setuptools import setup
 
+from plbmng import __version__
+
 install_requires = (
     [
         "vincent",
@@ -37,7 +39,7 @@ install_requires = (
 setup(
     name="plbmng",
     description="Tool for monitoring PlanetLab network",
-    version="0.4.2.post1",
+    version=__version__,
     license="MIT",
     packages=find_packages(),
     package_data={"plbmng": ["database/default.node"]},
@@ -45,8 +47,6 @@ setup(
     install_requires=install_requires,
     dependency_links=["https://github.com/pandas-dev/pandas/archive/master.zip?ref=master#egg=pandas"],
     url="https://gitlab.com/utko-planetlab/plbmng",
-    # author='',
-    # author_email='xandra03@stud.feec.vutbr.cz',
     maintainer="Dan Komosny",
     maintainer_email="komosny@feec.vutbr.cz",
     project_urls={

@@ -12,6 +12,7 @@ from vincent import ValueRef
 from vincent import Visualization
 
 from plbmng.utils.config import get_map_path
+from plbmng.utils.config import get_plbmng_geolocation_dir
 from plbmng.utils.logger import logger
 
 
@@ -51,8 +52,7 @@ def plot_server_on_map(nodes=None, file_path=None):
 
     vis.marks.append(mark)
     vis.axis_titles(x="days", y="latency [ms]")
-    # TODO: save vega file to ~/.plbmng dir
-    vis.to_json("vega.json")
+    vis.to_json(f"{get_plbmng_geolocation_dir()}/vega.json")
 
     map_full = folium.Map(location=[45.372, -121.6972], zoom_start=2)
 

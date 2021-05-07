@@ -22,6 +22,7 @@ from plbmng.executor import time_from_timestamp
 from plbmng.lib.database import PlbmngDb
 from plbmng.lib.library import clear
 from plbmng.lib.library import copy_files
+from plbmng.lib.library import delete_jobs
 from plbmng.lib.library import get_all_jobs
 from plbmng.lib.library import get_all_nodes
 from plbmng.lib.library import get_last_server_access
@@ -97,7 +98,7 @@ class Engine:
 
         def signal_handler(sig, frame):
             clear()
-            print("Terminating program. You have pressed Ctrl+C")
+            logger.info("Terminating program. You have pressed Ctrl+C")
             exit(1)
 
         signal.signal(signal.SIGINT, signal_handler)
@@ -273,8 +274,6 @@ class Engine:
             + """
                 This application is licensed under MIT license.
                 """,
-            width=0,
-            height=0,
             title="About",
         )
 
@@ -367,12 +366,19 @@ class Engine:
 
     def pick_date(self):
         text = "Select date you want to run the job at."
-        code, date = self.d.calendar(text=text, height=None, width=50)
-        code, time = self.d.timebox(text, height=20, width=50)
-        return datetime.strptime(
-            f"{date[0]:0>2}, {date[1]:0>2}, {date[2]:0>2}, {time[0]:0>2}, {time[1]:0>2}, {time[2]:0>2}",
-            "%d, %m, %Y, %H, %M, %S",
-        )
+        code, date = self.d.calendar(text=text)
+        if code == self.d.OK:
+            code, time = self.d.timebox(text)
+            if code == self.d.OK:
+                if date and time:
+                    return datetime.strptime(
+                        f"{date[0]:0>2}, {date[1]:0>2}, {date[2]:0>2}, {time[0]:0>2}, {time[1]:0>2}, {time[2]:0>2}",
+                        "%d, %m, %Y, %H, %M, %S",
+                    )
+                else:
+                    return None
+        if code == self.d.CANCEL:
+            return None
 
     def run_remote_command(self):
         text = "Type in the remote command"
@@ -399,8 +405,14 @@ class Engine:
         text = "Type in the remote command"
         init = ""
         date = self.pick_date()
+        if not date:
+            self.d.msgbox("Wrong date input!")
+            return
         code, remote_cmd = self.d.inputbox(text=text, init=init, height=0, width=0)
         if code == self.d.OK:
+            if not remote_cmd:
+                self.d.msgbox("No remote command entered. Please provide a command to run on the remote host.")
+                return
             servers = self.access_servers_gui(checklist=True)
         else:
             return
@@ -541,6 +553,7 @@ ID:            {job.job_id}"""
         jobs_interested = set(jobs).difference(set(jobs_downloaded_artefacts(jobs)))
         if not jobs_interested:
             self.d.msgbox("No job artefacts to update.")
+            return
         hosts = list(dict(groupby(jobs_interested, key_func)).keys())
 
         ssh_key = settings.remote_execution.ssh_key
@@ -551,6 +564,7 @@ ID:            {job.job_id}"""
             local_dir = f"{get_remote_jobs_path()}/{host}"
             Path(local_dir).mkdir(exist_ok=True)
             try:
+                # TODO: Use pssh instead of pysftp
                 with pysftp.Connection(host, username=user, private_key=ssh_key) as sftp:
                     with sftp.cd(f"/home/{user}/.plbmng/jobs"):
                         sftp.get_r(".", local_dir)
@@ -562,7 +576,7 @@ ID:            {job.job_id}"""
             text = (
                 "The job artefacts from the following hosts were not downloaded:\n"
                 + "\n".join(unsuccessfull_hosts)
-                + "\n\nMake sure that these hosts were added to the known_host file."
+                + "\n\nMake sure that these hosts were added to the 'known_hosts' file."
             )
             self.d.msgbox(text)
 
@@ -664,13 +678,31 @@ ID:            {job.job_id}"""
                 text = f"Choose hosts to filter:"
                 code, tag = self.d.checklist(text, choices=host_choices)
                 return [host for host in hosts if host in [hosts[int(t) - 1] for t in tag]]
+        else:
+            text = "There are no hosts to filter by. This indicates that you have no jobs in database."
+            self.d.msgbox(text)
 
     def preview_job_cleanup(self, state_filter, server_filter):
+        invalid_state_f = all(s is False for s in state_filter.values())
+        invalid_server_f = server_filter is None or len(server_filter) < 1
+        text = ""
+        if invalid_state_f:
+            text += "No state was chosen. Please choose at least one state to filter by."
+        if invalid_server_f:
+            if invalid_state_f:
+                text += "\n\n"
+            text += "No server was chosen. Please choose at least one server to filter by."
+        if invalid_state_f or invalid_server_f:
+            self.d.msgbox(text=text)
+            return
         state_filter = [PlbmngJobState(s) for s in state_filter if state_filter[s]]
         jobs: list(PlbmngJob) = get_all_jobs(self.db)
         filtered_jobs = filter(lambda job: (job.state in state_filter and job.hostname in server_filter), jobs)
         filtered_jobs = sorted(filtered_jobs, key=lambda job: job.hostname)
         hosts = groupby(filtered_jobs, lambda job: job.hostname)
+        if not filtered_jobs:
+            self.d.msgbox("No jobs found for the criteria set.")
+            return
         text = ""
         for host, h_jobs in hosts:
             text += host + "\n"
@@ -678,16 +710,27 @@ ID:            {job.job_id}"""
                 jobtext = self.job_info_s(job)
                 text += "\t\t" + "\t\t".join(jobtext.splitlines(True)) + "\n\n"
             text += "\n\n"
-
-        self.d.scrollbox(text)
+        tag = self.d.scrollbox(text, extra_button=True, extra_label="Clean jobs")
+        if tag == self.d.OK:
+            pass
+        elif tag == self.d.EXTRA:
+            text = f"Do you want to clean {len(filtered_jobs)} jobs?"  # TODO treat singular here
+            tag = self.d.yesno(text=text)
+            if tag == self.d.CANCEL:
+                self.d.msgbox("No jobs were cleaned up.")
+                return
+            elif tag == self.d.OK:
+                delete_jobs(self.db, filtered_jobs)
+                self.d.msgbox(f"{len(filtered_jobs)} jobs were cleaned up.")
 
     def copy_file(self):
         """
         Copy files to servers menu.
         """
-        text = "Type in destination path on the target/targets."
+        text = "Type in destination path on the target hosts. Path to specific file must be specified!"
         init = "/home/" + settings.planetlab.slice
         code, source_path = self.d.fselect(filepath="/home/", height=40, width=60)
+
         if code == self.d.OK:
             servers = self.access_servers_gui(checklist=True)
         else:
@@ -703,7 +746,7 @@ ID:            {job.job_id}"""
         if ret:
             self.d.msgbox("Copy successful!")
             return
-        self.d.msgbox("Could not copy file/directory to the all servers!")
+        self.d.msgbox("Could not copy file to the all servers!")
         return
 
     def access_servers_gui(self, checklist=False):

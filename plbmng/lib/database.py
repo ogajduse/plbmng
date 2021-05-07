@@ -374,3 +374,8 @@ class PlbmngDb:
                 s_jobs.append(job)
                 # ns_jobs.append({selected_columns[i]: row[i] for i, _ in enumerate(row)})
         return s_jobs
+
+    def delete_job(self, job: executor.PlbmngJob):
+        sql = f"DELETE FROM jobs WHERE id='{job.job_id}'"
+        self.cursor.execute(sql)
+        self.db.commit()

@@ -34,6 +34,10 @@ def get_plbmng_user_dir():
     return __plbmng_root_dir
 
 
+def get_plbmng_geolocation_dir():
+    return __plbmng_geolocation_dir
+
+
 def get_install_dir() -> str:
     """
     Return absolute path to the source directory of plbmng.

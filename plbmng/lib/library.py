@@ -6,6 +6,7 @@ import subprocess
 import sys
 import uuid
 import webbrowser
+from itertools import groupby
 from multiprocessing import Lock
 from multiprocessing import Pool
 from multiprocessing import Value
@@ -15,8 +16,9 @@ from platform import system
 import folium
 import pysftp
 from dialog import Dialog
+from gevent import joinall
+from pssh.clients.native.parallel import ParallelSSHClient
 
-import plbmng.lib.database
 import plbmng.lib.planetlab_list_creator
 from plbmng import executor
 from plbmng.lib import full_map
@@ -27,6 +29,7 @@ from plbmng.utils.config import get_install_dir
 from plbmng.utils.config import get_map_path
 from plbmng.utils.config import get_remote_jobs_path
 from plbmng.utils.config import settings
+from plbmng.utils.logger import logger
 
 
 # global variables
@@ -51,12 +54,6 @@ OPTION_PYTHON = "python"
 OPTION_KERNEL = "kernel"
 OPTION_MEM = "memory"
 
-USER_NODES = "/database/user_servers.node"
-LAST_SERVER = "/database/last_server.node"
-PLBMNG_DATABASE = "/database/internal.db"
-PLBMNG_CONF = "/conf/plbmng.conf"
-FIRST_RUN_FILE = "/database/first.boolean"
-MAP_FILE = "plbmng_server_map.html"
 DIALOG = None
 SOURCE_PATH = None
 DESTINATION_PATH = None
@@ -123,8 +120,7 @@ def run_command(cmd: str) -> (int, str):
 
 def schedule_remote_command(cmd, date, hosts, db):
     ssh_key = settings.remote_execution.ssh_key
-    user = settings.planetlab.slice
-    # executor_dst_path = "~/.plbmng/executor.py"
+    user = settings.planetlab.slice  # executor_dst_path = "~/.plbmng/executor.py"
     executor_dst_path = "/tmp/executor.py"
     # TODO: verify that paths are instances of Path()
     executor_path = executor.__file__
@@ -143,7 +139,6 @@ def schedule_remote_command(cmd, date, hosts, db):
             executor.PlbmngJobResult["pending"].value,
         )
         sshlib.command(executor_cmd, hostname=host, username=user, key_filename=ssh_key, background=True)
-    return True
 
 
 def get_non_stopped_jobs(db):
@@ -196,7 +191,7 @@ def get_server_params(ip_or_hostname: str, ssh=False) -> list:
             else:
                 output.append("unknown")
         except Exception as e:
-            print(e)
+            logger.error("An error occured: {}", e)
             return ["unknown" for x in range(len(commands))]
     return output
 
@@ -408,7 +403,7 @@ def get_server_info(server_id: int, option: int, nodes: list) -> (dict, list):
                 chosen_one = item
                 break
         if chosen_one == "":
-            print("Internal error, please file a bug report via PyPi")
+            logger.error("Internal error, please file a bug report via PyPi")
             exit(99)
         # get information about servers
         ip_or_hostname = chosen_one[OPTION_DNS] if chosen_one[OPTION_DNS] != "unknown" else chosen_one[OPTION_IP]
@@ -883,9 +878,13 @@ def copy_files(dialog: Dialog, source_path: str, hosts: list, destination_path: 
     ssh_key = settings.remote_execution.ssh_key
     user = settings.planetlab.slice
     dialog.gauge_start()
-    # TODO: verify that paths are instances of Path()
+    # TODO: Parallelize this method and work properly with gauges.
+    # TODO: Add possibility to copy directories recursively.
     for host in hosts:
-        sshlib.upload_file(source_path, destination_path, key_filename=ssh_key, hostname=host, username=user)
+        try:
+            sshlib.upload_file(source_path, destination_path, key_filename=ssh_key, hostname=host, username=user)
+        except OSError:
+            return False
     dialog.gauge_update(100, "Completed")
     return True
 
@@ -894,7 +893,7 @@ def run_remote_command(dialog: Dialog, command: str, hosts: list) -> bool:
     ssh_key = settings.remote_execution.ssh_key
     user = settings.planetlab.slice
     dialog.gauge_start()
-    # TODO: verify that paths are instances of Path()
+    # TODO: Parallelize this method and work properly with gauges.
     for host in hosts:
         sshlib.command(command, hostname=host, username=user, key_filename=ssh_key)
     dialog.gauge_update(100, "Completed")
@@ -913,3 +912,73 @@ def get_host_jobs_artefacts(host: str):
     with pysftp.Connection(hostname, username=username, private_key=ssh_key) as sftp:
         with sftp.cd(f"/home/{username}/.plbmng/jobs"):
             sftp.get_r(".", f"{get_remote_jobs_path()}/{host}/")
+
+
+def delete_jobs(db, jobs):
+    jobs = sorted(jobs, key=lambda job: job.hostname)
+    hosts = groupby(jobs, lambda job: job.hostname)
+    hosts = {host: [job for job in jobs] for host, jobs in hosts}
+
+    delete_remote_host_jobs(hosts)
+    for host in hosts:
+        for job in hosts[host]:
+            delete_job(db, job)
+
+
+def delete_remote_host_jobs(hosts):
+    hosts_list = list(hosts.keys())
+    ssh_key = settings.remote_execution.ssh_key
+    user = settings.planetlab.slice
+    file_name = "jobs.json"
+    separator = "_"
+
+    # get jobs.json from the host
+    client = ParallelSSHClient(hosts_list, user=user, pkey=ssh_key)
+    cmds = client.copy_remote_file(
+        f"/home/{user}/.plbmng/{file_name}", f"{get_remote_jobs_path()}/{file_name}", suffix_separator=separator
+    )
+    joinall(cmds, raise_error=True)
+
+    # remove jobs from jobs.json
+    for host in hosts:
+        try:
+            with executor.PlbmngJobsFile(f"{get_remote_jobs_path()}/{file_name}{separator}{host}") as jf:
+                for job in hosts[host]:
+                    jf.del_job(job)
+        except Exception:
+            pass  # ignore all exceptions raised during manipulation with jobs file
+
+    # copy jobs.json back to the host
+    copy_args = [
+        {
+            "local_file": f"{get_remote_jobs_path()}/{file_name}{separator}{host}",
+            "remote_file": f"/home/{user}/.plbmng/{file_name}",
+        }
+        for host in hosts_list
+    ]
+    cmds = client.copy_file("%(local_file)s", "%(remote_file)s", copy_args=copy_args)
+    joinall(cmds, raise_error=True)
+
+
+def delete_job(db, job):
+    def rm_tree(pth):
+        pth = Path(pth)
+        for child in pth.glob("*"):
+            if child.is_file():
+                child.unlink()
+            else:
+                rm_tree(child)
+        pth.rmdir()
+
+    # delete from database
+    db.delete_job(job)
+    # delete job artefacts
+    files_to_delete = [f"{get_remote_jobs_path()}/jobs.json_{job.hostname}", f"{get_remote_jobs_path()}/{job.hostname}"]
+    for file in files_to_delete:
+        try:
+            if Path(file).is_file():
+                Path(file).unlink()
+            else:
+                rm_tree(file)
+        except FileNotFoundError:
+            pass
