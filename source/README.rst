@@ -121,9 +121,11 @@ Authors
 - `Ivan Andrasov`_ - Contributor
 - `Filip Suba`_ - Contributor
 - `Martin Kacmarcik`_ - Contributor
+- `Ondrej Gajdusek`_ - Contributor
 
 
 .. _`Ivan Andrasov`: https://github.com/Andrasov
 .. _`Filip Suba`: https://github.com/fsuba
 .. _`Dan Komosny`: https://www.vutbr.cz/en/people/dan-komosny-3065
 .. _`Martin Kacmarcik`: https://github.com/xxMAKMAKxx
+.. _`Ondrej Gajdusek`: https://github.com/ogajduse

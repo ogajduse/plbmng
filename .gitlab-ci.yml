@@ -5,28 +5,38 @@ before_script:
   - python3 -V
   - rpm -q fedora-release-common
   - dnf install -y which python-pip gcc python3-devel dialog git
-  - pip install setuptools cython numpy pandas flake8 pre-commit
+  - pip install poetry
+  - poetry --version
+  - poetry config virtualenvs.in-project true
+  - poetry config pypi-token.pypi ${PYPI_TOKEN}
+  - poetry install -vv
 
 lint:
   script:
-    - pre-commit clean
-    - pre-commit run --all-files
+    - poetry run pre-commit clean
+    - poetry run pre-commit run --all-files
   after_script:
     - git diff
 
 run:
   script:
-    - python3 setup.py sdist
+    - poetry build -f sdist
   artifacts:
     paths:
       - dist/*.tar.gz
 
+publish:
+  before_script:
+    - poetry build -f sdist
+  script:
+    - poetry publish
+  only:
+    - tags
+
 pages:
   stage: deploy
   script:
-  - python3 setup.py install
-  - pip3 install -U sphinx
-  - sphinx-build -b html source public
+    - poetry run sphinx-build -b html source public
   artifacts:
     paths:
     - public

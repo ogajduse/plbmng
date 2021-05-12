@@ -1,3 +1,87 @@
+[project]
+name = "plbmng"
+version = "0.5.0"
+description = "Tool for monitoring PlanetLab network"
+maintainers = [
+    "Dan Komosny <komosny@feec.vutbr.cz>"
+]
+
+[[project.authors]]
+name = "Ivan Andrasov"
+email = "andrassk@gmail.com"
+
+[[project.authors]]
+name = "Filip Suba"
+email = "xsubaf01@vutbr.cz"
+
+[[project.authors]]
+name = "Martin Kacmarcik"
+email = "red.mak.up@gmail.com"
+
+[[project.authors]]
+name = "Ondrej Gajdusek"
+email = "xgajdu09@vutbr.cz"
+
+[tool.poetry]
+name = "plbmng"
+version = "0.5.0"
+description = "Tool for monitoring PlanetLab network"
+authors = [
+  "Ivan Andrasov <andrassk@gmail.com>",
+  "Filip Suba <xsubaf01@vutbr.cz>",
+  "Dan Komosny <komosny@feec.vutbr.cz>",
+  "Martin Kacmarcik <red.mak.up@gmail.com>",
+  "Ondřej Gajdušek <xgajdu09@vutbr.cz>",
+]
+license = "MIT"
+readme = "README.rst"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+vincent = "^0.4.4"
+dynaconf = "^3.1.4"
+folium = "^0.12.1"
+geocoder = "^1.38.1"
+paramiko = "^2.7.2"
+pythondialog = "^3.5.1"
+loguru = "^0.5.3"
+gevent = "^21.1.2"
+parallel-ssh = "^2.5.4"
+pysftp = "^0.2.9"
+
+[tool.poetry.dev-dependencies]
+Sphinx = "^4.0.0"
+rst2pdf = "^0.98"
+darglint = "^1.8.0"
+pep8-naming = "^0.11.1"
+flake8 = "^3.9.2"
+flake8-docstrings = "^1.6.0"
+sphinx-autodoc-typehints = "^1.12.0"
+sphinx-rtd-theme = "^0.5.2"
+flake8-unused-arguments = "^0.0.6"
+flake8-builtins = "^1.5.3"
+flake8-comprehensions = "^3.4.0"
+flake8-eradicate = "^1.0.0"
+flake8-print = "^4.0.0"
+flake8-bugbear = "^21.4.3"
+sphinx-pyproject = "^0.1.0"
+pre-commit = "^2.12.1"
+flake8-sphinx-links = "^0.2.1"
+
+[tool.poetry.scripts]
+plbmng = "plbmng.__main__:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+Homepage = "https://gitlab.com/utko-planetlab/plbmng/"
+"Issue Tracker" = "https://gitlab.com/utko-planetlab/plbmng/-/issues"
+"Source Code" = "https://gitlab.com/utko-planetlab/plbmng/"
+Documentation = "https://utko-planetlab.gitlab.io/plbmng/"
+
 [tool.black]
 line-length = 120
 include = '\.pyi?$'
@@ -14,3 +98,80 @@ exclude = '''
   | dist
 )/
 '''
+
+[tool.sphinx-pyproject]
+project = "plbmng"
+language = "en"
+package_root = "plbmng"
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.coverage",
+    "sphinx.ext.napoleon",
+    "rst2pdf.pdfbuilder",
+    "sphinx.ext.intersphinx",
+    "sphinx_autodoc_typehints",
+]
+templates_path = [ "_templates",]
+source_suffix = ".rst"
+master_doc = "index"
+pygments_style = "default"
+html_theme = "sphinx_rtd_theme"
+html_show_sourcelink = true
+toctree_plus_types = [
+    "class",
+    "confval",
+    "data",
+    "directive",
+    "enum",
+    "exception",
+    "flag",
+    "function",
+    "method",
+    "namedtuple",
+    "protocol",
+    "role",
+    "typeddict",
+]
+add_module_names = false
+hide_none_rtype = true
+all_typevars = true
+overloads_location = "bottom"
+autodoc_exclude_members = [
+    "__dict__",
+    "__class__",
+    "__dir__",
+    "__weakref__",
+    "__module__",
+    "__annotations__",
+    "__orig_bases__",
+    "__parameters__",
+    "__subclasshook__",
+    "__init_subclass__",
+    "__attrs_attrs__",
+    "__init__",
+    "__new__",
+    "__getnewargs__",
+    "__abstractmethods__",
+    "__hash__",
+]
+
+[tool.dep_checker.name_mapping]
+pythondialog = "dialog"
+parallel_ssh = "pssh"
+
+[tool.bumpver]
+current_version = "0.5.0"
+version_pattern = "MAJOR.MINOR.PATCH[PYTAGNUM]"
+commit_message = "bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = true
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    'current_version = "{version}"',
+    'version = "{version}"'
+]
+"plbmng/__init__.py" = [
+    '__version__ = "{version}"'
+]
