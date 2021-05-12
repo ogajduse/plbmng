@@ -1,0 +1,8 @@
+[flake8]
+max-line-length = 120
+docstring_style = sphinx
+exclude =
+    plbmng/__init__.py,
+ignore =
+    D100,
+    D105,
