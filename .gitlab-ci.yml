@@ -24,10 +24,9 @@ run:
       - dist/*.tar.gz
 
 publish:
-  before_script:
+  script:
     - poetry config pypi-token.pypi ${PYPI_TOKEN}
     - poetry build -f sdist
-  script:
     - poetry publish
   only:
     - tags
