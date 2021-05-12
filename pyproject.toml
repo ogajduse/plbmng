@@ -1,6 +1,6 @@
 [project]
 name = "plbmng"
-version = "0.5.0"
+version = "0.5.1"
 description = "Tool for monitoring PlanetLab network"
 maintainers = [
     "Dan Komosny <komosny@feec.vutbr.cz>"
@@ -24,7 +24,7 @@ email = "xgajdu09@vutbr.cz"
 
 [tool.poetry]
 name = "plbmng"
-version = "0.5.0"
+version = "0.5.1"
 description = "Tool for monitoring PlanetLab network"
 authors = [
   "Ivan Andrasov <andrassk@gmail.com>",
@@ -161,7 +161,7 @@ pythondialog = "dialog"
 parallel_ssh = "pssh"
 
 [tool.bumpver]
-current_version = "0.5.0"
+current_version = "0.5.1"
 version_pattern = "MAJOR.MINOR.PATCH[PYTAGNUM]"
 commit_message = "bump version {old_version} -> {new_version}"
 commit = true
