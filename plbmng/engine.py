@@ -7,6 +7,9 @@ import sys
 from datetime import datetime
 from itertools import groupby
 from pathlib import Path
+from typing import Dict
+from typing import List
+from typing import Union
 
 import pysftp
 from dialog import Dialog
@@ -50,29 +53,23 @@ from plbmng.lib.library import verify_api_credentials_exist
 from plbmng.lib.library import verify_ssh_credentials_exist
 from plbmng.utils.config import first_run
 from plbmng.utils.config import get_db_path
-from plbmng.utils.config import get_plbmng_user_dir
 from plbmng.utils.config import get_remote_jobs_path
 from plbmng.utils.config import settings
 from plbmng.utils.logger import init_logger
 from plbmng.utils.logger import logger
 
-# from dynaconf import settings
-
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 
 
 class Engine:
-    """
-    Class used for the interaction with the user and decision making based on user's input.
-    """
+    """Class used for the interaction with the user and decision making based on user's input."""
 
-    # _conf_path = "/conf/plbmng.conf"
     user_nodes = "/database/user_servers.node"
-    path = ""
     _debug = False
     _filtering_options = None
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """Create instance of the plbmng engine."""
         from plbmng import __version__
 
         self.version = __version__
@@ -87,14 +84,11 @@ class Engine:
         self.db = PlbmngDb()
         locale.setlocale(locale.LC_ALL, "")
         self.d.set_background_title("Planetlab Server Manager " + __version__)
-        self.path = get_plbmng_user_dir()
 
         logger.info("Plbmng engine initialized. Version: {}", __version__)
 
     def init_interface(self) -> None:
-        """
-        Main function of Engine class. Will show root page of plbmng.
-        """
+        """Initialize the Engine. Show root page of plbmng."""
 
         def signal_handler(sig, frame):
             clear()
@@ -143,6 +137,11 @@ class Engine:
                 exit(0)
 
     def run_jobs_on_servers_menu(self):
+        """
+        Run jobs on servers menu.
+
+        :return: None
+        """
         while True:
             code, tag = self.d.menu(
                 "Choose one of the following options:",
@@ -173,12 +172,10 @@ class Engine:
                 elif tag == "7":
                     self.job_cleanup_menu()
             else:
-                return
+                return None
 
-    def extras_menu(self):
-        """
-        Extras menu
-        """
+    def extras_menu(self) -> None:
+        """Extras menu."""
         code, tag = self.d.menu(
             "Choose one of the following options:",
             choices=[
@@ -198,10 +195,9 @@ class Engine:
 
     def filtering_options_gui(self) -> int:
         """
-        Filtering options menu.
+        Menu with filtering options.
 
         :return: Code based on PING AND SSH values.
-        :rtype: int
         """
         active_filters = self.db.get_filters_for_access_servers(binary_out=True)
         code, t = self.d.checklist(
@@ -230,36 +226,23 @@ class Engine:
         """
         Stats menu.
 
-        :param stats_dic: Dictionary which contains number of servers in database,\
-        number of servers which responded to the ping or ssh check.
-        :type stats_dic: dict
+        :param stats_dic: Dictionary which contains number of servers in database,
+            number of servers which responded to the ping or ssh check.
         """
-        self.d.msgbox(
-            """
-        Servers in database: """
-            + str(stats_dic["all"])
-            + """
-        SSH available: """
-            + str(stats_dic["ssh"])
-            + """
-        Ping available: """
-            + str(stats_dic["ping"])
-            + """
-        """,
-            width=0,
-            height=0,
-            title="Current statistics since the last servers status update:",
+        text = (
+            f"Servers in database: {str(stats_dic['all'])}"
+            f"SSH available: {str(stats_dic['ssh'])}"
+            f"Ping available: {str(stats_dic['ping'])}"
         )
+        self.d.msgbox(text, width=0, height=0, title="Current statistics since the last servers status update:")
 
-    def about_gui(self, version):
+    def about_gui(self, version: str) -> None:
         """
         About menu.
 
         :param version: Current version of plbmng.
-        :type version: str
         """
-        self.d.msgbox(
-            """
+        text = """
                 PlanetLab Server Manager
                 Project supervisor:
                     Dan Komosny
@@ -268,18 +251,15 @@ class Engine:
                     Filip Suba
                     Martin Kacmarcik
                     Ondrej Gajdusek
+                    """
+        text += f"Version: {version}\nThis application is licensed under MIT license."
+        self.d.msgbox(text, title="About")
 
-                Version """
-            + version
-            + """
-                This application is licensed under MIT license.
-                """,
-            title="About",
-        )
-
-    def plot_servers_on_map_gui(self):
+    def plot_servers_on_map_gui(self) -> None:
         """
         Plot servers on map menu.
+
+        :return: None
         """
         while True:
             code, tag = self.d.menu(
@@ -292,17 +272,19 @@ class Engine:
                 title="Map menu",
             )
             if code == self.d.OK:
-                nodes = self.db.get_nodes(True, int(tag), path=self.path)
-                plot_servers_on_map(nodes, self.path)
-                return
+                nodes = self.db.get_nodes(True, int(tag))
+                plot_servers_on_map(nodes)
+                return None
             else:
-                return
+                return None
 
-    def monitor_servers_gui(self):
+    def monitor_servers_gui(self) -> None:
         """
         Monitor servers menu.
+
+        :return: None
         """
-        if not verify_api_credentials_exist(self.path):
+        if not verify_api_credentials_exist():
             self.d.msgbox(
                 "Warning! Your credentials for PlanetLab API are not set. "
                 "Please use 'Set credentials' option in main menu to set them."
@@ -310,31 +292,12 @@ class Engine:
         while True:
             code, tag = self.d.menu(
                 "Choose one of the following options:",
-                # ("1", "Set crontab for status update"),
                 choices=[("1", "Update server list"), ("2", "Update server status")],
                 title="Monitoring menu",
                 height=0,
                 width=0,
             )
             if code == self.d.OK:
-                """if tag == "1":
-                code, tag = self.d.menu("Choose one of the following options:",
-                                   choices=[("1", "Set monitoring daily"),
-                                            ("2", "Set monitoring weekly"),
-                                            ("3", "Set monitoring monthly"),
-                                            ("4", "Remove all monitoring from cron")],
-                                   title="Crontab menu")
-                if code == self.d.OK:
-                    if tag == "1":
-                        addToCron(tag)
-                    elif tag == "2":
-                        addToCron(tag)
-                    elif tag == "3":
-                        addToCron(tag)
-                    elif tag == "4":
-                        removeCron()
-                else:
-                    continue"""
                 if tag == "1":
                     if self.d.yesno("This is going to take around 20 minutes") == self.d.OK:
                         try:
@@ -355,16 +318,21 @@ class Engine:
                             )
                             continue
                         else:
-                            nodes = self.db.get_nodes(path=self.path)
+                            nodes = self.db.get_nodes()
                             self.db.close()
                             update_availability_database_parent(dialog=self.d, nodes=nodes)
                             self.db.connect()
                     else:
                         continue
             else:
-                return
+                return None
 
-    def pick_date(self):
+    def pick_date(self) -> datetime:
+        """
+        Menu to pick date and time.
+
+        :return: datetime object containing the time information
+        """
         text = "Select date you want to run the job at."
         code, date = self.d.calendar(text=text)
         if code == self.d.OK:
@@ -380,49 +348,67 @@ class Engine:
         if code == self.d.CANCEL:
             return None
 
-    def run_remote_command(self):
+    def run_remote_command(self) -> None:
+        """
+        Run remote command menu.
+
+        :return: None
+        """
         text = "Type in the remote command"
         init = ""
         code, remote_cmd = self.d.inputbox(text=text, init=init, height=0, width=0)
         if code == self.d.OK:
             servers = self.access_servers_gui(checklist=True)
         else:
-            return
+            return None
         if not servers:
             self.d.msgbox("You did not select any servers!")
-            return
+            return None
 
         ret = run_remote_command(self.d, remote_cmd, servers)
 
         if ret:
             self.d.msgbox("Command was run successfully!")
-            return
+            return None
         self.d.msgbox("There was an error running the command.")
         # TODO: Print more meaningful message to the user, containing the error.
-        return
+        return None
 
-    def schedule_remote_cmd(self):
+    def schedule_remote_cmd(self) -> None:
+        """
+        Schedule remote command menu.
+
+        :return: None
+        """
         text = "Type in the remote command"
         init = ""
         date = self.pick_date()
         if not date:
             self.d.msgbox("Wrong date input!")
-            return
+            return None
         code, remote_cmd = self.d.inputbox(text=text, init=init, height=0, width=0)
         if code == self.d.OK:
             if not remote_cmd:
                 self.d.msgbox("No remote command entered. Please provide a command to run on the remote host.")
-                return
+                return None
             servers = self.access_servers_gui(checklist=True)
         else:
-            return
+            return None
         if not servers:
             self.d.msgbox("You did not select any servers!")
-            return
+            return None
+
+        # TODO: handle exceptions here
         schedule_remote_command(remote_cmd, date, servers, self.db)
         self.d.msgbox("Command scheduled successfully.")
 
-    def job_info_s(self, job):
+    def job_info_s(self, job: PlbmngJob) -> str:
+        """
+        Return formatted info about a :py:class:`plbmng.executor.PlbmngJob`.
+
+        :param job: plbmngjob to look-up
+        :return: formatted string to be printed in message box
+        """
         return f"""Scheduled at:  {time_from_timestamp(int(float(job.scheduled_at)))}
 Node hostname: {job.hostname}
 Command:       {job.cmd_argv}
@@ -432,12 +418,28 @@ Started at     {'Not yet started' if not job.started_at else time_from_timestamp
 Ended at       {'Not yet ended' if not job.ended_at else time_from_timestamp(float(job.ended_at))}
 ID:            {job.job_id}"""
 
-    def display_job_state(self, jobs, job_id: str):
+    def display_job_state(self, jobs: List[PlbmngJob], job_id: str) -> None:
+        """
+        Display job info about the given job with ``job_id``.
+
+        Displays scrollbox containing info about the given :py:class:`plbmng.executor.PlbmngJob`.
+
+        :param jobs: list of plbmng jobs to be searched
+        :param job_id: ID of the job that is being looked for
+        """
         job = list(filter(lambda jobs_found: jobs_found.job_id == job_id, jobs))[0]
         text = self.job_info_s(job)
         self.d.scrollbox(text)
 
-    def display_jobs_state_menu(self):
+    def display_jobs_state_menu(self) -> None:
+        """
+        Display jobs state menu.
+
+        This allows user to choose from non-finished and finished jobs.
+        According to choice, respective jobs will be displayed.
+
+        :return: None
+        """
         while True:
             code, tag = self.d.menu(
                 "Choose one of the following options:",
@@ -453,17 +455,27 @@ ID:            {job.job_id}"""
                 elif tag == "2":
                     self.display_finished_jobs()
             else:
-                return
+                return None
 
-    def display_non_finished_jobs(self):
+    def display_non_finished_jobs(self) -> None:
+        """Display dialog with a list of non-finished jobs."""
         jobs: list(PlbmngJob) = get_non_stopped_jobs(self.db)
         self.host_jobs_menu(jobs, "non-finished")
 
-    def display_finished_jobs(self):
+    def display_finished_jobs(self) -> None:
+        """Display dialog with a list of finished jobs."""
         jobs: list(PlbmngJob) = get_stopped_jobs(self.db)
         self.host_jobs_menu(jobs, "finished")
 
-    def host_jobs_menu(self, jobs, state):
+    def host_jobs_menu(self, jobs: List[PlbmngJob], state: str) -> None:
+        """
+        Display jobs menu. Displayed job type depends on ``state``.
+
+        :param jobs: List of plbmng jobs to be looked-up
+        :param state: Job state to filter. Can be either *non-finished* or *finished*.
+        :return: None
+        """
+
         def key_func(k):
             return k.hostname
 
@@ -488,18 +500,27 @@ ID:            {job.job_id}"""
                         else:
                             break
                 else:
-                    return
+                    return None
         else:
             self.d.msgbox(f"No {state} jobs to display.")
 
-    def refresh_jobs_status(self):
+    def refresh_jobs_status(self) -> None:
+        """
+        Refresh jobs status.
+
+        Refreshes status of all *non-finished* jobs in the database.
+        Ignores all finished jobs as we know their status already.
+
+        :return: None
+        """
+
         def key_func(k):
             return k.hostname
 
         ns_jobs = get_non_stopped_jobs(self.db)
         if len(ns_jobs) < 1:
             self.d.msgbox("There are no non-stopped jobs to update.")
-            return
+            return None
         hosts = list(dict(groupby(ns_jobs, key_func)).keys())
         ssh_key = settings.remote_execution.ssh_key
         user = settings.planetlab.slice
@@ -512,8 +533,7 @@ ID:            {job.job_id}"""
             # get jobs for the current host
             fetched_jobs.extend(get_remote_jobs(host))
         jobs_intersection = set(fetched_jobs).intersection(set(ns_jobs))
-        # jobs_to_ignore = set(fetched_jobs).difference(set(ns_jobs))
-        # jobs_to_delete_from_local_db = set(ns_jobs).difference(set(fetched_jobs))
+
         # update database
         for job in jobs_intersection:
             job = next((fjob for fjob in fetched_jobs if fjob == job), None)
@@ -526,7 +546,12 @@ ID:            {job.job_id}"""
             )
         self.d.msgbox("Jobs updated successfully.")
 
-    def job_artefacts_menu(self):
+    def job_artefacts_menu(self) -> None:
+        """
+        Job artefacts menu.
+
+        :return: None
+        """
         while True:
             code, tag = self.d.menu(
                 "Choose one of the following options:",
@@ -542,9 +567,17 @@ ID:            {job.job_id}"""
                 elif tag == "2":
                     self.download_job_artefacts()
             else:
-                return
+                return None
 
-    def download_job_artefacts(self):
+    def download_job_artefacts(self) -> None:
+        """
+        Download job artefacts.
+
+        Download artefacts of jobs that do not have artefacts downloaded yet.
+
+        :return: None
+        """
+
         def key_func(k):
             return k.hostname
 
@@ -553,7 +586,7 @@ ID:            {job.job_id}"""
         jobs_interested = set(jobs).difference(set(jobs_downloaded_artefacts(jobs)))
         if not jobs_interested:
             self.d.msgbox("No job artefacts to update.")
-            return
+            return None
         hosts = list(dict(groupby(jobs_interested, key_func)).keys())
 
         ssh_key = settings.remote_execution.ssh_key
@@ -573,10 +606,11 @@ ID:            {job.job_id}"""
                 unsuccessfull_hosts.append(host)
 
         if len(unsuccessfull_hosts) > 0:
+            nl = "\n"
             text = (
                 "The job artefacts from the following hosts were not downloaded:\n"
-                + "\n".join(unsuccessfull_hosts)
-                + "\n\nMake sure that these hosts were added to the 'known_hosts' file."
+                f"{nl.join(unsuccessfull_hosts)}"
+                "\n\nMake sure that these hosts were added to the 'known_hosts' file."
             )
             self.d.msgbox(text)
 
@@ -587,7 +621,17 @@ ID:            {job.job_id}"""
             text = "No job artefacts were downloaded."
         self.d.msgbox(text)
 
-    def show_job_artefacts_menu(self):
+    def show_job_artefacts_menu(self) -> None:
+        """
+        Show job artefacts menu.
+
+        User first selects server, and then selects respective job.
+        The next dialog allows to choose individual job artefacts for the given job.
+        All artefacts can be shown afterwards.
+
+        :return: None
+        """
+
         def key_func(k):
             return k.hostname
 
@@ -600,7 +644,7 @@ ID:            {job.job_id}"""
             for i, host in enumerate(hosts, start=1):
                 host_choices.append((str(i), host))
             while True:
-                text = f"Hosts with downloaded artefacts:"
+                text = "Hosts with downloaded artefacts:"
                 code, tag = self.d.menu(text, choices=host_choices)
                 if code == self.d.OK:
                     selected_host = hosts[int(tag) - 1]
@@ -608,18 +652,26 @@ ID:            {job.job_id}"""
                     for job in filter(lambda x: x.hostname == selected_host, jobs_art_down):
                         choices.append((job.job_id, job.cmd_argv))
                     while True:
-                        text = f"Job artefacts jobs from {selected_host}"
+                        text = f"Job artefacts from {selected_host}"
                         code, tag = self.d.menu(text, choices=choices)
                         if code == self.d.OK:
                             self.server_job_artefacts_menu(jobs, tag)
                         else:
                             break
                 else:
-                    return
+                    return None
         else:
-            self.d.msgbox(f"There are no job artefacts downloaded. Nothing to show.")
+            self.d.msgbox("There are no job artefacts downloaded. Nothing to show.")
 
-    def server_job_artefacts_menu(self, jobs, job_id):
+    def server_job_artefacts_menu(self, jobs: List[PlbmngJob], job_id: str) -> None:
+        """
+        Show job artefacts of the given ``job_id``.
+
+        Individual artefacts can be opened directly in the dialog.
+
+        :param jobs: list of plbmng jobs to be looked-up
+        :param job_id: ID of the plbmng job we are looking the artefacts for
+        """
         job = list(filter(lambda jobs_found: jobs_found.job_id == job_id, jobs))[0]
         path = f"{get_remote_jobs_path()}/{job.hostname}/{job.job_id}/artefacts/"
         p = Path(path).glob("**/*")
@@ -637,7 +689,14 @@ ID:            {job.job_id}"""
                 else:
                     break
 
-    def job_cleanup_menu(self):
+    def job_cleanup_menu(self) -> None:
+        """
+        Job cleanup menu.
+
+        A menu allowing the user to delete jobs according to filters set.
+
+        :return: None
+        """
         state_filter = {k: False for k in PlbmngJobState.list()}
         server_filter = []
         while True:
@@ -654,9 +713,17 @@ ID:            {job.job_id}"""
                 elif tag == "3":
                     self.preview_job_cleanup(state_filter, server_filter)
             else:
-                return
+                return None
 
-    def job_state_choice_menu(self, state_filter):
+    def job_state_choice_menu(self, state_filter: Dict[int, bool]) -> Dict[int, bool]:
+        """
+        Menu to choose :py:class:`plbmng.executor.PlbmngJobState` to be filtered by.
+
+        Menu allows user to choose from all possible :py:class:`plbmng.executor.PlbmngJobState`.
+
+        :param state_filter: state filter to be changed
+        :return: state filter confirmed by the user
+        """
         choices = []
         for state, v in state_filter.items():
             choices.append((str(state), PlbmngJobState(state).name.capitalize(), v))
@@ -666,7 +733,16 @@ ID:            {job.job_id}"""
         )
         return {s: (True if str(s) in tag else False) for s in state_filter}
 
-    def hosts_cleanup_filter_menu(self, server_filter):
+    def hosts_cleanup_filter_menu(self, server_filter: List[str]) -> List[str]:
+        """
+        Menu to choose remote hosts to be filtered by.
+
+        Menu allows user to choose from all hosts on which at least one plbmng job was running.
+
+        :param server_filter: server filter to be changed
+        :return: server filter confirmed by the user
+        """
+
         def key_func(k):
             return k.hostname
 
@@ -675,14 +751,24 @@ ID:            {job.job_id}"""
         if len(hosts) > 0:
             host_choices = [(str(i), host, host in server_filter) for i, host in enumerate(hosts, start=1)]
             while True:
-                text = f"Choose hosts to filter:"
+                text = "Choose hosts to filter:"
                 code, tag = self.d.checklist(text, choices=host_choices)
                 return [host for host in hosts if host in [hosts[int(t) - 1] for t in tag]]
         else:
             text = "There are no hosts to filter by. This indicates that you have no jobs in database."
             self.d.msgbox(text)
 
-    def preview_job_cleanup(self, state_filter, server_filter):
+    def preview_job_cleanup(self, state_filter: Dict[int, bool], server_filter: List[str]) -> None:
+        """
+        Menu to preview jobs to be cleaned up.
+
+        This menu allows user to look-up all jobs to delete.
+        User confirms deletion of these jobs and jobs are deleted.
+
+        :param state_filter: states to be filtered by
+        :param server_filter: servers to be filtered by
+        :return: None
+        """
         invalid_state_f = all(s is False for s in state_filter.values())
         invalid_server_f = server_filter is None or len(server_filter) < 1
         text = ""
@@ -694,7 +780,7 @@ ID:            {job.job_id}"""
             text += "No server was chosen. Please choose at least one server to filter by."
         if invalid_state_f or invalid_server_f:
             self.d.msgbox(text=text)
-            return
+            return None
         state_filter = [PlbmngJobState(s) for s in state_filter if state_filter[s]]
         jobs: list(PlbmngJob) = get_all_jobs(self.db)
         filtered_jobs = filter(lambda job: (job.state in state_filter and job.hostname in server_filter), jobs)
@@ -702,7 +788,7 @@ ID:            {job.job_id}"""
         hosts = groupby(filtered_jobs, lambda job: job.hostname)
         if not filtered_jobs:
             self.d.msgbox("No jobs found for the criteria set.")
-            return
+            return None
         text = ""
         for host, h_jobs in hosts:
             text += host + "\n"
@@ -718,53 +804,49 @@ ID:            {job.job_id}"""
             tag = self.d.yesno(text=text)
             if tag == self.d.CANCEL:
                 self.d.msgbox("No jobs were cleaned up.")
-                return
+                return None
             elif tag == self.d.OK:
                 delete_jobs(self.db, filtered_jobs)
                 self.d.msgbox(f"{len(filtered_jobs)} jobs were cleaned up.")
 
-    def copy_file(self):
+    def copy_file(self) -> None:
         """
         Copy files to servers menu.
+
+        :return: None
         """
         text = "Type in destination path on the target hosts. Path to specific file must be specified!"
         init = "/home/" + settings.planetlab.slice
-        code, source_path = self.d.fselect(filepath="/home/", height=40, width=60)
+        code, source_path = self.d.fselect(filepath="/home/")  # height=40, width=60)
 
         if code == self.d.OK:
             servers = self.access_servers_gui(checklist=True)
         else:
-            return
+            return None
         if not servers:
             self.d.msgbox("You did not select any servers!")
-            return
+            return None
         code, destination_path = self.d.inputbox(text=text, init=init, height=0, width=0)
         if code == self.d.OK:
             ret = copy_files(dialog=self.d, source_path=source_path, hosts=servers, destination_path=destination_path)
         else:
-            return
+            return None
         if ret:
             self.d.msgbox("Copy successful!")
-            return
+            return None
         self.d.msgbox("Could not copy file to the all servers!")
-        return
+        return None
 
-    def access_servers_gui(self, checklist=False):
+    def access_servers_gui(self, checklist: bool = False) -> Union[None, List[str]]:
         """
         Access servers menu.
 
-        :param checklist: True if menu shows filtered option as checkboxes.
-        :type checklist: bool
-        :return: If checklist is True, return all chosen servers by user.
-        :rtype: list
+        :param checklist: :py:obj:`True` if menu shows filtered option as checkboxes, defaults to :py:obj:`False`.
+        :return: If checklist is :py:obj:`True`, return all chosen servers by user.
         """
         while True:
             filter_options = self.db.get_filters_for_access_servers()
-            menu_text = (
-                """
-            \nActive filters: """
-                + filter_options
-            )
+            menu_text = f"\nActive filters: {filter_options}"
 
             code, tag = self.d.menu(
                 "Choose one of the following options:" + menu_text,
@@ -780,7 +862,7 @@ ID:            {job.job_id}"""
             )
             if code == self.d.OK:
                 # Filtering options
-                nodes = self.db.get_nodes(path=self.path, choose_availability_option=self._filtering_options)
+                nodes = self.db.get_nodes(choose_availability_option=self._filtering_options)
                 # Access last server
                 if tag == "1":
                     if checklist:
@@ -809,14 +891,14 @@ ID:            {job.job_id}"""
                     if checklist:
                         return ret
             else:
-                return
+                return None
 
-    def print_server_info(self, info_about_node_dic: dict):
+    def print_server_info(self, info_about_node_dic: dict) -> Union[str, None]:
         """
         Print server info menu.
 
         :param info_about_node_dic: Dictionary which contains all the info about node.
-        :type info_about_node_dic: dict
+        :return: tag chosen by user, can be in ``range(1,4)``
         """
         if not verify_ssh_credentials_exist():
             prepared_choices = [
@@ -832,14 +914,12 @@ ID:            {job.job_id}"""
         else:
             return None
 
-    def search_nodes_gui(self, prepared_choices, checklist=False):
+    def search_nodes_gui(self, prepared_choices: list, checklist: bool = False) -> Union[list, str, None]:
         """
         Search nodes menu.
 
         :param prepared_choices: list of prepared choices for user.
-        :type prepared_choices: list
-        :param checklist: If checklist is True, crate checklist instead of menu(multiple choices).
-        :type checklist: bool
+        :param checklist: If checklist is :py:obj:`True`, crate checklist instead of menu(multiple choices).
         :return: Selected tag(s) from :param prepared choices.
         """
         if not prepared_choices:
@@ -856,9 +936,7 @@ ID:            {job.job_id}"""
                 return None
 
     def first_run_message(self) -> None:
-        """
-        First run menu.
-        """
+        """First run menu."""
         self.d.msgbox(
             "This is first run of the application. "
             "Please navigate to ~/.plbmng directory and set the credentials in the settings file.",
@@ -866,45 +944,50 @@ ID:            {job.job_id}"""
             width=0,
         )
 
-    def need_to_fill_passwd_first_info(self):
-        """
-        Need to fill in password first menu.
-        """
+    def need_to_fill_passwd_first_info(self) -> None:
+        """Need to fill in password first dialog."""
         self.d.msgbox("Credentials are not set. Please go to menu and set them now")
 
-    def add_external_server_menu(self):
+    def add_external_server_menu(self) -> None:
         """
         Add external server into the plbmng database(NOT TO THE PLANETLAB NETWORK!).
-        """
-        code, text = self.d.editbox(get_db_path("user_nodes"), height=0, width=0)
-        if code == self.d.OK:
-            with open(self.path + self.user_nodes, "w") as nodeFile:
-                nodeFile.write(text)
 
-    def last_server_menu(self, no_menu) -> None:
+        Used in case the user wants to add a server that is
+        outside of the PlanetLab network to the plbmng database.
+        """
+        user_nodes = get_db_path("user_nodes")
+        code, text = self.d.editbox(user_nodes, height=0, width=0)
+        if code == self.d.OK:
+            with open(user_nodes, "w") as node_file:
+                node_file.write(text)
+
+    def last_server_menu(self, no_menu: bool) -> Union[None, str]:
         """
         Return last accessed server menu.
+
+        :param no_menu: If :py:obj:`True`, no further menu will be shown and FQDN of the chosen node is returned.
+        :return: FQDN of the chosen node | None if no node was chosen.
         """
         info_about_node_dic = None
         chosen_node = None
         try:
-            info_about_node_dic, chosen_node = get_last_server_access(self.path)
+            info_about_node_dic, chosen_node = get_last_server_access()
         except FileNotFoundError:
             self.d.msgbox("You did not access any server yet.")
-            return
+            return None
         if no_menu:
             return [chosen_node["dns"]]
         if info_about_node_dic is None or chosen_node is None:
-            return
+            return None
         returned_choice = self.print_server_info(info_about_node_dic)
         server_choices(returned_choice, chosen_node, info_about_node_dic)
 
-    def advanced_filtering_menu(self, checklist: bool):
+    def advanced_filtering_menu(self, checklist: bool) -> Union[None, list]:
         """
         Advanced filtering menu.
 
-        :param checklist: If checklist is True, return all chosen servers by user.
-        :type checklist: bool
+        :param checklist: If checklist is :py:obj:`True`, return all chosen servers by user.
+        :return: None
         """
         code, tag = self.d.menu(
             "Filter by software/hardware:",
@@ -916,7 +999,7 @@ ID:            {job.job_id}"""
             ],
         )
         if code == self.d.OK:
-            nodes = self.db.get_nodes(choose_software_hardware=tag, path=self.path)
+            nodes = self.db.get_nodes(choose_software_hardware=tag)
             answers = None
             if tag == "1":
                 answers = search_by_sware_hware(nodes=nodes, option=OPTION_GCC)
@@ -927,11 +1010,11 @@ ID:            {job.job_id}"""
             elif tag == "4":
                 answers = search_by_sware_hware(nodes=nodes, option=OPTION_MEM)
             if not answers:
-                return
+                return None
             choices = [(item, "") for item in answers.keys()]
             returned_choice = self.search_nodes_gui(choices)
             if returned_choice is None:
-                return
+                return None
             hostnames = sorted(set(answers[returned_choice]))
             if not checklist:
                 choices = [(hostname, "") for hostname in hostnames]
@@ -941,12 +1024,12 @@ ID:            {job.job_id}"""
             if checklist:
                 return returned_choice
             if returned_choice is None:
-                return
+                return None
             else:
                 info_about_node_dic, chosen_node = get_server_info(returned_choice, OPTION_DNS, nodes)
                 if not info_about_node_dic:
                     self.d.msgbox("Server is unreachable. Please update server status.")
-                    return
+                    return None
                 returned_choice = self.print_server_info(info_about_node_dic)
             try:
                 server_choices(returned_choice, chosen_node, info_about_node_dic)
@@ -954,24 +1037,26 @@ ID:            {job.job_id}"""
                 self.d.msgbox("Error while connecting. Please verify your credentials.")
                 logger.error(err)
         else:
-            return
+            return None
 
-    def search_by_location_menu(self, nodes, checklist: bool):
+    def search_by_location_menu(self, nodes: list, checklist: bool) -> Union[None, List[str]]:
         """
         Search by location menu.
 
-        :param checklist: If checklist is True, return all chosen servers by user.
-        :type checklist: bool
+        :param nodes: List of plbmng nodes.
+        :param checklist: If checklist is :py:obj:`True`, return all chosen servers by user.
+        :return: :py:obj:`None` is returned when no node is selected or if the server is unreachable.
+            ``List[str]`` is returned if ``checklist`` is :py:obj:`True`.
         """
         continents, countries = search_by_location(nodes)
         choices = [(continent, "") for continent in sorted(continents.keys())]
         returned_choice = self.search_nodes_gui(choices)
         if returned_choice is None:
-            return
+            return None
         choices = [(country, "") for country in countries.keys() if country in continents[returned_choice]]
         returned_choice = self.search_nodes_gui(choices)
         if returned_choice is None:
-            return
+            return None
         if not checklist:
             choices = [(item, "") for item in sorted(countries[returned_choice])]
         else:
@@ -980,11 +1065,11 @@ ID:            {job.job_id}"""
         if checklist:
             return returned_choice
         if returned_choice is None:
-            return
+            return None
         info_about_node_dic, chosen_node = get_server_info(returned_choice, OPTION_DNS, nodes)
         if not info_about_node_dic:
             self.d.msgbox("Server is unreachable. Please update server status.")
-            return
+            return None
         returned_choice = self.print_server_info(info_about_node_dic)
         try:
             server_choices(returned_choice, chosen_node, info_about_node_dic)
@@ -992,16 +1077,16 @@ ID:            {job.job_id}"""
             self.d.msgbox("Error while connecting. Please verify your credentials.")
             logger.error(err)
 
-    def search_by_regex_menu(self, nodes: list, option: int, checklist: bool):
+    def search_by_regex_menu(self, nodes: list, option: int, checklist: bool) -> Union[None, List[str]]:
         """
         Search by regex menu.
 
         :param nodes: List of all available nodes.
-        :type nodes: list
         :param option: Index in the nodes list(check constants at the start of this file).
-        :type option: int
-        :param checklist: If checklist is True, return all chosen servers by user.
-        :type checklist: bool
+        :param checklist: If checklist is :py:obj:`True`, return all chosen servers by user.
+        :return: :py:obj:`None` is returned when bad choice is made or if the server
+            is unreachable or a connection error occured.
+            ``List(str)`` is returned when ``checklist`` is :py:obj:`True`.
         """
         code, answer = self.d.inputbox("Search for:", title="Search", width=0, height=0)
         if code == self.d.OK:
@@ -1014,12 +1099,12 @@ ID:            {job.job_id}"""
             if checklist:
                 return returned_choice
             if returned_choice is None:
-                return
+                return None
             else:
                 info_about_node_dic, chosen_node = get_server_info(returned_choice, option, nodes)
                 if not info_about_node_dic:
                     self.d.msgbox("Server is unreachable. Please update server status.")
-                    return
+                    return None
                 returned_choice = self.print_server_info(info_about_node_dic)
             try:
                 server_choices(
@@ -1029,7 +1114,7 @@ ID:            {job.job_id}"""
                 self.d.msgbox("Error while connecting. Please verify your credentials.")
                 logger.error(err)
         else:
-            return
+            return None
 
 
 if __name__ == "__main__":

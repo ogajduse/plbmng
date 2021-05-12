@@ -4,12 +4,8 @@ import sys
 import folium
 
 
-def main():
-    """
-    Creates a map with location of a node.
-
-    :return: map_one.html file
-    """
+def main() -> None:
+    """Create a map with location of a node."""
     latitude = float(sys.argv[1])
     longitude = float(sys.argv[2])
     name = sys.argv[3]

@@ -1,3 +1,4 @@
+import datetime
 import hashlib
 import os
 import re
@@ -12,9 +13,12 @@ from multiprocessing import Pool
 from multiprocessing import Value
 from pathlib import Path
 from platform import system
+from typing import Dict
+from typing import List
+from typing import Tuple
+from typing import Union
 
 import folium
-import pysftp
 from dialog import Dialog
 from gevent import joinall
 from pssh.clients.native.parallel import ParallelSSHClient
@@ -38,7 +42,6 @@ increment = None
 lock = None
 
 # Constant definition
-OPTION_LOCATION = 0
 OPTION_IP = "ip"
 OPTION_DNS = "dns"
 OPTION_CONTINENT = "continent"
@@ -60,11 +63,7 @@ DESTINATION_PATH = None
 
 
 class NeedToFillPasswdFirstInfo(Exception):
-    """Raise when password is not filled"""
-
-
-class NonZeroReturnCode(Exception):
-    """Raise when return code is not equal to 0"""
+    """Raise when password is not filled."""
 
 
 def get_custom_servers(start_id: str) -> list:
@@ -72,9 +71,7 @@ def get_custom_servers(start_id: str) -> list:
     Read user_servers.node file in database directory a return all servers from it as list.
 
     :param start_id: Starting id as string.
-    :type start_id: str
     :return: Return all servers from user_servers.node.
-    :rtype: list
     """
     user_nodes = []
     with open(get_db_path("user_nodes")) as tsv:
@@ -87,7 +84,7 @@ def get_custom_servers(start_id: str) -> list:
         columns = line.split()
         columns.insert(0, start_id)
         if len(columns) < 11:
-            for column in range(11 - len(columns)):
+            for _column in range(11 - len(columns)):
                 columns.append("unknown")
         try:
             user_nodes.append(columns)
@@ -97,14 +94,12 @@ def get_custom_servers(start_id: str) -> list:
     return user_nodes
 
 
-def run_command(cmd: str) -> (int, str):
+def run_command(cmd: str) -> Tuple[int, str]:
     """
-    Executes given cmd param as shell command.
+    Execute given cmd param as shell command.
 
     :param cmd: shell command as string.
-    :type cmd: str
     :return: Return exit code and standard outpur of given cmd.
-    :rtype: tuple
     """
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, shell=True)
     try:
@@ -118,7 +113,19 @@ def run_command(cmd: str) -> (int, str):
     return return_code, stdout
 
 
-def schedule_remote_command(cmd, date, hosts, db):
+def schedule_remote_command(cmd: str, date: datetime.datetime, hosts: List[str], db) -> None:
+    """
+    Schedule command (``cmd``) to run the specified ``hosts`` at the specified ``date``.
+
+    An unique ``job_id`` is created for the pair host:command.
+    There should be no more than one job with the same ID.
+
+    :param cmd: command to be run on the remote host
+    :param date: :py:class:`datetime.datetime` object representing the time in which the ``cmd`` will be executed.
+    :param hosts: List of plbmng hosts on which the ``cmd`` should be run.
+    :param db: plbmng database to write the job to.
+    :type db: PlbmngDb
+    """
     ssh_key = settings.remote_execution.ssh_key
     user = settings.planetlab.slice  # executor_dst_path = "~/.plbmng/executor.py"
     executor_dst_path = "/tmp/executor.py"
@@ -141,28 +148,45 @@ def schedule_remote_command(cmd, date, hosts, db):
         sshlib.command(executor_cmd, hostname=host, username=user, key_filename=ssh_key, background=True)
 
 
-def get_non_stopped_jobs(db):
+def get_non_stopped_jobs(db) -> List[executor.PlbmngJob]:
+    """
+    Get all non-stopped jobs from the plbmng database.
+
+    :param db: plbmng database to be looked-up
+    :type db: PlbmngDb
+    :return: list of plbmng jobs that are not in *stopped* :py:class:`plbmng.executor.PlbmngJobState`
+    """
     return db.get_non_stopped_jobs()
 
 
-def get_stopped_jobs(db):
+def get_stopped_jobs(db) -> List[executor.PlbmngJob]:
+    """
+    Get all stopped jobs from the plbmng database.
+
+    :param db: plbmng database to be looked-up
+    :type db: PlbmngDb
+    :return: list of plbmng jobs that are in *stopped* :py:class:`plbmng.executor.PlbmngJobState`
+    """
     return db.get_stopped_jobs()
 
 
-def get_all_jobs(db):
+def get_all_jobs(db) -> List[executor.PlbmngJob]:
+    """
+    Get all jobs from the plbmng database.
+
+    :param db: plbmng database to be looked-up
+    :type db: PlbmngDb
+    :return: list of all plbmng jobs
+    """
     return db.get_all_jobs()
 
 
-def get_server_params(ip_or_hostname: str, ssh=False) -> list:
-    """
-    Return versions of prepared commands as list.
+def get_server_params(ip_or_hostname: str, ssh: bool = False) -> list:
+    """Return versions of prepared commands as a list.
 
     :param ip_or_hostname: IP address of hostname of the target
-    :type ip_or_hostname: str
-    :param ssh:
-    :type ssh: bool
+    :param ssh: use ssh, defaults to :py:obj:`False`
     :return: List of requested info as string
-    :rtype: list
     """
     commands = [
         "gcc -dumpversion",
@@ -196,12 +220,13 @@ def get_server_params(ip_or_hostname: str, ssh=False) -> list:
     return output
 
 
-def get_all_nodes():
+def get_all_nodes() -> None:
     """
     Get all nodes from plbmng using planetlab_list_creator script.
 
-    :raise: NeedToFillPasswdFirstInfo
-    :return: Create file default.node in plbmng database directory
+    Create file default.node in plbmng database directory
+
+    :raises NeedToFillPasswdFirstInfo: if ``username`` or ``password`` are not specified in the plbmng settings
     """
     user = settings.planetlab.username
     passwd = settings.planetlab.password
@@ -220,11 +245,8 @@ def search_by_regex(nodes: list, option: int, regex: str) -> list:
     Return all :param regex matched values from :param nodes at :param option index.
 
     :param nodes: list of nodes.
-    :type nodes: list
     :param option: Index in the nodes list(check constants at the start of this file).
-    :type option: str
     :param regex: Pattern to be found.
-    :type regex: str
     :return: Return list of matched values as list.
     """
     answers = []
@@ -236,15 +258,14 @@ def search_by_regex(nodes: list, option: int, regex: str) -> list:
 
 def search_by_sware_hware(nodes: list, option: int) -> dict:
     """
-    Return all unique entries in :param nodes list at :param option index
-    as keys and all host names which contains the entry in list as value.
+    Search by software/hardware.
+
+    Return all unique entries in ``nodes`` list at ``option`` index as
+    keys and all hostnameswhich contains the entry in list as value.
 
     :param nodes: list of nodes.
-    :type nodes: list
     :param option: Index in the nodes list(check constants at the start of this file).
-    :type option: int
     :return: Return dictionary of unique entries as keys and all host names in list as value.
-    :rtype: dict
     """
     filter_nodes = {}
     for item in nodes:
@@ -255,16 +276,16 @@ def search_by_sware_hware(nodes: list, option: int) -> dict:
     return filter_nodes
 
 
-def search_by_location(nodes: list) -> (dict, dict):
+def search_by_location(nodes: list) -> Tuple[dict, dict]:
     """
-    Return two dictionaries created from :param nodes list based on their continent, country and host name.\
-    First dictionary contains continents(eg. EU, AS) as key and all the countries in the list(eg. ["CZ, SK"])\
-    Second dictionary contains country as key(eg. "CZ") and values are all the server based in the country in list.\
+    Return two dictionaries created from :param nodes list based on their continent, country and host name.
+
+    First dictionary contains continents(eg. EU, AS) as key and all the countries in the list(eg. ["CZ, SK"])
+    Second dictionary contains country as key(eg. "CZ") and values are all the server based in the country in list.
     {"EU": ["CZ", "SK"...]}, {"cz": ["aaaa.cz", "bbbbb.cz"]}
 
     :param nodes: List of all available nodes.
-    :type nodes: list
-    :rtype: tuple
+    :return: tuple with continents and countries
     """
     continents_dict = {}
     countries = {}
@@ -281,51 +302,43 @@ def search_by_location(nodes: list) -> (dict, dict):
     return continents_dict, countries
 
 
-def connect(mode: int, node: list):
+def connect(mode: int, node: list) -> None:
     """
     Connect to a node using ssh or Midnight Commander.
 
-    :param mode: If mode is equals to 1, ssh is used. If mode is equals to 2, MC is used to connect to the node.\
-                 If mode is different from 1 or 2, return None.
-    :type mode: int
-    :param node: List which contains all information from planetlab\
-    network about the node(must follow template from default.node).
-    :type node: list
-    :raises: ConnectionError
+    :param mode: If mode is equals to 1, ssh is used. If mode is equals to 2, MC is used to connect to the node.
+        If mode is different from 1 or 2, return None.
+    :param node: List which contains all information from planetlab
+        network about the node(must follow template from default.node).
+    :raises ConnectionError: If SSH command fails.
+    :raises ConnectionError: If MC fails.
     """
     clear()
     key = settings.remote_execution.ssh_key
     user = settings.planetlab.slice
     if mode == 1:
-        return_value = os.system(
-            'ssh -o "StrictHostKeyChecking = no" -o "UserKnownHostsFile=\
-            /dev/null" -i '
-            + key
-            + " "
-            + user
-            + "@"
-            + node[OPTION_IP]
-        )
+        command = 'ssh -o "StrictHostKeyChecking = no" -o "UserKnownHostsFile=/dev/null"'
+        command += f" -i {key} {user}@{node[OPTION_IP]}"
+        return_value = os.system(command)
         if return_value != 0:
             raise ConnectionError(f"SSH failed with error code {return_value}")
     elif mode == 2:
         os.system("ssh-add " + key)
-        return_value = os.system("mc sh://" + user + "@" + node[OPTION_IP] + ":/home")
+        return_value = os.system(f"mc sh://{user}@{node[OPTION_IP]}:/home")
         if return_value != 0:
             raise ConnectionError(f"MC failed with error code {return_value}")
 
 
-def show_on_map(node: list, node_info="") -> None:
+def show_on_map(node: list, node_info: dict = None) -> None:
     """
     Generate and open in default web browser html page with map of the world and show node on the map.
 
-    :param node: List which contains all information from planetlab\
-    network about the node(must follow template from default.node).
-    :type node: list
+    :param node: List which contains all information from planetlab
+        network about the node(must follow template from default.node).
     :param node_info: Info about node as string.
-    :type node_info: str
-    :rtype: None
     """
+    if not node_info:
+        node_info = {"text": ""}
     _stderr = os.dup(2)
     os.close(2)
     _stdout = os.dup(1)
@@ -338,7 +351,7 @@ def show_on_map(node: list, node_info="") -> None:
     longitude = float(node[OPTION_LON])
     popup = folium.Popup(node_info["text"].strip().replace("\n", "<br>"), max_width=1000)
     node_map = folium.Map(location=[latitude, longitude], zoom_start=2, min_zoom=2)
-    if node_info == "":
+    if node_info["text"] == "":
         folium.Marker([latitude, longitude], popup=popup).add_to(node_map)
     else:
         folium.Marker([latitude, longitude], popup).add_to(node_map)
@@ -351,15 +364,11 @@ def show_on_map(node: list, node_info="") -> None:
         os.dup2(_stdout, 1)
 
 
-def plot_servers_on_map(nodes: list, path: str) -> None:
+def plot_servers_on_map(nodes: list) -> None:
     """
     Plot every node in nodes on map.
 
     :param nodes: List of Planetlab nodes.
-    :type nodes: list
-    :param path: path to the directory which contains MAP_FILE.
-    :type path: str
-    :rtype: None
     """
     _stderr = os.dup(2)
     os.close(2)
@@ -379,19 +388,16 @@ def plot_servers_on_map(nodes: list, path: str) -> None:
         os.dup2(_stdout, 1)
 
 
-def get_server_info(server_id: int, option: int, nodes: list) -> (dict, list):
+def get_server_info(server_id: int, option: int, nodes: list) -> Tuple[dict, list]:
     """
-    Retrieve all available info about server from :param node
-    based on :param server_id. Option should be index on which is server id present in node list.
+    Retrieve all available info about server from ``node`` based on ``server_id``.
+
+    Option should be index on which is server id present in node list.
 
     :param server_id: ID of the server.
-    :type server_id: int
     :param option: Index program should look for server_id in node.
-    :type option: int
     :param nodes: List of all nodes.
-    :type nodes: list
     :return: Return dictionary with info about node and the node found in node based on server id.
-    :rtype: tuple
     """
     if option == 0:
         option = OPTION_DNS
@@ -407,7 +413,7 @@ def get_server_info(server_id: int, option: int, nodes: list) -> (dict, list):
             exit(99)
         # get information about servers
         ip_or_hostname = chosen_one[OPTION_DNS] if chosen_one[OPTION_DNS] != "unknown" else chosen_one[OPTION_IP]
-        info_about_node_dic = dict()
+        info_about_node_dic = {}
         region, city, url, fullname, lat, lon = get_info_from_node(chosen_one)
         info_about_node_dic["region"] = region
         info_about_node_dic["city"] = city
@@ -455,15 +461,13 @@ def get_server_info(server_id: int, option: int, nodes: list) -> (dict, list):
             return {}, []
 
 
-def get_info_from_node(node: list) -> tuple:
+def get_info_from_node(node: list) -> Tuple[str, str, str, str, str, str]:
     """
-    Return basic information from node an return it as tuple
+    Return basic information from node an return it as tuple.
 
-    :param node: List which contains all information from planetlab\
-    network about the node(must follow template from default.node).
-    :type node: list
+    :param node: List which contains all information from planetlab
+        network about the node(must follow template from default.node).
     :return: Return region, city, url, full name, latitude and longitude from the node as tuple.
-    :rtype: tuple
     """
     region = node["region"]
     city = node["city"]
@@ -474,38 +478,18 @@ def get_info_from_node(node: list) -> tuple:
     return region, city, url, fullname, lat, lon
 
 
-"""
-DEPRECATED FUNCTION
-def remove_cron():
-    os.system("crontab -l | grep -v \"plbmng crontab\" | crontab -")
-
-    def add_to_cron(mode):
-    if int(mode) == 1:
-        line = "@daily plbmng crontab"
-    elif int(mode) == 2:
-        line = "@weekly plbmng crontab"
-    elif int(mode) == 3:
-        line = "@monthly plbmng crontab"
-    os.system("echo \"$(crontab -l ; echo " + line + ")\" | crontab -")
-"""
-
-
 def clear() -> None:
-    """
-    Clear shell.
-    """
+    """Clear shell."""
     os.system("clear")
 
 
-def test_ping(target: str, return_bool=False):
+def test_ping(target: str, return_bool: bool = False) -> Union[str, bool]:
     """
     Try to ping :param target host and return boolean value or message\
     based on ping command return code from ping tool.
 
     :param target: Host name or IP address.
-    :type target: str
-    :param return_bool: If set to False return message instead of boolean.
-    :type return_bool: bool
+    :param return_bool: If set to  :py:obj:`False` return message instead of boolean.
     :return: Return message or bool value with ping result.
     """
     if system().lower() == "windows":
@@ -536,16 +520,15 @@ def test_ping(target: str, return_bool=False):
         return True
 
 
-def test_ssh(target: str):
+def test_ssh(target: str) -> Union[bool, int]:
     """
     Scan port 22 of the given :param target.
 
     :param target: Host name or IP address.
-    :type target: str
     :return: Result of the port scanning.
     """
     result = port_scanner.test_port_availability(target, 22)
-    if result is True or result is False:
+    if isinstance(result, bool):
         return result
     elif result == 98:
         return result
@@ -553,14 +536,11 @@ def test_ssh(target: str):
         return result
 
 
-def verify_api_credentials_exist(path: str) -> bool:
+def verify_api_credentials_exist() -> bool:
     """
     Verify that user credentials are set in the plbmng conf file.
 
-    :param path: Path to the source directory of plbmng.
-    :type path: str
-    :return: Return False if USERNAME or PASSWORD is not set. If both are set, return True.
-    :rtype: bool
+    :return: Return  :py:obj:`False` if USERNAME or PASSWORD is not set. If both are set, return :py:obj:`True`.
     """
     try:
         assert settings.planetlab.username and settings.planetlab.username != ""
@@ -574,8 +554,7 @@ def verify_ssh_credentials_exist() -> bool:
     """
     Verify that SLICE NAME(user acc on remote host) and path to SSH key are set in the plbmng conf file.
 
-    :return: Return False if SLICE_NAME or SSH_KEY is not set. If both are set, return True.
-    :rtype: bool
+    :return: Return :py:obj:`False` if SLICE_NAME or SSH_KEY is not set. If both are set, return :py:obj:`True`.
     """
     try:
         assert settings.planetlab.slice and settings.planetlab.slice != ""
@@ -590,26 +569,20 @@ def update_last_server_access(info_about_node_dic: dict, chosen_node: list) -> N
     Update file which contains all the information about last accessed node by user.
 
     :param info_about_node_dic: Dictionary which contains all the info about node.
-    :type info_about_node_dic: dict
-    :param chosen_node: List which contains all information from planetlab\
-    network about the node(must follow template from default.node).
-    :type chosen_node: list
-    :param path: Path to the source directory of plbmng.
-    :type path: str
+    :param chosen_node: List which contains all information from planetlab
+        network about the node(must follow template from default.node).
     """
     last_server_file = get_db_path("last_server", failsafe=True)
     with open(last_server_file, "w") as last_server_file:
         last_server_file.write(repr((info_about_node_dic, chosen_node)))
 
 
-def get_last_server_access(path: str) -> (dict, list):
+def get_last_server_access() -> Tuple[dict, list]:
     """
     Return dictionary and list in tuple with all the available information about the last accessed node.
 
-    :param path: Path to the source directory of plbmng.
-    :type path: str
     :return: info_about_node_dic and chosen_node.
-    :rtype: tuple
+    :raises FileNotFoundError: if the last_server file does not exist
     """
     last_server_file = get_db_path("last_server")
     if not os.path.exists(last_server_file):
@@ -619,24 +592,22 @@ def get_last_server_access(path: str) -> (dict, list):
     return info_about_node_dic, chosen_node
 
 
-def server_choices(returned_choice: int, chosen_node: list, info_about_node_dic=None) -> None:
+def server_choices(returned_choice: int, chosen_node: list, info_about_node_dic: dict = None) -> None:
     """
-    Prepared choices for user to connect or generate HTML page with map.\
+    Prepare choices for user to connect or generate HTML page with map.
+
     Based on the :param returned_choice, execute function with given parameters.
 
     :param returned_choice: Number 1-3 specified by user in DIALOG window.
-    :type returned_choice: int
-    :param chosen_node: List which contains all information from planetlab\
-    network about the node(must follow template from default.node).
-    :type chosen_node: list
+    :param chosen_node: List which contains all information from planetlab
+        network about the node(must follow template from default.node).
     :param info_about_node_dic: Dictionary which contains all the info about node.
-    :type info_about_node_dic: dict
-    :rtype: None
+    :return: None
     """
     if returned_choice is None:
-        return
+        return None
     elif not returned_choice:
-        return
+        return None
     elif int(returned_choice) == 1:
         connect(int(returned_choice), chosen_node)
     elif int(returned_choice) == 2:
@@ -645,14 +616,12 @@ def server_choices(returned_choice: int, chosen_node: list, info_about_node_dic=
         show_on_map(chosen_node, info_about_node_dic)
 
 
-def update_availability_database_parent(dialog, nodes=None) -> None:
+def update_availability_database_parent(dialog: Dialog, nodes: list = None) -> None:
     """
     Initialize parallel updating of the plbmng database.
 
     :param dialog: Instance of a dialog engine.
     :param nodes: List of nodes to update the database.
-    :type nodes: list
-    :rtype: None
     """
     global DIALOG
     increment = Value("f", 0)
@@ -662,14 +631,7 @@ def update_availability_database_parent(dialog, nodes=None) -> None:
     DIALOG = dialog
     dialog.gauge_start()
     try:
-        pool = Pool(
-            initializer=multi_processing_init,
-            initargs=(
-                lock,
-                base,
-                increment,
-            ),
-        )
+        pool = Pool(initializer=multi_processing_init, initargs=(lock, base, increment))
     except sqlite3.OperationalError:
         dialog.msgbox("Could not update database")
     pool.map(update_availability_database, nodes)
@@ -680,33 +642,28 @@ def update_availability_database_parent(dialog, nodes=None) -> None:
     dialog.msgbox("Availability database has been successfully updated")
 
 
-def multi_processing_init(l: Lock, b: Value, i: Value) -> None:
+def multi_processing_init(i_lock: Lock, i_base: Value, i_increment: Value) -> None:
     """
-    Initializer for Pool.
+    Initialize Pool.
 
-    :param l: Lock to synchronize processes.
-    :type l: Lock
-    :param b: Progress of updating the database. Value is used in DIALOG gauge.
-    :type b: Value
-    :param i: Incremental value in % added to :param base when process is done.
-    :type i: Value
+    :param i_lock: Lock to synchronize processes.
+    :param i_base: Progress of updating the database. Value is used in DIALOG gauge.
+    :param i_increment: Incremental value in % added to :param base when process is done.
     """
     global lock
-    lock = l
+    lock = i_lock
     global base
-    base = b
+    base = i_base
     global increment
-    increment = i
+    increment = i_increment
 
 
 def update_availability_database(node: list) -> None:
     """
     Update database with given information from :param node.
 
-    :param node: List which contains all information from planetlab\
-    network about the node (must follow template from default.node).
-    :type node: list
-    :rtype: None
+    :param node: List which contains all information from planetlab
+        network about the node (must follow template from default.node).
     """
     # inint block
     global DIALOG  # ,PLBMNG_DATABASE
@@ -719,77 +676,54 @@ def update_availability_database(node: list) -> None:
     ping_result = "T" if test_ping(ip_or_hostname, True) is True else "F"
     ssh = True if ssh_result == "T" else False
     programs = get_server_params(ip_or_hostname, ssh)
-    # find if object exists in the database
-    cursor.execute(
-        'SELECT nkey from AVAILABILITY where \
-                shash = "'
-        + str(hash_object.hexdigest())
-        + '";'
-    )
-    if cursor.fetchone() is None:
-        cursor.execute(
-            'INSERT into AVAILABILITY(shash, shostname, bssh, bping) VALUES\
-                            ("'
-            + hash_object.hexdigest()
-            + '", "'
-            + ip_or_hostname
-            + '",\
-                            "'
-            + ssh_result
-            + '", "'
-            + ping_result
-            + '")'
-        )
-    else:
-        cursor.execute(
-            'UPDATE availability SET bssh="'
-            + ssh_result
-            + '", bping="'
-            + ping_result
-            + '" WHERE shash="'
-            + hash_object.hexdigest()
-            + '"'
-        )
 
-    cursor.execute(
-        'SELECT nkey from PROGRAMS where \
-                shash = "'
-        + str(hash_object.hexdigest())
-        + '";'
+    # find if object exists in the database
+    sql = """SELECT nkey from availability
+             WHERE shash = "{hash}";""".format(
+        hash=str(hash_object.hexdigest())
     )
+    cursor.execute(sql)
     if cursor.fetchone() is None:
-        cursor.execute(
-            "INSERT into PROGRAMS(shash, shostname, "
-            'sgcc, spython, skernel, smem) VALUES\
-                        ("'
-            + hash_object.hexdigest()
-            + '", "'
-            + ip_or_hostname
-            + '", "'
-            + programs[0]
-            + '",\
-                                    "'
-            + programs[1]
-            + '", "'
-            + programs[2]
-            + '", "'
-            + programs[3]
-            + '")'
+        sql = """INSERT INTO availability(shash, shostname, bssh, bping)
+                 VALUES ("{hash}", "{ip_hstnm}", "{ssh_res}", "{ping_res}");""".format(
+            hash=hash_object.hexdigest(), ip_hstnm=ip_or_hostname, ssh_res=ssh_result, ping_res=ping_result
         )
     else:
-        cursor.execute(
-            'UPDATE programs SET sgcc="'
-            + programs[0]
-            + '", spython="'
-            + programs[1]
-            + '", skernel="'
-            + programs[2]
-            + '", smem="'
-            + programs[3]
-            + '" WHERE shash="'
-            + hash_object.hexdigest()
-            + '"'
+        sql = """UPDATE availability
+                 SET bssh="{bssh}", bping="{bping}"
+                 WHERE shash="{shash}";""".format(
+            bssh=ssh_result, bping=ping_result, shash=hash_object.hexdigest()
         )
+    cursor.execute(sql)
+
+    sql = """SELECT nkey
+             FROM programs
+             WHERE shash="{shash}";""".format(
+        shash=str(hash_object.hexdigest())
+    )
+    cursor.execute(sql)
+
+    if cursor.fetchone() is None:
+        sql = """INSERT INTO programs(shash, shostname, sgcc, spython, skernel, smem)
+                 VALUES ("{shash}", "{shostname}", "{sgcc}", "{spython}", "{skernel}", "{smem}");""".format(
+            shash=hash_object.hexdigest(),
+            shostname=ip_or_hostname,
+            sgcc=programs[0],
+            spython=programs[1],
+            skernel=programs[2],
+            smem=programs[3],
+        )
+    else:
+        sql = """UPDATE programs
+                 SET sgcc="{sgcc}", spython="{spython}", skernel="{skernel}", smem="{smem}")
+                 WHERE shash="{shash}";""".format(
+            shash=hash_object.hexdigest(),
+            sgcc=programs[0],
+            spython=programs[1],
+            skernel=programs[2],
+            smem=programs[3],
+        )
+    cursor.execute(sql)
     # clean up
 
     lock.acquire()
@@ -800,14 +734,14 @@ def update_availability_database(node: list) -> None:
     db.close()
 
 
-def secure_copy(host: str):
+def secure_copy(host: str) -> bool:
     """
-    Copy :param SOURCE_PATH to the :param DESTINATION_PATH to :param host. Global parameters must be set first!
+    Copy ``SOURCE_PATH`` to the ``DESTINATION_PATH`` to ``host``.
+
+    **Global parameters must be set first!**
 
     :param host: IP address or host name.
-    :type host: str
-    :return: Return True if command has failed. Otherwise return False.
-    :rtype: bool
+    :return: Return :py:obj:`True` if command has failed. Otherwise return :py:obj:`False`.
     """
     global SOURCE_PATH, DESTINATION_PATH
     ssh_key = settings.remote_execution.ssh_key
@@ -827,22 +761,25 @@ def secure_copy(host: str):
     return False
 
 
-def jobs_downloaded_artefacts(jobs):
+def jobs_downloaded_artefacts(jobs: List[executor.PlbmngJob]) -> List[executor.PlbmngJob]:
+    """
+    Return all jobs that have artefacts downloaded.
+
+    :param jobs: list of plbmng jobs to be looked up
+    :return: list of plbmng jobs that have artefacts downloaded
+    """
     return [job for job in jobs if Path(f"{get_remote_jobs_path()}/{job.hostname}/{job.job_id}").exists()]
 
 
 def parallel_copy(dialog, source_path: str, hosts: list, destination_path: str) -> bool:
     """
+    Perform parallel copy of the local file to the remote host.
 
     :param dialog: Instance of dialog engine.
     :param source_path: File or directory to be copied.
-    :type source_path: str
     :param hosts: List of hosts(ip addressed or host names).
-    :type hosts: list
     :param destination_path: Path on the target where should be file or directory copied to.
-    :type destination_path: str
     :return: True if source path has been copied successfully to all hosts.
-    :rtype: bool
     """
     global DIALOG, SOURCE_PATH, DESTINATION_PATH
     DIALOG = dialog
@@ -854,14 +791,7 @@ def parallel_copy(dialog, source_path: str, hosts: list, destination_path: str) 
     lock = Lock()
     DIALOG = dialog
     dialog.gauge_start()
-    pool = Pool(
-        initializer=multi_processing_init,
-        initargs=(
-            lock,
-            base,
-            increment,
-        ),
-    )
+    pool = Pool(initializer=multi_processing_init, initargs=(lock, base, increment))
     ret = pool.map(secure_copy, hosts)
     pool.close()
     pool.join()
@@ -875,6 +805,15 @@ def parallel_copy(dialog, source_path: str, hosts: list, destination_path: str) 
 
 
 def copy_files(dialog: Dialog, source_path: str, hosts: list, destination_path: str) -> bool:
+    """
+    Perform copy of the file specified by ``source_path`` to the ``destination_path`` at the specified ``hosts``.
+
+    :param dialog: Instance of dialog engine.
+    :param source_path: Path of the file to copy.
+    :param hosts: List of hosts on which the file should be copied.
+    :param destination_path: Path to the destination file that will be copied.
+    :return: :py:obj:`True` if all copy operations were performed successfully, :py:obj:`False` otherwise.
+    """
     ssh_key = settings.remote_execution.ssh_key
     user = settings.planetlab.slice
     dialog.gauge_start()
@@ -890,34 +829,49 @@ def copy_files(dialog: Dialog, source_path: str, hosts: list, destination_path: 
 
 
 def run_remote_command(dialog: Dialog, command: str, hosts: list) -> bool:
+    """
+    Run ``command`` on the specified ``hosts``.
+
+    :param dialog: Instance of dialog.
+    :param command: Command to be run on the specified ``hosts``.
+    :param hosts: List of hosts on which the ``command`` should be executed.
+    :return: :py:obj:`True` if all commands ended successfully, :py:obj:`False` otherwise.
+    """
     ssh_key = settings.remote_execution.ssh_key
     user = settings.planetlab.slice
     dialog.gauge_start()
     # TODO: Parallelize this method and work properly with gauges.
-    for host in hosts:
-        sshlib.command(command, hostname=host, username=user, key_filename=ssh_key)
-    dialog.gauge_update(100, "Completed")
+    try:
+        for host in hosts:
+            sshlib.command(command, hostname=host, username=user, key_filename=ssh_key)
+        dialog.gauge_update(100, "Completed")
+    except Exception:
+        return False
     return True
 
 
-def get_remote_jobs(host: str) -> list:
+def get_remote_jobs(host: str) -> List[executor.PlbmngJob]:
+    """
+    Return all jobs found in the *jobs.json* of the given ``host``.
+
+    :param host: The ``host`` whose entities are to be returned.
+    :return: List of jobs for the given ``host``.
+    """
     with executor.PlbmngJobsFile(f"{get_remote_jobs_path()}/jobs.json_{host}") as jobs:
         return jobs.jobs
 
 
-def get_host_jobs_artefacts(host: str):
-    username = settings.planetlab.slice
-    hostname = "pl2.uni-rostock.de"
-    ssh_key = settings.remote_execution.ssh_key
-    with pysftp.Connection(hostname, username=username, private_key=ssh_key) as sftp:
-        with sftp.cd(f"/home/{username}/.plbmng/jobs"):
-            sftp.get_r(".", f"{get_remote_jobs_path()}/{host}/")
+def delete_jobs(db, jobs: List[executor.PlbmngJob]) -> None:
+    """
+    Delete all ``jobs``.
 
-
-def delete_jobs(db, jobs):
+    :param db: plbmng database to be manipulated with
+    :type db: PlbmngDb
+    :param jobs: list of plbmng jobs to be deleted
+    """
     jobs = sorted(jobs, key=lambda job: job.hostname)
     hosts = groupby(jobs, lambda job: job.hostname)
-    hosts = {host: [job for job in jobs] for host, jobs in hosts}
+    hosts: Dict[str, List[executor.PlbmngJob]] = {host: list(jobs) for host, jobs in hosts}
 
     delete_remote_host_jobs(hosts)
     for host in hosts:
@@ -925,7 +879,12 @@ def delete_jobs(db, jobs):
             delete_job(db, job)
 
 
-def delete_remote_host_jobs(hosts):
+def delete_remote_host_jobs(hosts: Dict[str, List[executor.PlbmngJob]]) -> None:
+    """
+    Delete :py:class:`plbmng.executor.PlbmngJob`/s from the remote hosts.
+
+    :param hosts: Dictionary containing hosts. For each host a list of jobs is defined.
+    """
     hosts_list = list(hosts.keys())
     ssh_key = settings.remote_execution.ssh_key
     user = settings.planetlab.slice
@@ -960,7 +919,21 @@ def delete_remote_host_jobs(hosts):
     joinall(cmds, raise_error=True)
 
 
-def delete_job(db, job):
+def delete_job(db, job: plbmng.executor.PlbmngJob) -> None:
+    """
+    Delete :py:class:`plbmng.executor.PlbmngJob`.
+
+    Job is deleted from the following places:
+        - local plbmng database
+        - remote host job from *jobs.json*
+        - artefacts on remote host
+        - local artefacts
+
+    :param db: plbmng database to be manipulated with
+    :type db: PlbmngDb
+    :param job: job to be deleted
+    """
+
     def rm_tree(pth):
         pth = Path(pth)
         for child in pth.glob("*"):

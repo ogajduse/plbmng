@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import argparse
 import codecs
+import logging
 import socket
 import sys
 import traceback
@@ -10,6 +11,7 @@ from time import asctime
 from time import localtime
 from time import sleep
 from time import time
+from typing import Union
 
 import geocoder
 
@@ -266,10 +268,8 @@ continents = {
 }
 
 
-def arguments():
-    """
-    Argument parser for command line usage.
-    """
+def arguments() -> None:
+    """Argument parser for command line usage."""
     global plc_host
     parser = argparse.ArgumentParser(
         prog="planetlab_list_creator",
@@ -289,7 +289,7 @@ def arguments():
         auth["AuthString"] = args.password
     if args.output:
         if not Path(args.output).parent.exists():
-            print("Parent directory does not exist. Create the directory")
+            logging.error("Parent directory does not exist. Create the directory")
             exit(1)
 
         arg["path"] = args.output
@@ -302,15 +302,16 @@ def arguments():
         arg["quiet"] = True
 
     if unknown_argument:
-        print("Unknown argument")
+        logging.error("Unknown argument")
         sys.exit(1)
 
 
-def get_continent(country_code):
+def get_continent(country_code: str) -> Union[str, None]:
     """
-    Function returns continent based on country code provided as parameter.\n
-    :param country_code: string containing country code\n
-    :return: None if country code is not recognized. Otherwise it will return continent code.\n
+    Return continent based on country code provided as parameter.
+
+    :param country_code: string containing country code
+    :return: None if country code is not recognized. Otherwise it will return continent code.
     """
     global continents
     if country_code is None:
@@ -320,10 +321,11 @@ def get_continent(country_code):
     return None
 
 
-def get_ip_address(hostname):
+def get_ip_address(hostname: str) -> Union[str, None]:
     """
-    Function translates hostname to IP address.\n
-    :param hostname: HOSTNAME\n
+    Translate hostname to IP address.
+
+    :param hostname: HOSTNAME
     :return: if hostname cannot be translated to IP address returns None. Otherwise it returns IP address as a string.
     """
     if hostname is not None or hostname == "":
@@ -335,10 +337,11 @@ def get_ip_address(hostname):
     return None
 
 
-def append_to_file(node):
+def append_to_file(node: dict) -> None:
     """
-    Function for writing information about a node into the file\n
-    :param node:  dictionary containing information about a node
+    Write information about a node into the file.
+
+    :param node: dictionary containing information about a node
     """
     if arg["id"] == arg["start_id"]:
         try:
@@ -347,7 +350,7 @@ def append_to_file(node):
             f.close()
         except Exception as err:
             traceback.print_exc()
-            print(err)
+            logging.error(err)
             sys.exit(1)
 
     try:
@@ -369,16 +372,17 @@ def append_to_file(node):
             )
     except Exception as err:
         traceback.print_exc()
-        print(err)
+        logging.error(err)
         sys.exit(1)
 
 
-def print_info(node):
+def print_info(node: dict) -> None:
     """
-    Function prints information about a node.\n
+    Print information about a node.
+
     :param node:  dictionary containing information about the node
     """
-    print(
+    logging.info(
         "ID: %s \n"
         "IP ADDRESS: \t%s\n"
         "HOSTNAME: \t%s\n"
@@ -406,32 +410,36 @@ def print_info(node):
     )
 
 
-def run(path=None, username=None, password=None, start_id=None, quiet=False, return_output=False):
+def run(path=None, username=None, password=None, start_id=None, quiet=False, return_output=False) -> Union[None, list]:
     """
-    Function creates output file with all information about the nodes. It takes
-    username and password from Planetlab web to authenticate for the API. In path param
-    you specify the path where output shall be saved. These parameters are required and
-    function will not work properly without them. Start id is optional and you should
-    use it only if you want to use different numbering for nodes. Default value for
-    start id is '1'. Quiet is boolean value for printing standard output.\n
-    :param path: path to file as string. REQUIRED\n
-    :param username: username of your Planetlab web account. REQUIRED\n
-    :param password: password of your Planetlab web account. REQUIRED\n
-    :param start_id: integer value for numbering. Optional: default=1\n
-    :param quiet:  boolean value deciding whether to print information as standard output. Optional: default=False\n
-    :param return_output: boolean value deciding whether to return output as list of nodes. Optional: default=False\n
-    :return: lib/default2.node file, which contains following information about node:\n
-        - ID\n
-        - IP address\n
-        - Hostname\n
-        - Continent\n
-        - Country\n
-        - Region\n
-        - City\n
-        - URL\n
-        - Name of an institution, which owns the node\n
-        - Latitude\n
-        - Longitude\n
+    Create output file with all information about the nodes.
+
+    It takes username and password from Planetlab web to authenticate for the API.
+    In path param you specify the path where output shall be saved. These parameters
+    are required and function will not work properly without them. Start id is optional
+    and you should use it only if you want to use different numbering for nodes.
+    Default value for ``start_id`` is '1'. Quiet is boolean value for printing standard output.
+
+    :param path: path to file as string. REQUIRED
+    :param username: username of your Planetlab web account. REQUIRED
+    :param password: password of your Planetlab web account. REQUIRED
+    :param start_id: integer value for numbering. Optional: default=1
+    :param quiet:  boolean value deciding whether to print information as standard output.
+        Optional: default=:py:obj:`False`
+    :param return_output: boolean value deciding whether to return output as list of nodes.
+        Optional: default=:py:obj:`False`
+    :return: lib/default2.node file, which contains following information about node:
+        - ID
+        - IP address
+        - Hostname
+        - Continent
+        - Country
+        - Region
+        - City
+        - URL
+        - Name of an institution, which owns the node
+        - Latitude
+        - Longitude
     """
     global auth
 
@@ -491,12 +499,12 @@ def run(path=None, username=None, password=None, start_id=None, quiet=False, ret
             arg["id"] += 1
 
     except (KeyboardInterrupt, SystemExit):
-        print("Program stopped by user. Exiting....")
+        logging.error("Program stopped by user. Exiting....")
         sys.exit(1)
 
     except Exception as err:
         traceback.print_exc()
-        print(err)
+        logging.error(err)
         sys.exit(1)
 
     if return_output:
@@ -504,7 +512,8 @@ def run(path=None, username=None, password=None, start_id=None, quiet=False, ret
 
 
 if __name__ == "__main__":
-    print(f"Start: {asctime(localtime(time()))}")
+    logging.basicConfig(level=logging.INFO)
+    logging.info(f"Start: {asctime(localtime(time()))}")
     arguments()
     run()
-    print(f"Finish: {asctime(localtime(time()))}")
+    logging.info(f"Finish: {asctime(localtime(time()))}")

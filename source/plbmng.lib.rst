@@ -28,8 +28,8 @@ plbmng.lib.icmp\_map module
    :undoc-members:
    :show-inheritance:
 
-plbmng.lib.lib module
----------------------
+plbmng.lib.library module
+-------------------------
 
 .. automodule:: plbmng.lib.library
    :members:
@@ -64,6 +64,14 @@ plbmng.lib.ssh\_map module
 --------------------------
 
 .. automodule:: plbmng.lib.ssh_map
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+plbmng.lib.ssh module
+--------------------------
+
+.. automodule:: plbmng.lib.ssh
    :members:
    :undoc-members:
    :show-inheritance:

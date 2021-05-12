@@ -16,11 +16,13 @@ from plbmng.utils.config import get_plbmng_geolocation_dir
 from plbmng.utils.logger import logger
 
 
-def plot_server_on_map(nodes=None, file_path=None):
+def plot_server_on_map(nodes=None, file_path: str = None) -> None:
     """
-    Creates a map of every known node and generates chart with information about their's latency.
+    Create a map of every known node and generates chart with information about their's latency.
 
-    :return: map_full.html file
+    :param nodes: list of nodes
+    :param file_path: Optional: Path to the file into which the map should be saved.
+        If no path is specified, value from plbmng config will be used.
     """
     df = pd.DataFrame({"Data 1": [1, 2, 3, 4, 5, 6, 7, 12], "Data 2": [42, 27, 52, 18, 61, 19, 62, 33]})
 

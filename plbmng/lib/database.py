@@ -2,6 +2,9 @@ import csv
 import hashlib
 import re
 import sqlite3
+from typing import Dict
+from typing import List
+from typing import Union
 
 from plbmng import executor
 from plbmng.lib.library import get_custom_servers
@@ -10,17 +13,22 @@ from plbmng.utils.logger import logger
 
 
 class PlbmngDb:
-    """
-    Class provides basic interaction with plbmng database.
-    """
+    """Class provides basic interaction with plbmng database."""
 
-    def __init__(self):
+    def __init__(self) -> None:  # noqa: D107
         self._db_path = get_db_path("plbmng_database")
         self.db = sqlite3.connect(self._db_path)
         self.cursor = self.db.cursor()
 
     @staticmethod
-    def init_db_schema():
+    def init_db_schema() -> None:
+        """
+        Initialize the plbmng database schema.
+
+        It is supposed run only if the database does not exist.
+
+        :return: None
+        """
         try:
             get_db_path("plbmng_database")
         except FileNotFoundError:
@@ -96,30 +104,26 @@ class PlbmngDb:
                 )
             db.commit()
             db.close()
-            return
+            return None
         logger.error("Database init was not performed. Database already exists.")
 
     def connect(self) -> None:
-        """
-        Connect to plbmng database
-        """
+        """Connect to plbmng database."""
         self.db = sqlite3.connect(self._db_path)
         self.cursor = self.db.cursor()
 
     def close(self) -> None:
-        """
-        Close connection to plbmng database.
-        """
+        """Close connection to plbmng database."""
         self.db.close()
 
     def get_stats(self) -> dict:
         """
         Return dictionary which contains stats about ping and ssh responses.
 
-        :rtype: dict
+        :return: dictionary which contains stats about ping and ssh responses
         """
         # Initialize filtering settings
-        stat_dic = dict()
+        stat_dic = {}
 
         # get numbers of all servers in database
         self.cursor.execute("select count(*) from availability;")
@@ -138,9 +142,9 @@ class PlbmngDb:
         """
         Return stats how many servers responded with version of kernel, gcc, python and how many RAM server has.
 
-        :rtype: dict
+        :return: hardware and software stats
         """
-        stat_dic = dict()
+        stat_dic = {}
         self.cursor.execute("select count(*) from programs;")
         stat_dic["all"] = self.cursor.fetchall()[0][0]
         # SSH available
@@ -155,11 +159,12 @@ class PlbmngDb:
         stat_dic["memory"] = self.cursor.fetchall()[0][0]
         return stat_dic
 
-    def get_filters_for_access_servers(self, binary_out=False):
+    def get_filters_for_access_servers(self, binary_out: bool = False) -> Union[str, Dict[str, bool]]:
         """
         Return message which filtering options(ssh, ping) are active.
 
-        :rtype: str
+        :param binary_out: if :py:obj:`True`, the return type will be dict instead of dict, defaults to :py:obj:`False`
+        :return: text string specifying the filters applied
         """
         self.cursor.execute("SELECT * from configuration;")
         configuration = self.cursor.fetchall()
@@ -191,7 +196,6 @@ class PlbmngDb:
         Change filtering options based on given tag.
 
         :param tag: Number as string. If '1' is given, change ssh to enabled. If '2' is given, change ping to enabled.
-        :type tag: str
         """
         if "1" in tag:
             self.cursor.execute('UPDATE configuration SET senabled="T" where sname="ssh"')
@@ -207,21 +211,18 @@ class PlbmngDb:
             self.db.commit()
 
     def get_nodes(
-        self, check_configuration=True, choose_availability_option=None, choose_software_hardware=None, path="/"
-    ):
+        self,
+        check_configuration: bool = True,
+        choose_availability_option: int = None,
+        choose_software_hardware: str = None,
+    ) -> List[Dict[str, str]]:
         """
         Return all nodes from default.node file plus all user specified nodes from user_servers.node.
 
-        :param check_configuration: If set to True, check if status of server has been updated.
-        :type check_configuration: bool
+        :param check_configuration: If set to :py:obj:`True`, check if status of server has been updated.
         :param choose_availability_option: Select filter option based on availability of ssh, ping or both.
-        :type choose_availability_option: int
         :param choose_software_hardware: Select filter option from: gcc, python, kernel, mem.
-        :type choose_software_hardware: str
-        :param path: Path to the source directory of plbmng.
-        :type: str
         :return: List of all nodes
-        :rtype: list
         """
         # Initialize filtering settings
         if choose_software_hardware:
@@ -279,7 +280,12 @@ class PlbmngDb:
         return nodes
 
     @staticmethod
-    def read_default_node():
+    def read_default_node() -> List[Dict[str, str]]:
+        """
+        Read ``default.node`` file and return the servers in a list.
+
+        :return: list of servers
+        """
         node_file = get_db_path("default_node")
         nodes = []
         with open(node_file) as tsv:
@@ -289,7 +295,17 @@ class PlbmngDb:
                 nodes.append(row)
         return nodes
 
-    def add_job(self, job_id, node, cmd_argv, scheduled_at, state, result):
+    def add_job(self, job_id: str, node: str, cmd_argv: str, scheduled_at: str, state: str, result: str) -> None:
+        """
+        Add a new job to the plbmng database.
+
+        :param job_id: ID of the job to be added to the database
+        :param node: FQDN of the node on which the job is running
+        :param cmd_argv: argv of the command
+        :param scheduled_at: time at which the job is scheduled
+        :param state: state of the job
+        :param result: result of the job
+        """
         sql = """INSERT INTO jobs (id, node, cmd_argv, scheduled_at, state, result)
                              values ("{}", (select nkey
                              from availability
@@ -299,7 +315,18 @@ class PlbmngDb:
         self.cursor.execute(sql)
         self.db.commit()
 
-    def update_job(self, job_id, state, result, started_at, ended_at):
+    def update_job(
+        self, job_id: str, state: int, result: int, started_at: Union[int, float], ended_at: Union[int, float]
+    ) -> None:
+        """
+        Update existing job in the plbmng database.
+
+        :param job_id: ID of the job to be added to the database
+        :param state: state of the job
+        :param result: result of the job
+        :param started_at: time at which the job was started
+        :param ended_at: time at which the job ended
+        """
         sql = """UPDATE jobs
                  SET state = {jstate}, result = {jresult}, started_at = "{jstarted_at}", ended_at = "{jended_at}"
                  WHERE id = "{jid}";""".format(
@@ -309,7 +336,12 @@ class PlbmngDb:
         self.cursor.execute(sql)
         self.db.commit()
 
-    def get_non_stopped_jobs(self):
+    def get_non_stopped_jobs(self) -> List[executor.PlbmngJob]:
+        """
+        Collect all non-stopped jobs from the local plbmng database.
+
+        :return: list of non-stopped jobs
+        """
         selected_columns = ["id", "shostname", "cmd_argv", "scheduled_at", "state", "result", "started_at", "ended_at"]
         sql = """SELECT {}
                  FROM jobs JOIN availability ON jobs.node = availability.nkey
@@ -328,11 +360,15 @@ class PlbmngDb:
                 args = {selected_columns[i]: row[i] for i, _ in enumerate(row)}
                 job = executor.PlbmngJob(**args)
                 ns_jobs.append(job)
-                # ns_jobs.append({selected_columns[i]: row[i] for i, _ in enumerate(row)})
         return ns_jobs
 
     # TODO: deduplicate code
-    def get_stopped_jobs(self):
+    def get_stopped_jobs(self) -> List[executor.PlbmngJob]:
+        """
+        Collect all stopped (non-running) jobs from the local plbmng database.
+
+        :return: list of stopped jobs
+        """
         selected_columns = ["id", "shostname", "cmd_argv", "scheduled_at", "state", "result", "started_at", "ended_at"]
         sql = """SELECT {}
                  FROM jobs JOIN availability ON jobs.node = availability.nkey
@@ -351,10 +387,14 @@ class PlbmngDb:
                 args = {selected_columns[i]: row[i] for i, _ in enumerate(row)}
                 job = executor.PlbmngJob(**args)
                 s_jobs.append(job)
-                # ns_jobs.append({selected_columns[i]: row[i] for i, _ in enumerate(row)})
         return s_jobs
 
-    def get_all_jobs(self):
+    def get_all_jobs(self) -> List[executor.PlbmngJob]:
+        """
+        Collect **all** jobs from the local plbmng database.
+
+        :return: list of all jobs
+        """
         selected_columns = ["id", "shostname", "cmd_argv", "scheduled_at", "state", "result", "started_at", "ended_at"]
         sql = """SELECT {}
                  FROM jobs JOIN availability ON jobs.node = availability.nkey""".format(
@@ -372,10 +412,14 @@ class PlbmngDb:
                 args = {selected_columns[i]: row[i] for i, _ in enumerate(row)}
                 job = executor.PlbmngJob(**args)
                 s_jobs.append(job)
-                # ns_jobs.append({selected_columns[i]: row[i] for i, _ in enumerate(row)})
         return s_jobs
 
-    def delete_job(self, job: executor.PlbmngJob):
+    def delete_job(self, job: executor.PlbmngJob) -> None:
+        """
+        Delete job from the local plbmng database.
+
+        :param job: job to be deleted
+        """
         sql = f"DELETE FROM jobs WHERE id='{job.job_id}'"
         self.cursor.execute(sql)
         self.db.commit()

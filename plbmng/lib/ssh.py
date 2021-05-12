@@ -1,10 +1,8 @@
-import base64
 import logging
-import os
 import re
 import time
 from contextlib import contextmanager
-from fnmatch import fnmatch
+from typing import Union
 
 import paramiko
 
@@ -12,25 +10,24 @@ from plbmng.utils.config import settings
 
 logger = logging.getLogger(__name__)
 
-CONNECTION_TIMEOUT = 30
-COMMAND_TIMEOUT = 60
-HOSTNAME = "ple1.cesnet.cz"
+CONNECTION_TIMEOUT = settings.remote_execution.connection_timeout
+COMMAND_TIMEOUT = settings.remote_execution.command_timeout
 SSH_USERNAME = settings.planetlab.slice
-SSH_PASSWORD = None
 SSH_KEY = settings.remote_execution.ssh_key
 
-# TODO impmlement https://pypi.org/project/parallel-ssh/
+# TODO impmlement https://pypi.org/project/parallel-ssh/ into this library
 
 
 class SSHCommandTimeoutError(Exception):
-    """Raised when the SSH command has not finished executing after a
-    predefined period of time.
+    """Raised when the SSH command has not finished executing after a predefined period of time."""
+
+
+def decode_to_utf8(text) -> bytes:  # pragma: no cover
     """
+    Paramiko returns bytes object and we need to ensure it is utf-8 before parsing.
 
-
-def decode_to_utf8(text):  # pragma: no cover
-    """Paramiko returns bytes object and we need to ensure it is utf-8 before
-    parsing
+    :param text: non-decoded bytes
+    :return: decoded text
     """
     try:
         return text.decode("utf-8")
@@ -41,7 +38,17 @@ def decode_to_utf8(text):  # pragma: no cover
 class SSHCommandResult:
     """Structure that returns in all ssh commands results."""
 
-    def __init__(self, stdout=None, stderr=None, return_code=0, output_format=None):
+    def __init__(self, stdout=None, stderr=None, return_code=0) -> None:
+        """
+        Construct object of SSHCommandResult class.
+
+        :param stdout: command stdout, defaults to None
+        :type stdout: list, optional
+        :param stderr: command stderr, defaults to None
+        :type stderr: str, optional
+        :param return_code: command return code, defaults to 0
+        :type return_code: int, optional
+        """
         self.stdout = stdout
         self.stderr = stderr
         self.return_code = return_code
@@ -52,12 +59,23 @@ class SSHCommandResult:
 
 
 class SSHClient(paramiko.SSHClient):
-    def run(self, cmd, *args, **kwargs):
-        """This method exists to allow the reuse of existing connections when
-        running multiple ssh commands as in the following example of use:
+    """Representation of SSH client."""
+
+    def run(self, cmd, *args, **kwargs) -> SSHCommandResult:
+        """
+        Run SSH client.
+
+        .. # noqa: DAR101
+        .. # noqa: DAR201
+
+        This method exists to allow the reuse of existing connections when
+        running multiple ssh commands as in the following example of use::
+
             with plbmng.ssh.get_connection() as connection:
                 connection.run('ls /tmp')
                 connection.run('another command')
+                ...
+
         `self` is always passed as the connection when used in context manager
         only when using `ssh.get_connection` function.
         Note: This method is named `run` to avoid conflicts with existing
@@ -66,70 +84,86 @@ class SSHClient(paramiko.SSHClient):
         return execute_command(cmd, self, *args, **kwargs)
 
 
-def _call_paramiko_sshclient():  # pragma: no cover
-    """Call ``paramiko.SSHClient``.
-    This function does not alter the behaviour of ``paramiko.SSHClient``. It
-    exists solely for the sake of easing unit testing: it can be overridden for
-    mocking purposes.
+def _call_paramiko_sshclient() -> SSHClient:  # pragma: no cover
+    """
+    Call ``:py:class:`paramiko.client.SSHClient```.
+
+    .. # noqa: DAR201
     """
     return SSHClient()
 
 
-def get_client(hostname=None, username=None, password=None, key_filename=None, timeout=None, port=22):
-    """Returns a SSH client connected to given hostname"""
+def get_client(hostname=None, username=None, key_filename=None, timeout=None, port=22) -> SSHClient:
+    """
+    Return a SSH client connected to given hostname.
+
+    :param hostname: The hostname of the server to establish connection. If
+        it is :py:obj:`None` ``hostname`` from configuration's ``server`` section
+        will be used.
+    :type hostname: str
+    :param username: The username to use when connecting. If it is :py:obj:`None`
+        ``ssh_username`` from configuration's ``server`` section will be used.
+    :type username: str
+    :param key_filename: The path of the ssh private key to use when
+        connecting to the server. If it is :py:obj:`None` ``key_filename`` from
+        configuration's ``server`` section will be used.
+    :type key_filename: str
+    :param timeout: Time to wait for establish the connection.
+    :type timeout: int
+    :param port: The server port to connect to, the default port is 22.
+    :type port: int
+    :raises ValueError: if ``hostname`` argument is missing
+    :return: An SSH connection.
+    """
     if hostname is None:
-        hostname = HOSTNAME
+        raise ValueError("Can not start SSH client. The 'hostname' argument is missing.")
     if username is None:
         username = SSH_USERNAME
-    if key_filename is None and password is None:
+    if key_filename is None:
         key_filename = SSH_KEY
-    if password is None:
-        password = SSH_PASSWORD
     if timeout is None:
         timeout = CONNECTION_TIMEOUT
     client = _call_paramiko_sshclient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect(
-        hostname=hostname,
-        username=username,
-        key_filename=key_filename,
-        password=password,
-        timeout=timeout,
-        port=port,
-    )
+    client.connect(hostname=hostname, username=username, key_filename=key_filename, timeout=timeout, port=port)
     client._id = hex(id(client))
     return client
 
 
 @contextmanager
-def get_connection(hostname=None, username=None, password=None, key_filename=None, timeout=None, port=22):
-    """Yield an ssh connection object.
+def get_connection(hostname=None, username=None, key_filename=None, timeout=None, port=22):
+    """
+    Yield an ssh connection object.
+
     The connection will be configured with the specified arguments or will
     fall-back to server configuration in the configuration file.
     Yield this SSH connection. The connection is automatically closed when the
-    caller is done using it using ``contextlib``, so clients should use the
+    caller is done using it using :py:obj:`contextlib <contextlib>`, so clients should use the
     ``with`` statement to handle the object::
+
         with get_connection() as connection:
             ...
-    :param str hostname: The hostname of the server to establish connection.If
-        it is ``None`` ``hostname`` from configuration's ``server`` section
+
+    :param hostname: The hostname of the server to establish connection. If
+        it is :py:obj:`None` ``hostname`` from configuration's ``server`` section
         will be used.
-    :param str username: The username to use when connecting. If it is ``None``
+    :type hostname: str
+    :param username: The username to use when connecting. If it is :py:obj:`None`
         ``ssh_username`` from configuration's ``server`` section will be used.
-    :param str password: The password to use when connecting. If it is ``None``
-        ``ssh_password`` from configuration's ``server`` section will be used.
-        Should be applied only in case ``key_filename`` is not set
-    :param str key_filename: The path of the ssh private key to use when
-        connecting to the server. If it is ``None`` ``key_filename`` from
+    :type username: str
+    :param key_filename: The path of the ssh private key to use when
+        connecting to the server. If it is :py:obj:`None` ``key_filename`` from
         configuration's ``server`` section will be used.
-    :param int timeout: Time to wait for establish the connection.
-    :param int port: The server port to connect to, the default port is 22.
-    :return: An SSH connection.
-    :rtype: ``paramiko.SSHClient``
+    :type key_filename: str
+    :param timeout: Time to wait for establish the connection.
+    :type timeout: int
+    :param port: The server port to connect to, the default port is 22.
+    :type port: int
+    :yield: :py:class:`paramiko.client.SSHClient`
     """
     if timeout is None:
         timeout = CONNECTION_TIMEOUT
-    client = get_client(hostname, username, password, key_filename, timeout, port)
+    client = get_client(hostname, username, key_filename, timeout, port)
     try:
         logger.debug(f"Instantiated Paramiko client {client._id}")
         logger.info("Connected to [%s]", hostname)
@@ -140,37 +174,35 @@ def get_connection(hostname=None, username=None, password=None, key_filename=Non
 
 
 @contextmanager
-def get_sftp_session(hostname=None, username=None, password=None, key_filename=None, timeout=None):
-    """Yield a SFTP session object.
-    The session will be configured with the host whose hostname is
-    passed as
-    argument.
-    Yield this SFTP Session. The session is automatically closed when
-    the caller is done using it using ``contextlib``, so clients should use
-    the``with`` statement to handle the object::
-      with get_sftp_session() as session:
-      ...
-    :param str hostname: The hostname of the server to establish connection.If
-        it is ``None`` ``hostname`` from configuration's ``server`` section
-        will be used.
-    :param str username: The username to use when connecting.If it is ``None``
-        ``ssh_username`` from configuration's ``server`` section will be used.
-    :param str password: The password to use when connecting. If it is
-        ``None``  ``ssh_password`` from configuration's ``server`` section
-        will be used. Should be applied only in case ``key_filename`` is not
-        set
-    :param str key_filename: The path of the ssh private key to use when
-        connecting to the server. If it is ``None`` ``key_filename`` from
-        configuration's ``server`` section will be used.
-    :param int timeout: Time to wait for establish the connection.
+def get_sftp_session(hostname=None, username=None, key_filename=None, timeout=None):
     """
-    with get_connection(
-        hostname=hostname,
-        username=username,
-        password=password,
-        key_filename=key_filename,
-        timeout=timeout,
-    ) as connection:
+    Yield a SFTP session object.
+
+    The session will be configured with the host whose hostname is
+    passed as argument.
+    Yield this SFTP Session. The session is automatically closed when
+    the caller is done using it using :py:obj:`contextlib <contextlib>`, so clients should use
+    the ``with`` statement to handle the object::
+
+        with get_sftp_session() as session:
+            ...
+
+    :param hostname: The hostname of the server to establish connection. If
+        it is :py:obj:`None` ``hostname`` from configuration's ``server`` section
+        will be used.
+    :type hostname: str
+    :param username: The username to use when connecting.If it is :py:obj:`None`
+        ``ssh_username`` from configuration's ``server`` section will be used.
+    :type username: str
+    :param key_filename: The path of the ssh private key to use when
+        connecting to the server. If it is :py:obj:`None` ``key_filename`` from
+        configuration's ``server`` section will be used.
+    :type key_filename: str
+    :param timeout: Time to wait for establish the connection.
+    :type timeout: int
+    :yield: SFTP session
+    """
+    with get_connection(hostname=hostname, username=username, key_filename=key_filename, timeout=timeout) as connection:
         try:
             sftp = connection.open_sftp()
             yield sftp
@@ -179,8 +211,31 @@ def get_sftp_session(hostname=None, username=None, password=None, key_filename=N
 
 
 @contextmanager
-def get_transport(hostname=None, username=None, password=None, key_filename=None, timeout=None, port=22):
-    client = get_client(hostname, username, password, key_filename, timeout, port)
+def get_transport(hostname=None, username=None, key_filename=None, timeout=None, port=22):
+    """
+    Create connection and return the transport object for this SSH connection.
+
+    This can be used to perform lower-level tasks, like opening specific
+    kinds of channels.
+
+    :param hostname: The hostname of the server to establish connection. If
+        it is :py:obj:`None` ``hostname`` from configuration's ``server`` section
+        will be used.
+    :type hostname: str
+    :param username: The username to use when connecting. If it is :py:obj:`None`
+        ``ssh_username`` from configuration's ``server`` section will be used.
+    :type username: str
+    :param key_filename: The path of the ssh private key to use when
+        connecting to the server. If it is :py:obj:`None` ``key_filename`` from
+        configuration's ``server`` section will be used.
+    :type key_filename: str
+    :param timeout: Time to wait for establish the connection.
+    :type timeout: int
+    :param port: The server port to connect to, the default port is 22.
+    :type port: int
+    :yield: :py:class:`paramiko.transport.Transport` object
+    """
+    client = get_client(hostname, username, key_filename, timeout, port)
     transport = client.get_transport()
     try:
         logger.debug(f"Instantiated Paramiko client {client._id}")
@@ -195,118 +250,58 @@ def get_transport(hostname=None, username=None, password=None, key_filename=None
 
 
 @contextmanager
-def get_channel(hostname=None, username=None, password=None, key_filename=None, timeout=None, port=22):
-    with get_transport(hostname, username, password, key_filename, timeout, port) as transport:
+def get_channel(hostname=None, username=None, key_filename=None, timeout=None, port=22):
+    """
+    Yield a SSH channel.
+
+    :param hostname: The hostname of the server to establish connection. If
+        it is :py:obj:`None` ``hostname`` from configuration's ``server`` section
+        will be used.
+    :type hostname: str
+    :param username: The username to use when connecting.If it is :py:obj:`None`
+        ``ssh_username`` from configuration's ``server`` section will be used.
+    :type username: str
+    :param key_filename: The path of the ssh private key to use when
+        connecting to the server. If it is :py:obj:`None` ``key_filename`` from
+        configuration's ``server`` section will be used.
+    :type key_filename: str
+    :param timeout: Time to wait for establish the connection.
+    :type timeout: int
+    :param port: The server port to connect to, the default port is 22.
+    :type port: int
+    :yield: :py:class:`paramiko.channel.Channel` object
+    """
+    with get_transport(hostname, username, key_filename, timeout, port) as transport:
         try:
             channel = transport.open_session()
             yield channel
         finally:
             channel.close()
-            pass
 
 
-def add_authorized_key(key, hostname=None, username=None, password=None, key_filename=None, timeout=None):
-    """Appends a local public ssh key to remote authorized keys
-    refer to: remote_execution_ssh_keys provisioning template
-    :param key: either a file path, key string or a file-like obj to append.
-    :param str hostname: The hostname of the server to establish connection. If
-        it is ``None`` ``hostname`` from configuration's ``server`` section
-        will be used.
-    :param str username: The username to use when connecting. If it is ``None``
-        ``ssh_username`` from configuration's ``server`` section will be used.
-    :param str password: The password to use when connecting. If it is ``None``
-        ``ssh_password`` from configuration's ``server`` section will be used.
-        Should be applied only in case ``key_filename`` is not set
-    :param str key_filename: The path of the ssh private key to use when
-        connecting to the server. If it is ``None`` ``key_filename`` from
-        configuration's ``server`` section will be used.
-    :param int timeout: Time to wait for establish the connection.
+def upload_file(local_file, remote_file, key_filename=None, hostname=None, username=None) -> None:
     """
+    Upload a local file to a remote machine.
 
-    if getattr(key, "read", None):  # key is a file-like object
-        key_content = key.read()  # pragma: no cover
-    elif is_ssh_pub_key(key):  # key is a valid key-string
-        key_content = key
-    elif os.path.exists(key):  # key is a path to a pub key-file
-        with open(key) as key_file:  # pragma: no cover
-            key_content = key_file.read()
-    else:
-        raise AttributeError("Invalid key")
-
-    if timeout is None:
-        timeout = CONNECTION_TIMEOUT
-
-    key_content = key_content.strip()
-    ssh_path = "~/.ssh"
-    auth_file = os.path.join(ssh_path, "authorized_keys")
-
-    with get_connection(
-        hostname=hostname,
-        username=username,
-        password=password,
-        key_filename=key_filename,
-        timeout=timeout,
-    ) as con:
-
-        # ensure ssh directory exists
-        execute_command(f"mkdir -p {ssh_path}", con)
-
-        # append the key if doesn't exists
-        add_key = "grep -q '{key}' {dest} || echo '{key}' >> {dest}".format(key=key_content, dest=auth_file)
-        execute_command(add_key, con)
-
-        # set proper permissions
-        execute_command(f"chmod 700 {ssh_path}", con)
-        execute_command(f"chmod 600 {auth_file}", con)
-        ssh_user = username or SSH_USERNAME
-        execute_command(f"chown -R {ssh_user} {ssh_path}", con)
-
-        # Restore SELinux context with restorecon, if it's available:
-        cmd = f"command -v restorecon && restorecon -RvF {ssh_path} || true"
-        execute_command(cmd, con)
-
-
-def upload_file(local_file, remote_file, key_filename=None, hostname=None, username=None):
-    """Upload a local file to a remote machine
     :param local_file: either a file path or a file-like object to be uploaded.
     :param remote_file: a remote file path where the uploaded file will be
         placed.
     :param hostname: target machine hostname. If not provided will be used the
         ``server.hostname`` from the configuration.
-    :param str key_filename: The path of the ssh private key to use when
-        connecting to the server. If it is ``None`` ``key_filename`` from
+    :param key_filename: The path of the ssh private key to use when
+        connecting to the server. If it is :py:obj:`None` ``key_filename`` from
         configuration's ``server`` section will be used.
+    :param username: The username to use when connecting. If it is :py:obj:`None`
+        ``ssh_username`` from configuration's ``server`` section will be used.
     """
-
     with get_sftp_session(hostname=hostname, username=username, key_filename=key_filename) as sftp:
         _upload_file(sftp, local_file, remote_file)
 
 
-def upload_files(local_dir, remote_dir, file_search="*.txt", hostname=None, key_filename=None):
-    """Upload all files from directory to a remote directory
-    :param local_dir: all files from local path to be uploaded.
-    :param remote_dir: a remote path where the uploaded files will be
-        placed.
-    :param file_search: filter only files contains the type extension
-    :param hostname: target machine hostname. If not provided will be used the
-        ``server.hostname`` from the configuration.
-    :param str key_filename: The path of the ssh private key to use when
-        connecting to the server. If it is ``None`` ``key_filename`` from
-        configuration's ``server`` section will be used.
+def _upload_file(sftp, local_file, remote_file) -> None:
     """
-    command(f"mkdir -p {remote_dir}")
-    # making only one SFTP Session to transfer all files
-    with get_sftp_session(hostname=hostname, key_filename=key_filename) as sftp:
-        for root, dirs, files in os.walk(local_dir):
-            for local_filename in files:
-                if fnmatch(local_filename, file_search):
-                    remote_file = f"{remote_dir}/{local_filename}"
-                    local_file = os.path.join(local_dir, local_filename)
-                    _upload_file(sftp, local_file, remote_file)
+    Upload a file using existent sftp session.
 
-
-def _upload_file(sftp, local_file, remote_file):
-    """Upload a file using existent sftp session
     :param sftp: sftp session object
     :param local_file: either a file path or a file-like object to be uploaded.
     :param remote_file: a remote file path where the uploaded file will be
@@ -320,9 +315,21 @@ def _upload_file(sftp, local_file, remote_file):
         sftp.put(local_file, remote_file)
 
 
-def download_file(remote_file, local_file=None, key_filename=None, hostname=None, username=None):
-    """Download a remote file to the local machine. If ``hostname`` is not
-    provided will be used the server.
+def download_file(remote_file, local_file=None, key_filename=None, hostname=None, username=None) -> None:
+    """
+    Download a remote file to the local machine.
+
+    :param remote_file: path to the file on the remote host
+    :type remote_file: str
+    :param local_file: path to the local file where the remote file should be copied to, defaults to None
+    :type local_file: str
+    :param hostname: target machine hostname. If not provided will be used the
+        ``server.hostname`` from the configuration.
+    :param key_filename: The path of the ssh private key to use when
+        connecting to the server. If it is :py:obj:`None` ``key_filename`` from
+        configuration's ``server`` section will be used.
+    :param username: The username to use when connecting. If it is :py:obj:`None`
+        ``ssh_username`` from configuration's ``server`` section will be used.
     """
     if local_file is None:  # pragma: no cover
         local_file = remote_file
@@ -339,68 +346,70 @@ def download_file(remote_file, local_file=None, key_filename=None, hostname=None
 def command(
     cmd,
     hostname=None,
-    output_format=None,
     username=None,
-    password=None,
     key_filename=None,
-    timeout=None,  # TODO: put timeout and other variables into config
+    timeout=None,
     connection_timeout=None,
     port=22,
     background=False,
-):
-    """Executes SSH command(s) on remote hostname.
-    :param str cmd: The command to run
-    :param str output_format: json, csv or None
-    :param str hostname: The hostname of the server to establish connection. If
-        it is ``None`` ``hostname`` from configuration's ``server`` section
-        will be used.
-    :param str username: The username to use when connecting. If it is ``None``
-        ``ssh_username`` from configuration's ``server`` section will be used.
-    :param str password: The password to use when connecting. If it is ``None``
-        ``ssh_password`` from configuration's ``server`` section will be used.
-        Should be applied only in case ``key_filename`` is not set
-    :param str key_filename: The path of the ssh private key to use when
-        connecting to the server. If it is ``None`` ``key_filename`` from
-        configuration's ``server`` section will be used.
-    :param int timeout: Time to wait for the ssh command to finish.
-    :param connection_timeout: Time to wait for establishing the connection.
-    :param int port: The server port to connect to, the default port is 22.
+) -> Union[None, SSHCommandResult]:
     """
-    hostname = hostname or HOSTNAME
+    Execute SSH command(s) on remote hostname.
+
+    .. # noqa: D402
+
+    :param cmd: The command to run
+    :type cmd: str
+    :param hostname: The hostname of the server to establish connection.If
+        it is :py:obj:`None` ``hostname`` from configuration's ``server`` section
+        will be used.
+    :type hostname: str
+    :param username: The username to use when connecting. If it is :py:obj:`None`
+        ``ssh_username`` from configuration's ``server`` section will be used.
+    :type username: str
+    :param key_filename: The path of the ssh private key to use when
+        connecting to the server. If it is :py:obj:`None` ``key_filename`` from
+        configuration's ``server`` section will be used.
+    :type key_filename: str
+    :param timeout: Time to wait for the ssh command to finish.
+    :type timeout: int
+    :param connection_timeout: Time to wait for establishing the connection.
+    :type connection_timeout: int
+    :param port: The server port to connect to, the default port is 22.
+    :type port: int
+    :param background: Specifies whether the command should run in background.
+        If the command is running in the background, no result will be returned.
+    :type background: bool
+    :raises ValueError: if ``hostname`` argument is missing
+    :return: :py:class:`SSHCommandResult` | :py:obj:`None` if ``background`` is :py:obj:`True`
+    """
+    if hostname is None:
+        raise ValueError("Can not start SSH client. The 'hostname' argument is missing.")
     if timeout is None:
         timeout = COMMAND_TIMEOUT
     if connection_timeout is None:
         connection_timeout = CONNECTION_TIMEOUT
     if background:
         with get_channel(
-            hostname=hostname,
-            username=username,
-            password=password,
-            key_filename=key_filename,
-            timeout=timeout,
-            port=port,
+            hostname=hostname, username=username, key_filename=key_filename, timeout=timeout, port=port
         ) as channel:
             channel.exec_command(cmd)
     else:
         with get_connection(
-            hostname=hostname,
-            username=username,
-            password=password,
-            key_filename=key_filename,
-            timeout=connection_timeout,
-            port=port,
+            hostname=hostname, username=username, key_filename=key_filename, timeout=connection_timeout, port=port
         ) as connection:
-            return execute_command(cmd, connection, output_format, timeout, connection_timeout)
+            return execute_command(cmd, connection, timeout, connection_timeout)
 
 
-def execute_command(cmd, connection, output_format=None, timeout=None, connection_timeout=None):
-    """Execute a command via ssh in the given connection
+def execute_command(cmd, connection, timeout=None, connection_timeout=None) -> SSHCommandResult:
+    """Execute a command via ssh in the given connection.
+
     :param cmd: a command to be executed via ssh
     :param connection: SSH Paramiko client connection
-    :param output_format: base|json|csv|list valid only for hammer commands
     :param timeout: Time to wait for the ssh command to finish.
     :param connection_timeout: Time to wait for establishing the connection.
-    :return: SSHCommandResult
+    :raises SSHCommandTimeoutError: if the command does not respond in time
+    :return: :py:class:`SSHCommandResult`
     """
     if timeout is None:
         timeout = COMMAND_TIMEOUT
@@ -417,8 +426,7 @@ def execute_command(cmd, connection, output_format=None, timeout=None, connectio
             time.sleep(1)
         else:
             logger.error(
-                "ssh command did not respond in the predefined time" " (timeout=%s) and will be interrupted",
-                timeout,
+                "ssh command did not respond in the predefined time" " (timeout=%s) and will be interrupted", timeout
             )
             stdout.channel.close()
             stderr.channel.close()
@@ -442,8 +450,7 @@ def execute_command(cmd, connection, output_format=None, timeout=None, connectio
         # Convert to unicode string and remove all color codes characters
         stderr = regex.sub("", decode_to_utf8(stderr))
         logger.info("<<< stderr\n%s", stderr)
-    # Skip converting to list if 'plain', or the hammer options 'json' or 'base' are passed
-    if stdout and output_format not in ("json", "base", "plain"):
+    if stdout:
         # Mostly only for hammer commands
         # for output we don't really want to see all of Rails traffic
         # information, so strip it out.
@@ -451,29 +458,4 @@ def execute_command(cmd, connection, output_format=None, timeout=None, connectio
         stdout = stdout.replace('""', "")
         stdout = "".join(stdout).split("\n")
         stdout = [regex.sub("", line) for line in stdout if not line.startswith("[")]
-    return SSHCommandResult(stdout, stderr, errorcode, output_format)
-
-
-def is_ssh_pub_key(key):
-    """Validates if a string is in valid ssh pub key format
-    :param key: A string containing a ssh public key encoded in base64
-    :return: Boolean
-    """
-
-    if not isinstance(key, str):
-        raise ValueError(f"Key should be a string type, received: {type(key)}")
-
-    # 1) a valid pub key has 3 parts separated by space
-    try:
-        key_type, key_string, comment = key.split()
-    except ValueError:  # need more than one value to unpack
-        return False
-
-    # 2) The second part (key string) should be a valid base64
-    try:
-        base64.decodebytes(key_string.encode("ascii"))
-    except base64.binascii.Error:
-        return False
-
-    # 3) The first part, the type, should be one of below
-    return key_type in ("ecdsa-sha2-nistp256", "ssh-dss", "ssh-rsa", "ssh-ed25519")
+    return SSHCommandResult(stdout, stderr, errorcode)
