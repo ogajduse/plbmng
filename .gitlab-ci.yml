@@ -1,4 +1,3 @@
-
 image: fedora:latest
 
 before_script:
@@ -8,7 +7,6 @@ before_script:
   - pip install poetry
   - poetry --version
   - poetry config virtualenvs.in-project true
-  - poetry config pypi-token.pypi ${PYPI_TOKEN}
   - poetry install -vv
 
 lint:
@@ -27,6 +25,7 @@ run:
 
 publish:
   before_script:
+    - poetry config pypi-token.pypi ${PYPI_TOKEN}
     - poetry build -f sdist
   script:
     - poetry publish
@@ -39,6 +38,6 @@ pages:
     - poetry run sphinx-build -b html source public
   artifacts:
     paths:
-    - public
+      - public
   only:
     - master
