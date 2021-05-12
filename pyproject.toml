@@ -49,6 +49,7 @@ loguru = "^0.5.3"
 gevent = "^21.1.2"
 parallel-ssh = "^2.5.4"
 pysftp = "^0.2.9"
+bumpver = "^2021.1112"
 
 [tool.poetry.dev-dependencies]
 Sphinx = "^4.0.0"
