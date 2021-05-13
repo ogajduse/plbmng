@@ -230,9 +230,9 @@ class Engine:
             number of servers which responded to the ping or ssh check.
         """
         text = (
-            f"Servers in database: {str(stats_dic['all'])}"
-            f"SSH available: {str(stats_dic['ssh'])}"
-            f"Ping available: {str(stats_dic['ping'])}"
+            f"Servers in database: {str(stats_dic['all'])}\n"
+            f"SSH available: {str(stats_dic['ssh'])}\n"
+            f"Ping available: {str(stats_dic['ping'])}\n"
         )
         self.d.msgbox(text, width=0, height=0, title="Current statistics since the last servers status update:")
 
@@ -939,7 +939,8 @@ ID:            {job.job_id}"""
         """First run menu."""
         self.d.msgbox(
             "This is first run of the application. "
-            "Please navigate to ~/.plbmng directory and set the credentials in the settings file.",
+            "Please navigate to ~/.plbmng directory and set the credentials in the "
+            "settings file and reload plbmng to load the settings",
             height=0,
             width=0,
         )

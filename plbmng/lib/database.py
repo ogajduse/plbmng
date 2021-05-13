@@ -237,15 +237,15 @@ class PlbmngDb:
                 sql = "select shostname from availability where"
                 for item in configuration:
                     if re.match(r".*where$", sql):
-                        sql = sql + " b" + item[1] + "='T'"
+                        sql = f'{sql} b{item[1]}="T"'
                     else:
-                        sql = sql + " and b" + item[1] + "='T'"
+                        sql = f'{sql} and b{item[1]}="T"'
         elif choose_availability_option == 1:
             sql = "select shostname from availability where bping='T'"
         elif choose_availability_option == 2:
             sql = "select shostname from availability where bssh='T'"
         elif choose_availability_option == 3:
-            sql = "select shostname from availability"
+            sql = "select shostname from availability where bping='T' and bssh='T'"
         self.cursor.execute(sql)
         returned_values_sql = self.cursor.fetchall()
         server_list = {}
