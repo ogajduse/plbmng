@@ -26,15 +26,43 @@ email = "xgajdu09@vutbr.cz"
 name = "plbmng"
 version = "0.5.2"
 description = "Tool for monitoring PlanetLab network"
+repository = "https://gitlab.com/utko-planetlab/plbmng/"
+homepage = "https://gitlab.com/utko-planetlab/plbmng/"
+documentation = "https://utko-planetlab.gitlab.io/plbmng/"
 authors = [
   "Ivan Andrasov <andrassk@gmail.com>",
   "Filip Suba <xsubaf01@vutbr.cz>",
   "Dan Komosny <komosny@feec.vutbr.cz>",
   "Martin Kacmarcik <red.mak.up@gmail.com>",
-  "Ondřej Gajdušek <xgajdu09@vutbr.cz>",
+  "Ondrej Gajdusek <xgajdu09@vutbr.cz>",
 ]
 license = "MIT"
 readme = "README.rst"
+include = [
+    "README.rst",
+    "LICENSE",
+]
+keywords = [
+    "planetlab",
+    "system",
+    "management"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Scientific/Engineering",
+    "Topic :: System :: Distributed Computing",
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -49,7 +77,6 @@ loguru = "^0.5.3"
 gevent = "^21.1.2"
 parallel-ssh = "^2.5.4"
 pysftp = "^0.2.9"
-bumpver = "^2021.1112"
 
 [tool.poetry.dev-dependencies]
 Sphinx = "^4.0.0"
@@ -69,6 +96,8 @@ flake8-bugbear = "^21.4.3"
 sphinx-pyproject = "^0.1.0"
 pre-commit = "^2.12.1"
 flake8-sphinx-links = "^0.2.1"
+bumpver = "^2021.1112"
+black = "^21.5b1"
 
 [tool.poetry.scripts]
 plbmng = "plbmng.__main__:main"
