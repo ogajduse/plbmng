@@ -809,8 +809,8 @@ ID:            {job.job_id}"""
         :return: None
         """
         text = "Type in destination path on the target hosts. Path to specific file must be specified!"
-        init = "/home/" + settings.planetlab.slice
-        code, source_path = self.d.fselect(filepath="/home/")  # height=40, width=60)
+        init = f"/home/{settings.planetlab.slice}"
+        code, source_path = self.d.fselect(filepath="/home/", height=10, width=0)
 
         if code == self.d.OK:
             servers = self.access_servers_gui(checklist=True)
@@ -827,7 +827,7 @@ ID:            {job.job_id}"""
         if ret:
             self.d.msgbox("Copy successful!")
             return None
-        self.d.msgbox("Could not copy file to the all servers!")
+        self.d.msgbox("Could not copy file to all servers!")
         return None
 
     def access_servers_gui(self, checklist: bool = False) -> Union[None, List[str]]:
