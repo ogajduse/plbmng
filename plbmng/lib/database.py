@@ -315,24 +315,28 @@ class PlbmngDb:
         self.cursor.execute(sql)
         self.db.commit()
 
-    def update_job(
-        self, job_id: str, state: int, result: int, started_at: Union[int, float], ended_at: Union[int, float]
-    ) -> None:
+    def update_job(self, job: executor.PlbmngJob) -> None:
         """
         Update existing job in the plbmng database.
 
-        :param job_id: ID of the job to be added to the database
-        :param state: state of the job
-        :param result: result of the job
-        :param started_at: time at which the job was started
-        :param ended_at: time at which the job ended
+        :param job: job to be modified in the database
         """
+        # Handle case when any of the time fields might be == null/None
+        for attr in ["started_at", "ended_at"]:
+            if not hasattr(job, attr):
+                setattr(job, attr, "")
+            else:
+                # TODO: deal with timezones properly, parse the TZ info from job
+                setattr(job, attr, f', {attr} = "{executor.time_from_iso(getattr(job, attr)).timestamp()}"')
         sql = """UPDATE jobs
-                 SET state = {jstate}, result = {jresult}, started_at = "{jstarted_at}", ended_at = "{jended_at}"
+                 SET state = {jstate}, result = {jresult}{jstarted_at}{jended_at}
                  WHERE id = "{jid}";""".format(
-            jid=job_id, jstarted_at=started_at, jended_at=ended_at, jstate=state, jresult=result
+            jid=job.job_id,
+            jstarted_at=job.started_at,
+            jended_at=job.ended_at,
+            jstate=job.state.value,
+            jresult=job.result.value,
         )
-        # TODO: handle case when any of the time fields might be == null/None
         self.cursor.execute(sql)
         self.db.commit()
 

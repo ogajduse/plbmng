@@ -20,7 +20,6 @@ from pssh.clients.native.parallel import ParallelSSHClient
 from plbmng.executor import PlbmngJob
 from plbmng.executor import PlbmngJobResult
 from plbmng.executor import PlbmngJobState
-from plbmng.executor import time_from_iso
 from plbmng.executor import time_from_timestamp
 from plbmng.lib.database import PlbmngDb
 from plbmng.lib.library import clear
@@ -537,13 +536,7 @@ ID:            {job.job_id}"""
         # update database
         for job in jobs_intersection:
             job = next((fjob for fjob in fetched_jobs if fjob == job), None)
-            self.db.update_job(
-                job.job_id,
-                job.state.value,
-                job.result.value,
-                time_from_iso(job.started_at).timestamp(),
-                time_from_iso(job.ended_at).timestamp(),
-            )
+            self.db.update_job(job)
         self.d.msgbox("Jobs updated successfully.")
 
     def job_artefacts_menu(self) -> None:
