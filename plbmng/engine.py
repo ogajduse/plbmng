@@ -63,7 +63,6 @@ sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 class Engine:
     """Class used for the interaction with the user and decision making based on user's input."""
 
-    user_nodes = "/database/user_servers.node"
     _debug = False
     _filtering_options = None
 
@@ -474,12 +473,8 @@ ID:            {job.job_id}"""
         :param state: Job state to filter. Can be either *non-finished* or *finished*.
         :return: None
         """
-
-        def key_func(k):
-            return k.hostname
-
         host_choices = []
-        hosts = list(dict(groupby(jobs, key_func)).keys())
+        hosts = list(dict(groupby(jobs, lambda job: job.hostname)).keys())
         if len(hosts) > 0:
             for i, host in enumerate(hosts, start=1):
                 host_choices.append((str(i), host))
@@ -512,15 +507,11 @@ ID:            {job.job_id}"""
 
         :return: None
         """
-
-        def key_func(k):
-            return k.hostname
-
         ns_jobs = get_non_stopped_jobs(self.db)
         if len(ns_jobs) < 1:
             self.d.msgbox("There are no non-stopped jobs to update.")
             return None
-        hosts = list(dict(groupby(ns_jobs, key_func)).keys())
+        hosts = list(dict(groupby(ns_jobs, lambda job: job.hostname)).keys())
         ssh_key = settings.remote_execution.ssh_key
         user = settings.planetlab.slice
         client = ParallelSSHClient(hosts, user=user, pkey=ssh_key)
@@ -570,17 +561,13 @@ ID:            {job.job_id}"""
 
         :return: None
         """
-
-        def key_func(k):
-            return k.hostname
-
         jobs = get_stopped_jobs(self.db)
         # make difference between jobs that already have artefacts downloaded
         jobs_interested = set(jobs).difference(set(jobs_downloaded_artefacts(jobs)))
         if not jobs_interested:
             self.d.msgbox("No job artefacts to update.")
             return None
-        hosts = list(dict(groupby(jobs_interested, key_func)).keys())
+        hosts = list(dict(groupby(jobs_interested, lambda job: job.hostname)).keys())
 
         ssh_key = settings.remote_execution.ssh_key
         user = settings.planetlab.slice
@@ -624,14 +611,10 @@ ID:            {job.job_id}"""
 
         :return: None
         """
-
-        def key_func(k):
-            return k.hostname
-
         jobs = get_stopped_jobs(self.db)
         jobs_art_down = jobs_downloaded_artefacts(jobs)
 
-        hosts = list(dict(groupby(jobs_art_down, key_func)).keys())
+        hosts = list(dict(groupby(jobs_art_down, lambda job: job.hostname)).keys())
         host_choices = []
         if len(hosts) > 0:
             for i, host in enumerate(hosts, start=1):
@@ -735,12 +718,8 @@ ID:            {job.job_id}"""
         :param server_filter: server filter to be changed
         :return: server filter confirmed by the user
         """
-
-        def key_func(k):
-            return k.hostname
-
         jobs: list(PlbmngJob) = get_all_jobs(self.db)
-        hosts = list(dict(groupby(jobs, key_func)).keys())
+        hosts = list(dict(groupby(jobs, lambda job: job.hostname)).keys())
         if len(hosts) > 0:
             host_choices = [(str(i), host, host in server_filter) for i, host in enumerate(hosts, start=1)]
             while True:

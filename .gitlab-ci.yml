@@ -1,5 +1,10 @@
 image: fedora:latest
 
+stages:
+  - lint
+  - build
+  - deploy
+
 before_script:
   - python3 -V
   - rpm -q fedora-release-common
@@ -9,14 +14,16 @@ before_script:
   - poetry config virtualenvs.in-project true
   - poetry install -vv
 
-lint:
+lint-check:
+  stage: lint
   script:
     - poetry run pre-commit clean
     - poetry run pre-commit run --all-files
   after_script:
     - git diff
 
-run:
+build-sdist:
+  stage: build
   script:
     - poetry build -f sdist
   artifacts:
@@ -24,6 +31,7 @@ run:
       - dist/*.tar.gz
 
 publish:
+  stage: deploy
   script:
     - poetry config pypi-token.pypi ${PYPI_TOKEN}
     - poetry build -f sdist

@@ -25,7 +25,7 @@ class PlbmngDb:
         """
         Initialize the plbmng database schema.
 
-        It is supposed run only if the database does not exist.
+        It is supposed to run only if the database does not exist.
 
         :return: None
         """

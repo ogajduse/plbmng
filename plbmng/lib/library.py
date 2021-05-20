@@ -865,6 +865,12 @@ def delete_jobs(db, jobs: List[executor.PlbmngJob]) -> None:
     """
     Delete all ``jobs``.
 
+    Jobs are deleted from the following places:
+        - local plbmng database
+        - remote host job from *jobs.json*
+        - artefacts on remote host
+        - local artefacts
+
     :param db: plbmng database to be manipulated with
     :type db: PlbmngDb
     :param jobs: list of plbmng jobs to be deleted
@@ -921,13 +927,7 @@ def delete_remote_host_jobs(hosts: Dict[str, List[executor.PlbmngJob]]) -> None:
 
 def delete_job(db, job: plbmng.executor.PlbmngJob) -> None:
     """
-    Delete :py:class:`plbmng.executor.PlbmngJob`.
-
-    Job is deleted from the following places:
-        - local plbmng database
-        - remote host job from *jobs.json*
-        - artefacts on remote host
-        - local artefacts
+    Delete :py:class:`plbmng.executor.PlbmngJob` and its artefacts.
 
     :param db: plbmng database to be manipulated with
     :type db: PlbmngDb
