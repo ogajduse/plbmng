@@ -789,7 +789,7 @@ ID:            {job.job_id}"""
         """
         text = "Type in destination path on the target hosts. Path to specific file must be specified!"
         init = f"/home/{settings.planetlab.slice}"
-        code, source_path = self.d.fselect(filepath="/home/", height=10, width=0)
+        code, source_path = self.d.fselect(filepath="/home/", height=20, width=60)
 
         if code == self.d.OK:
             servers = self.access_servers_gui(checklist=True)
